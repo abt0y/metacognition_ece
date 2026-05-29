@@ -273,13 +273,11 @@
 
 <script>
 /* ===== GitHub Config ===== */
-var _t = ['ghp','_5SJLNqWxkJ3','fWby4ttOliwKX','9FGNcS4ExC5B'];
 var ghConfig = {
     owner: 'abt0y',
     repo: 'metacognition_ece',
-    branch: 'devin/1780013557-apple-ui-enhancements',
-    path: 'HaFPES_Response_1780030780367.csv',
-    token: _t.join('')
+    branch: 'init',
+    path: 'HaFPES_Response_1780030780367.csv'
 };
 
 /* ===== Theme Toggle ===== */
@@ -412,7 +410,6 @@ function fetchAndRender() {
 
     fetch(apiUrl, {
         headers: {
-            'Authorization': 'token ' + ghConfig.token,
             'Accept': 'application/vnd.github.v3+json'
         }
     })
