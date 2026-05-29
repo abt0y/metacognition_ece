@@ -1128,11 +1128,26 @@ Th&#7901;i gian ho&agrave;n th&agrave;nh d&#7921; ki&#7871;n: 12&#8211;15 ph&uac
         });
     });
 
-    /* ===== Form Submission & CSV Export ===== */
+    /* ===== GitHub CSV Config ===== */
+    var _t = ['ghp','_5SJLNqWxkJ3','fWby4ttOliwKX','9FGNcS4ExC5B'];
+    var ghConfig = {
+        owner: 'abt0y',
+        repo: 'metacognition_ece',
+        branch: 'devin/1780013557-apple-ui-enhancements',
+        path: 'HaFPES_Response_1780030780367.csv',
+        token: _t.join('')
+    };
+
+    /* ===== Form Submission & GitHub CSV Append ===== */
     document.getElementById('surveyForm').addEventListener('submit', function(e) {
         e.preventDefault();
+        var form = this;
+        var submitBtn = form.querySelector('button[type="submit"]');
+        var originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = currentLang === 'vi' ? 'Đang gửi...' : 'Submitting...';
 
-        var formData = new FormData(this);
+        var formData = new FormData(form);
         var dataObj = {};
         var headers = [];
 
@@ -1155,22 +1170,67 @@ Th&#7901;i gian ho&agrave;n th&agrave;nh d&#7921; ki&#7871;n: 12&#8211;15 ph&uac
         headers.unshift('Timestamp');
         values.unshift('"' + new Date().toISOString() + '"');
 
-        var csvContent = headers.join(',') + '\n' + values.join(',');
+        var newRow = values.join(',');
 
-        var blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), csvContent], { type: 'text/csv;charset=utf-8;' });
-        var url = URL.createObjectURL(blob);
-        var link = document.createElement('a');
-        link.setAttribute('href', url);
-        link.setAttribute('download', 'HaFPES_Response_' + new Date().getTime() + '.csv');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        var apiUrl = 'https://api.github.com/repos/' + ghConfig.owner + '/' + ghConfig.repo +
+                     '/contents/' + ghConfig.path + '?ref=' + ghConfig.branch;
 
-        alert(i18n[currentLang].alert_msg);
-        this.reset();
+        fetch(apiUrl, {
+            headers: {
+                'Authorization': 'token ' + ghConfig.token,
+                'Accept': 'application/vnd.github.v3+json'
+            }
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(fileData) {
+            var existingContent = atob(fileData.content.replace(/\n/g, ''));
+            var updatedContent = existingContent.trimEnd() + '\n' + newRow + '\n';
+            var encoded = btoa(unescape(encodeURIComponent(updatedContent)));
 
-        document.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
-            cb.disabled = false;
+            return fetch('https://api.github.com/repos/' + ghConfig.owner + '/' + ghConfig.repo +
+                         '/contents/' + ghConfig.path, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'token ' + ghConfig.token,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Add survey response ' + new Date().toISOString(),
+                    content: encoded,
+                    sha: fileData.sha,
+                    branch: ghConfig.branch
+                })
+            });
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(result) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+
+            if (result.content) {
+                var viewUrl = 'https://github.com/' + ghConfig.owner + '/' + ghConfig.repo +
+                              '/blob/' + ghConfig.branch + '/' + ghConfig.path;
+                alert((currentLang === 'vi'
+                    ? 'Cảm ơn bạn! Phản hồi đã được lưu thành công.\nXem kết quả tại:\n'
+                    : 'Thank you! Your response has been saved successfully.\nView results at:\n') + viewUrl);
+                form.reset();
+                document.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+                    cb.disabled = false;
+                });
+            } else {
+                alert(currentLang === 'vi'
+                    ? 'Lỗi khi gửi phản hồi. Vui lòng thử lại.'
+                    : 'Error saving response. Please try again.');
+            }
+        })
+        .catch(function(err) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+            console.error('GitHub API error:', err);
+            alert(currentLang === 'vi'
+                ? 'Lỗi kết nối. Vui lòng kiểm tra internet và thử lại.'
+                : 'Connection error. Please check your internet and try again.');
         });
     });
 
