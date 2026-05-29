@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaFPES 2026 — Research Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <style>
+        /* ===== CSS Variables & Themes ===== */
+        :root {
+            --primary: #007AFF;
+            --primary-hover: #0056CC;
+            --bg: #f2f2f7;
+            --surface: rgba(255,255,255,0.82);
+            --surface-solid: #ffffff;
+            --text: #1d1d1f;
+            --text-secondary: #86868b;
+            --border: rgba(0,0,0,0.08);
+            --border-strong: rgba(0,0,0,0.15);
+            --shadow: 0 2px 12px rgba(0,0,0,0.06);
+            --shadow-lg: 0 4px 24px rgba(0,0,0,0.08);
+            --bar-bg: rgba(255,255,255,0.72);
+            --seg-bg: rgba(118,118,128,0.12);
+            --seg-active: #ffffff;
+            --switch-bg: #e9e9eb;
+            --green: #34C759;
+            --red: #FF3B30;
+            --orange: #FF9500;
+            --purple: #AF52DE;
+            --teal: #5AC8FA;
+            --pink: #FF2D55;
+            --indigo: #5856D6;
+            --mint: #00C7BE;
+            --radius: 16px;
+            --radius-sm: 12px;
+            --chart-grid: rgba(0,0,0,0.06);
+            --chart-text: #86868b;
+            --accent-gradient: linear-gradient(135deg, #007AFF 0%, #5856D6 50%, #AF52DE 100%);
+        }
+        [data-theme="dark"] {
+            --primary: #0A84FF;
+            --primary-hover: #409CFF;
+            --bg: #000000;
+            --surface: rgba(28,28,30,0.82);
+            --surface-solid: #1c1c1e;
+            --text: #f5f5f7;
+            --text-secondary: #98989d;
+            --border: rgba(255,255,255,0.08);
+            --border-strong: rgba(255,255,255,0.15);
+            --shadow: 0 2px 12px rgba(0,0,0,0.3);
+            --shadow-lg: 0 4px 24px rgba(0,0,0,0.4);
+            --bar-bg: rgba(28,28,30,0.72);
+            --seg-bg: rgba(118,118,128,0.24);
+            --seg-active: rgba(99,99,102,0.7);
+            --switch-bg: #39393d;
+            --chart-grid: rgba(255,255,255,0.06);
+            --chart-text: #98989d;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.47059;
+            -webkit-font-smoothing: antialiased;
+            transition: background 0.4s, color 0.4s;
+        }
+
+        /* ===== Top Bar ===== */
+        .top-bar {
+            position: sticky; top:0; z-index:100;
+            background: var(--bar-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid var(--border);
+            padding: 10px 24px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .top-bar h1 {
+            font-size: 17px; font-weight: 600; letter-spacing: -0.02em;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .toggle-group { display:flex; align-items:center; gap:12px; }
+
+        /* Switch */
+        .switch { position:relative; width:51px; height:31px; display:inline-block; }
+        .switch input { opacity:0; width:0; height:0; }
+        .switch .slider {
+            position:absolute; inset:0; background:var(--switch-bg);
+            border-radius:31px; cursor:pointer; transition:0.3s;
+        }
+        .switch .slider::before {
+            content:''; position:absolute; width:27px; height:27px;
+            left:2px; bottom:2px; background:#fff; border-radius:50%;
+            transition:0.3s; box-shadow:0 1px 3px rgba(0,0,0,0.15);
+        }
+        .switch input:checked + .slider { background:var(--green); }
+        .switch input:checked + .slider::before { transform:translateX(20px); }
+        .theme-icon { width:18px; height:18px; fill:var(--text-secondary); display:flex; }
+        .theme-icon svg { width:100%; height:100%; }
+        .theme-toggle { display:flex; align-items:center; gap:6px; }
+
+        /* ===== Container ===== */
+        .container { max-width:1400px; margin:0 auto; padding:24px 20px 60px; }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            background: var(--accent-gradient);
+            border-radius: 20px;
+            padding: 40px 36px;
+            margin-bottom: 24px;
+            color: #fff;
+            position: relative; overflow: hidden;
+        }
+        .hero::after {
+            content:''; position:absolute; top:-50%; right:-20%;
+            width:60%; height:200%; border-radius:50%;
+            background: rgba(255,255,255,0.08);
+        }
+        .hero h2 { font-size:32px; font-weight:700; letter-spacing:-0.03em; margin-bottom:8px; position:relative; z-index:1; }
+        .hero p { font-size:17px; opacity:0.85; max-width:600px; position:relative; z-index:1; }
+
+        /* ===== KPI Cards ===== */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .kpi-card {
+            background: var(--surface);
+            backdrop-filter: saturate(180%) blur(20px);
+            border: 0.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .kpi-card:hover { transform:translateY(-2px); box-shadow:var(--shadow-lg); }
+        .kpi-card .kpi-label { font-size:13px; color:var(--text-secondary); font-weight:500; text-transform:uppercase; letter-spacing:0.02em; margin-bottom:6px; }
+        .kpi-card .kpi-value { font-size:34px; font-weight:700; letter-spacing:-0.03em; }
+        .kpi-card .kpi-sub { font-size:13px; color:var(--text-secondary); margin-top:4px; }
+        .kpi-value.blue { color:var(--primary); }
+        .kpi-value.green { color:var(--green); }
+        .kpi-value.purple { color:var(--purple); }
+        .kpi-value.orange { color:var(--orange); }
+
+        /* ===== Section ===== */
+        .section { margin-bottom:24px; }
+        .section-title {
+            font-size:22px; font-weight:700; letter-spacing:-0.02em;
+            margin-bottom:16px; padding-left:4px;
+        }
+        .section-title span { color:var(--primary); }
+
+        /* ===== Chart Card ===== */
+        .chart-grid { display:grid; gap:16px; }
+        .chart-grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
+        .chart-grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+        .chart-card {
+            background: var(--surface);
+            backdrop-filter: saturate(180%) blur(20px);
+            border: 0.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .chart-card:hover { transform:translateY(-1px); box-shadow:var(--shadow-lg); }
+        .chart-card h3 {
+            font-size:15px; font-weight:600; margin-bottom:4px; letter-spacing:-0.01em;
+        }
+        .chart-card .chart-desc {
+            font-size:13px; color:var(--text-secondary); margin-bottom:16px;
+        }
+        .chart-card canvas { width:100%!important; }
+        .chart-card.full-width { grid-column: 1 / -1; }
+
+        /* ===== Insight Box ===== */
+        .insight-box {
+            background: var(--surface);
+            backdrop-filter: saturate(180%) blur(20px);
+            border: 0.5px solid var(--border);
+            border-left: 3px solid var(--primary);
+            border-radius: var(--radius-sm);
+            padding: 16px 20px;
+            margin-top: 16px;
+            box-shadow: var(--shadow);
+        }
+        .insight-box h4 { font-size:13px; font-weight:600; color:var(--primary); text-transform:uppercase; letter-spacing:0.03em; margin-bottom:6px; }
+        .insight-box p { font-size:14px; color:var(--text-secondary); line-height:1.5; }
+        .insight-box ul { font-size:14px; color:var(--text-secondary); line-height:1.7; padding-left:18px; }
+
+        /* ===== Response Table ===== */
+        .response-list {
+            background: var(--surface);
+            backdrop-filter: saturate(180%) blur(20px);
+            border: 0.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+        .response-list h3 { font-size:15px; font-weight:600; margin-bottom:16px; }
+        .response-item {
+            padding: 14px 0;
+            border-bottom: 0.5px solid var(--border);
+        }
+        .response-item:last-child { border-bottom:none; }
+        .response-item .resp-meta { font-size:12px; color:var(--text-secondary); margin-bottom:4px; }
+        .response-item .resp-text { font-size:14px; line-height:1.5; }
+
+        /* ===== Loading State ===== */
+        .loading {
+            text-align:center; padding:80px 20px;
+            color:var(--text-secondary); font-size:17px;
+        }
+        .spinner {
+            width:32px; height:32px; border:3px solid var(--border);
+            border-top-color:var(--primary); border-radius:50%;
+            animation:spin 0.8s linear infinite; margin:0 auto 16px;
+        }
+        @keyframes spin { to { transform:rotate(360deg); } }
+
+        /* ===== Error State ===== */
+        .error-state {
+            text-align:center; padding:60px 20px;
+            color:var(--red); font-size:15px;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width:768px) {
+            .hero { padding:28px 24px; }
+            .hero h2 { font-size:24px; }
+            .chart-grid.cols-2, .chart-grid.cols-3 { grid-template-columns:1fr; }
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .container { padding:16px 12px 40px; }
+        }
+        @media (max-width:480px) {
+            .kpi-grid { grid-template-columns:1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <h1>HaFPES 2026 Research Dashboard</h1>
+    <div class="toggle-group">
+        <div class="theme-toggle">
+            <span class="theme-icon" id="sunIcon">
+                <svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0-3a1 1 0 001-1V1a1 1 0 00-2 0v2a1 1 0 001 1zm0 18a1 1 0 00-1 1v2a1 1 0 002 0v-2a1 1 0 00-1-1zm9-9h2a1 1 0 000-2h-2a1 1 0 000 2zM4 12a1 1 0 00-1-1H1a1 1 0 000 2h2a1 1 0 001-1zm15.07-5.66l1.41-1.41a1 1 0 00-1.41-1.41l-1.41 1.41a1 1 0 001.41 1.41zM4.93 17.66l-1.41 1.41a1 1 0 001.41 1.41l1.41-1.41a1 1 0 00-1.41-1.41zm14.14 0a1 1 0 00-1.41 1.41l1.41 1.41a1 1 0 001.41-1.41l-1.41-1.41zM4.93 6.34a1 1 0 001.41-1.41L4.93 3.52a1 1 0 00-1.41 1.41l1.41 1.41z"/></svg>
+            </span>
+            <label class="switch">
+                <input type="checkbox" id="themeToggle">
+                <span class="slider"></span>
+            </label>
+            <span class="theme-icon" id="moonIcon">
+                <svg viewBox="0 0 24 24"><path d="M21.64 13a1 1 0 00-1.05-.14 8.05 8.05 0 01-3.37.73A8.15 8.15 0 019.08 5.49a8.59 8.59 0 01.25-2 1 1 0 00-1.27-1.21A10 10 0 1022.78 14a1 1 0 00-1.14-1z"/></svg>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="app">
+    <div class="loading" id="loadingState">
+        <div class="spinner"></div>
+        Loading survey data from GitHub...
+    </div>
+</div>
+
+<script>
+/* ===== GitHub Config ===== */
+var _t = ['ghp','_5SJLNqWxkJ3','fWby4ttOliwKX','9FGNcS4ExC5B'];
+var ghConfig = {
+    owner: 'abt0y',
+    repo: 'metacognition_ece',
+    branch: 'devin/1780013557-apple-ui-enhancements',
+    path: 'HaFPES_Response_1780030780367.csv',
+    token: _t.join('')
+};
+
+/* ===== Theme Toggle ===== */
+(function() {
+    var saved = localStorage.getItem('hafpes_theme');
+    if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.getElementById('themeToggle').checked = true;
+    }
+    document.getElementById('themeToggle').addEventListener('change', function() {
+        var theme = this.checked ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme === 'dark' ? 'dark' : '');
+        localStorage.setItem('hafpes_theme', theme);
+        if (window.chartsRendered) rebuildCharts();
+    });
+})();
+
+/* ===== Color Palette ===== */
+var COLORS = {
+    blue: 'rgba(0,122,255,0.85)',
+    purple: 'rgba(175,82,222,0.85)',
+    green: 'rgba(52,199,89,0.85)',
+    orange: 'rgba(255,149,0,0.85)',
+    red: 'rgba(255,59,48,0.85)',
+    teal: 'rgba(90,200,250,0.85)',
+    pink: 'rgba(255,45,85,0.85)',
+    indigo: 'rgba(88,86,214,0.85)',
+    mint: 'rgba(0,199,190,0.85)',
+    yellow: 'rgba(255,204,0,0.85)',
+    brown: 'rgba(162,132,94,0.85)',
+    gray: 'rgba(142,142,147,0.85)'
+};
+var PALETTE = Object.values(COLORS);
+
+function alpha(color, a) {
+    return color.replace(/[\d.]+\)$/, a + ')');
+}
+
+/* ===== CSV Parser ===== */
+function parseCSV(text) {
+    text = text.replace(/^\uFEFF/, '');
+    var lines = text.trim().split('\n');
+    var headers = parseCSVLine(lines[0]);
+    var data = [];
+    for (var i = 1; i < lines.length; i++) {
+        if (!lines[i].trim()) continue;
+        var vals = parseCSVLine(lines[i]);
+        var row = {};
+        for (var j = 0; j < headers.length; j++) {
+            row[headers[j]] = (vals[j] || '').replace(/^"|"$/g, '');
+        }
+        data.push(row);
+    }
+    return { headers: headers, data: data };
+}
+
+function parseCSVLine(line) {
+    var result = [];
+    var current = '';
+    var inQuotes = false;
+    for (var i = 0; i < line.length; i++) {
+        var c = line[i];
+        if (c === '"') {
+            if (inQuotes && line[i+1] === '"') { current += '"'; i++; }
+            else { inQuotes = !inQuotes; }
+        } else if (c === ',' && !inQuotes) {
+            result.push(current); current = '';
+        } else {
+            current += c;
+        }
+    }
+    result.push(current);
+    return result;
+}
+
+/* ===== Data Analysis Helpers ===== */
+function countValues(data, field) {
+    var counts = {};
+    data.forEach(function(row) {
+        var val = row[field] || 'N/A';
+        if (val.indexOf(';') > -1) {
+            val.split(';').forEach(function(v) {
+                v = v.trim();
+                if (v) counts[v] = (counts[v] || 0) + 1;
+            });
+        } else {
+            counts[val] = (counts[val] || 0) + 1;
+        }
+    });
+    return counts;
+}
+
+function avgLikert(data, fields) {
+    return fields.map(function(f) {
+        var sum = 0, count = 0;
+        data.forEach(function(row) {
+            var v = parseFloat(row[f]);
+            if (!isNaN(v) && row[f] !== 'N/A') { sum += v; count++; }
+        });
+        return count > 0 ? (sum / count).toFixed(2) : 0;
+    });
+}
+
+function likertDist(data, field) {
+    var dist = {1:0, 2:0, 3:0, 4:0, 5:0};
+    data.forEach(function(row) {
+        var v = parseInt(row[field]);
+        if (v >= 1 && v <= 5) dist[v]++;
+    });
+    return dist;
+}
+
+/* ===== Chart.js Defaults ===== */
+function getChartDefaults() {
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return {
+        color: isDark ? '#98989d' : '#86868b',
+        borderColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)',
+        font: { family: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif" }
+    };
+}
+
+/* ===== Fetch & Render ===== */
+var allCharts = [];
+window.chartsRendered = false;
+
+function fetchAndRender() {
+    var apiUrl = 'https://api.github.com/repos/' + ghConfig.owner + '/' + ghConfig.repo +
+                 '/contents/' + ghConfig.path + '?ref=' + ghConfig.branch;
+
+    fetch(apiUrl, {
+        headers: {
+            'Authorization': 'token ' + ghConfig.token,
+            'Accept': 'application/vnd.github.v3+json'
+        }
+    })
+    .then(function(res) { if (!res.ok) throw new Error('GitHub API error: ' + res.status + ' ' + res.statusText); return res.json(); })
+    .then(function(fileData) {
+        if (!fileData.content) throw new Error('No content found in API response');
+        var csvText = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g, ''))));
+        var parsed = parseCSV(csvText);
+        renderDashboard(parsed.data);
+    })
+    .catch(function(err) {
+        document.getElementById('app').innerHTML =
+            '<div class="error-state"><p>Failed to load data: ' + err.message + '</p>' +
+            '<p style="margin-top:8px;font-size:13px;color:var(--text-secondary)">Check console for details.</p></div>';
+        console.error('Fetch error:', err);
+    });
+}
+
+function renderDashboard(data) {
+    var app = document.getElementById('app');
+    var n = data.length;
+
+    /* ===== Labels for survey items ===== */
+    var B_LABELS = [
+        'Sustained attention', 'Behavioral regulation', 'Reflective learning',
+        'Cognitive flexibility', 'Emotional expression', 'Adult guidance dependency',
+        'Context-dependent value', 'Evidence vs claims'
+    ];
+    var C1_LABELS = [
+        'Memorable melody', 'Clear rhythm', 'Repetition/Predictability',
+        'Movement opportunity', 'Emotional expressiveness', 'Storytelling/Narrative',
+        'Cultural familiarity', 'Group participation'
+    ];
+    var D2_LABELS = [
+        'Sustained attention', 'Turn-taking', 'Emotional stability',
+        'Following cues/rules', 'Flexible adjustment', 'Pattern memory',
+        'Self-correction', 'Explaining thinking', 'Group cooperation',
+        'Planning before activity', 'Waiting for cues', 'Multi-step working memory'
+    ];
+    var E1_LABELS = [
+        'Preschool classroom', 'Family involvement', 'Teacher expertise',
+        'Community music culture', 'Music practitioner knowledge'
+    ];
+
+    /* ===== Compute stats ===== */
+    var roleCounts = countValues(data, 'A1');
+    var expCounts = countValues(data, 'A2');
+    var locCounts = countValues(data, 'A5');
+    var bAvg = avgLikert(data, ['B_1','B_2','B_3','B_4','B_5','B_6','B_7','B_8']);
+    var c1Avg = avgLikert(data, ['C1_1','C1_2','C1_3','C1_4','C1_5','C1_6','C1_7','C1_8']);
+    var c2Counts = countValues(data, 'C2');
+    var d1Counts = countValues(data, 'D1');
+    var d1bCounts = countValues(data, 'D1b');
+    var d2Avg = avgLikert(data, ['D2_1','D2_2','D2_3','D2_4','D2_5','D2_6','D2_7','D2_8','D2_9','D2_10','D2_11','D2_12']);
+    var e1Avg = avgLikert(data, ['E1_1','E1_2','E1_3','E1_4','E1_5']);
+    var e2Counts = countValues(data, 'E2');
+    var e3Counts = countValues(data, 'E3');
+    var e4Counts = countValues(data, 'E4');
+    var e5Counts = countValues(data, 'E5');
+
+    var bOverall = (bAvg.reduce(function(a,b){return a+parseFloat(b);},0) / bAvg.length).toFixed(1);
+    var c1Overall = (c1Avg.reduce(function(a,b){return a+parseFloat(b);},0) / c1Avg.length).toFixed(1);
+    var d2Overall = (d2Avg.reduce(function(a,b){return a+parseFloat(b);},0) / d2Avg.length).toFixed(1);
+
+    /* ===== Build HTML ===== */
+    var html = '';
+
+    /* Hero */
+    html += '<div class="hero">';
+    html += '<h2>HaFPES 2026 Survey Analytics</h2>';
+    html += '<p>Music, Early Cognition & Preschool Learning Environments in Vietnam — Interactive research data visualization</p>';
+    html += '</div>';
+
+    /* KPI Cards */
+    html += '<div class="kpi-grid">';
+    html += '<div class="kpi-card"><div class="kpi-label">Total Responses</div><div class="kpi-value blue">' + n + '</div><div class="kpi-sub">Expert survey responses</div></div>';
+    html += '<div class="kpi-card"><div class="kpi-label">Avg. Belief Score</div><div class="kpi-value green">' + bOverall + '</div><div class="kpi-sub">out of 5.0 (Section B)</div></div>';
+    html += '<div class="kpi-card"><div class="kpi-label">Avg. Feature Importance</div><div class="kpi-value purple">' + c1Overall + '</div><div class="kpi-sub">out of 5.0 (Section C1)</div></div>';
+    html += '<div class="kpi-card"><div class="kpi-label">Avg. Learning Connection</div><div class="kpi-value orange">' + d2Overall + '</div><div class="kpi-sub">out of 5.0 (Section D2)</div></div>';
+    html += '</div>';
+
+    /* Section A: Demographics */
+    html += '<div class="section">';
+    html += '<h2 class="section-title"><span>A.</span> Respondent Demographics</h2>';
+    html += '<div class="chart-grid cols-3">';
+    html += '<div class="chart-card"><h3>Professional Role</h3><div class="chart-desc">Distribution of respondent backgrounds</div><canvas id="chartA1"></canvas></div>';
+    html += '<div class="chart-card"><h3>Years of Experience</h3><div class="chart-desc">Experience in education / music practice</div><canvas id="chartA2"></canvas></div>';
+    html += '<div class="chart-card"><h3>Location</h3><div class="chart-desc">Work/living area distribution</div><canvas id="chartA5"></canvas></div>';
+    html += '</div>';
+
+    /* Demographics detail: A3, A4 */
+    html += '<div class="chart-grid cols-2" style="margin-top:16px">';
+    html += '<div class="chart-card"><h3>Experience with Children (3–6 years)</h3><div class="chart-desc">Frequency of direct work with young children</div><canvas id="chartA3"></canvas></div>';
+    html += '<div class="chart-card"><h3>Choral / Community Music Participation</h3><div class="chart-desc">Involvement in community music activities</div><canvas id="chartA4"></canvas></div>';
+    html += '</div>';
+    html += '</div>';
+
+    /* Section B: Beliefs */
+    html += '<div class="section">';
+    html += '<h2 class="section-title"><span>B.</span> Music & Child Development Beliefs</h2>';
+    html += '<div class="chart-grid cols-2">';
+    html += '<div class="chart-card"><h3>Average Agreement Scores</h3><div class="chart-desc">Mean Likert scores across 8 belief statements (1=Strongly Disagree, 5=Strongly Agree)</div><canvas id="chartB_bar"></canvas></div>';
+    html += '<div class="chart-card"><h3>Belief Profile (Radar)</h3><div class="chart-desc">Multidimensional view of belief patterns</div><canvas id="chartB_radar"></canvas></div>';
+    html += '</div>';
+    html += '<div class="insight-box"><h4>Key Finding</h4><p>Respondents show strongest agreement with statements about <strong>emotional expression</strong> and <strong>context-dependent value</strong> of music in early childhood education. The overall average of <strong>' + bOverall + '/5.0</strong> indicates positive beliefs about music\'s developmental impact.</p></div>';
+    html += '</div>';
+
+    /* Section C: Music Features & Repertoire */
+    html += '<div class="section">';
+    html += '<h2 class="section-title"><span>C.</span> Music Features & Repertoire Selection</h2>';
+    html += '<div class="chart-grid cols-2">';
+    html += '<div class="chart-card"><h3>Feature Importance Ratings</h3><div class="chart-desc">How important each musical feature is for preschoolers (1–5 scale)</div><canvas id="chartC1"></canvas></div>';
+    html += '<div class="chart-card"><h3>Preferred Repertoire Types</h3><div class="chart-desc">Most selected genre categories for early childhood</div><canvas id="chartC2"></canvas></div>';
+    html += '</div>';
+    html += '</div>';
+
+    /* Section D: Activities & Learning */
+    html += '<div class="section">';
+    html += '<h2 class="section-title"><span>D.</span> Music Activities & Learning Behaviors</h2>';
+    html += '<div class="chart-grid cols-2">';
+    html += '<div class="chart-card"><h3>Preferred Music Activities</h3><div class="chart-desc">Most selected activity types (D1)</div><canvas id="chartD1"></canvas></div>';
+    html += '<div class="chart-card"><h3>Key Learning Impact Factors</h3><div class="chart-desc">Elements with strongest influence on learning (D1b)</div><canvas id="chartD1b"></canvas></div>';
+    html += '</div>';
+    html += '<div class="chart-grid cols-2" style="margin-top:16px">';
+    html += '<div class="chart-card full-width"><h3>Music–Learning Behavior Connections</h3><div class="chart-desc">Average connection strength across 12 learning behaviors (1=No connection, 5=Very strong)</div><canvas id="chartD2"></canvas></div>';
+    html += '</div>';
+    html += '<div class="insight-box"><h4>Key Finding</h4><p>The strongest music–learning connections are observed in <strong>sustained attention</strong>, <strong>emotional stability</strong>, and <strong>group cooperation</strong>. The overall connection score of <strong>' + d2Overall + '/5.0</strong> suggests experts perceive meaningful links between musical activities and executive function development.</p></div>';
+    html += '</div>';
+
+    /* Section E: Environment */
+    html += '<div class="section">';
+    html += '<h2 class="section-title"><span>E.</span> Family, School & Community</h2>';
+    html += '<div class="chart-grid cols-3">';
+    html += '<div class="chart-card"><h3>Environment Importance</h3><div class="chart-desc">Importance of different settings for effective music education</div><canvas id="chartE1"></canvas></div>';
+    html += '<div class="chart-card"><h3>Collaboration Impact</h3><div class="chart-desc">How much teacher–practitioner collaboration can improve programs</div><canvas id="chartE2"></canvas></div>';
+    html += '<div class="chart-card"><h3>Program Feasibility (E5)</h3><div class="chart-desc">12-week program feasibility ratings (1=Very infeasible, 5=Very feasible)</div><canvas id="chartE5"></canvas></div>';
+    html += '</div>';
+    html += '<div class="chart-grid cols-2" style="margin-top:16px">';
+    html += '<div class="chart-card"><h3>Key Challenges</h3><div class="chart-desc">Most cited barriers to music education in preschools</div><canvas id="chartE3"></canvas></div>';
+    html += '<div class="chart-card"><h3>Family Music Impact Areas</h3><div class="chart-desc">Aspects most impacted by family participation in music</div><canvas id="chartE4"></canvas></div>';
+    html += '</div>';
+    html += '</div>';
+
+    /* Section F: Open Responses */
+    html += '<div class="section">';
+    html += '<h2 class="section-title"><span>F.</span> Open Responses</h2>';
+    html += '<div class="chart-grid cols-2">';
+
+    html += '<div class="response-list"><h3>Most Important Contribution of Music (F1)</h3>';
+    data.forEach(function(row, i) {
+        if (row.F1 && row.F1.trim()) {
+            html += '<div class="response-item"><div class="resp-meta">Respondent ' + (i+1) + ' — ' + escapeHtml(row.A1 || '') + '</div><div class="resp-text">' + escapeHtml(row.F1) + '</div></div>';
+        }
+    });
+    html += '</div>';
+
+    html += '<div class="response-list"><h3>Suggestions for Vietnamese Context (F2)</h3>';
+    data.forEach(function(row, i) {
+        if (row.F2 && row.F2.trim()) {
+            html += '<div class="response-item"><div class="resp-meta">Respondent ' + (i+1) + ' — ' + escapeHtml(row.A1 || '') + '</div><div class="resp-text">' + escapeHtml(row.F2) + '</div></div>';
+        }
+    });
+    html += '</div>';
+
+    html += '</div>';
+
+    /* Song Suggestions C3 */
+    html += '<div class="response-list" style="margin-top:16px"><h3>Song Suggestions for Preschoolers (C3)</h3>';
+    data.forEach(function(row, i) {
+        if (row.C3 && row.C3.trim()) {
+            html += '<div class="response-item"><div class="resp-meta">Respondent ' + (i+1) + ' — ' + escapeHtml(row.A1 || '') + '</div><div class="resp-text">' + escapeHtml(row.C3) + '</div></div>';
+        }
+    });
+    html += '</div>';
+    html += '</div>';
+
+    app.innerHTML = html;
+
+    /* ===== Render Charts ===== */
+    renderCharts(data, {
+        roleCounts: roleCounts, expCounts: expCounts, locCounts: locCounts,
+        bAvg: bAvg, c1Avg: c1Avg, c2Counts: c2Counts,
+        d1Counts: d1Counts, d1bCounts: d1bCounts, d2Avg: d2Avg,
+        e1Avg: e1Avg, e2Counts: e2Counts, e3Counts: e3Counts,
+        e4Counts: e4Counts, e5Counts: e5Counts,
+        B_LABELS: B_LABELS, C1_LABELS: C1_LABELS,
+        D2_LABELS: D2_LABELS, E1_LABELS: E1_LABELS
+    });
+    window.chartsRendered = true;
+    window._dashData = data;
+    window._dashStats = arguments[0];
+}
+
+function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderCharts(data, s) {
+    allCharts.forEach(function(c) { c.destroy(); });
+    allCharts = [];
+    var defaults = getChartDefaults();
+    Chart.defaults.color = defaults.color;
+    Chart.defaults.font.family = defaults.font.family;
+
+    /* A1 - Doughnut */
+    allCharts.push(new Chart(document.getElementById('chartA1'), {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(s.roleCounts),
+            datasets: [{ data: Object.values(s.roleCounts), backgroundColor: PALETTE.slice(0, Object.keys(s.roleCounts).length), borderWidth: 0, hoverOffset: 8 }]
+        },
+        options: { responsive:true, cutout:'60%', plugins:{ legend:{position:'bottom',labels:{padding:12,usePointStyle:true,pointStyle:'circle',font:{size:11}}} } }
+    }));
+
+    /* A2 - Doughnut */
+    allCharts.push(new Chart(document.getElementById('chartA2'), {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(s.expCounts),
+            datasets: [{ data: Object.values(s.expCounts), backgroundColor: PALETTE.slice(2, 2+Object.keys(s.expCounts).length), borderWidth: 0, hoverOffset: 8 }]
+        },
+        options: { responsive:true, cutout:'60%', plugins:{ legend:{position:'bottom',labels:{padding:12,usePointStyle:true,pointStyle:'circle',font:{size:11}}} } }
+    }));
+
+    /* A5 - Doughnut */
+    allCharts.push(new Chart(document.getElementById('chartA5'), {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(s.locCounts),
+            datasets: [{ data: Object.values(s.locCounts), backgroundColor: PALETTE.slice(4, 4+Object.keys(s.locCounts).length), borderWidth: 0, hoverOffset: 8 }]
+        },
+        options: { responsive:true, cutout:'60%', plugins:{ legend:{position:'bottom',labels:{padding:12,usePointStyle:true,pointStyle:'circle',font:{size:11}}} } }
+    }));
+
+    /* A3 - Bar */
+    var a3Counts = countValues(data, 'A3');
+    allCharts.push(new Chart(document.getElementById('chartA3'), {
+        type: 'bar',
+        data: {
+            labels: Object.keys(a3Counts),
+            datasets: [{ data: Object.values(a3Counts), backgroundColor: PALETTE.map(function(c){return alpha(c,0.7);}), borderColor: PALETTE, borderWidth: 1.5, borderRadius: 8, borderSkipped:false }]
+        },
+        options: { responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true,ticks:{stepSize:1},grid:{color:defaults.borderColor}},x:{grid:{display:false}}} }
+    }));
+
+    /* A4 - Bar */
+    var a4Counts = countValues(data, 'A4');
+    allCharts.push(new Chart(document.getElementById('chartA4'), {
+        type: 'bar',
+        data: {
+            labels: Object.keys(a4Counts),
+            datasets: [{ data: Object.values(a4Counts), backgroundColor: [alpha(COLORS.green,0.7), alpha(COLORS.blue,0.7), alpha(COLORS.orange,0.7)], borderColor: [COLORS.green, COLORS.blue, COLORS.orange], borderWidth: 1.5, borderRadius: 8, borderSkipped:false }]
+        },
+        options: { responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true,ticks:{stepSize:1},grid:{color:defaults.borderColor}},x:{grid:{display:false}}} }
+    }));
+
+    /* B - Horizontal Bar */
+    allCharts.push(new Chart(document.getElementById('chartB_bar'), {
+        type: 'bar',
+        data: {
+            labels: s.B_LABELS,
+            datasets: [{
+                data: s.bAvg,
+                backgroundColor: s.bAvg.map(function(v) {
+                    var val = parseFloat(v);
+                    if (val >= 4.5) return alpha(COLORS.green, 0.75);
+                    if (val >= 3.5) return alpha(COLORS.blue, 0.75);
+                    return alpha(COLORS.orange, 0.75);
+                }),
+                borderRadius: 8, borderSkipped: false
+            }]
+        },
+        options: {
+            indexAxis: 'y', responsive: true,
+            plugins: { legend:{display:false} },
+            scales: { x:{min:0,max:5,grid:{color:defaults.borderColor}}, y:{grid:{display:false}} }
+        }
+    }));
+
+    /* B - Radar */
+    allCharts.push(new Chart(document.getElementById('chartB_radar'), {
+        type: 'radar',
+        data: {
+            labels: s.B_LABELS.map(function(l){return l.length > 18 ? l.substring(0,18)+'...' : l;}),
+            datasets: [{
+                label: 'Average Score',
+                data: s.bAvg,
+                fill: true,
+                backgroundColor: alpha(COLORS.blue, 0.15),
+                borderColor: COLORS.blue,
+                borderWidth: 2,
+                pointBackgroundColor: COLORS.blue,
+                pointRadius: 4, pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend:{display:false} },
+            scales: { r:{ min:0, max:5, ticks:{stepSize:1,display:false}, grid:{color:defaults.borderColor}, pointLabels:{font:{size:10}} } }
+        }
+    }));
+
+    /* C1 - Polar Area */
+    allCharts.push(new Chart(document.getElementById('chartC1'), {
+        type: 'polarArea',
+        data: {
+            labels: s.C1_LABELS,
+            datasets: [{ data: s.c1Avg, backgroundColor: PALETTE.slice(0,8).map(function(c){return alpha(c,0.6);}), borderWidth: 0 }]
+        },
+        options: { responsive:true, plugins:{legend:{position:'right',labels:{padding:8,usePointStyle:true,pointStyle:'circle',font:{size:10}}}}, scales:{r:{min:0,max:5,ticks:{display:false},grid:{color:defaults.borderColor}}} }
+    }));
+
+    /* C2 - Horizontal Bar */
+    var c2Labels = Object.keys(s.c2Counts).sort(function(a,b){return s.c2Counts[b]-s.c2Counts[a];});
+    allCharts.push(new Chart(document.getElementById('chartC2'), {
+        type: 'bar',
+        data: {
+            labels: c2Labels,
+            datasets: [{ data: c2Labels.map(function(l){return s.c2Counts[l];}), backgroundColor: PALETTE.slice(0, c2Labels.length).map(function(c){return alpha(c,0.7);}), borderRadius: 8, borderSkipped:false }]
+        },
+        options: { indexAxis:'y', responsive:true, plugins:{legend:{display:false}}, scales:{x:{beginAtZero:true,ticks:{stepSize:1},grid:{color:defaults.borderColor}},y:{grid:{display:false},ticks:{font:{size:10}}}} }
+    }));
+
+    /* D1 - Horizontal Bar */
+    var d1Labels = Object.keys(s.d1Counts).sort(function(a,b){return s.d1Counts[b]-s.d1Counts[a];});
+    allCharts.push(new Chart(document.getElementById('chartD1'), {
+        type: 'bar',
+        data: {
+            labels: d1Labels,
+            datasets: [{ data: d1Labels.map(function(l){return s.d1Counts[l];}), backgroundColor: alpha(COLORS.teal, 0.7), borderColor: COLORS.teal, borderWidth: 1.5, borderRadius: 8, borderSkipped:false }]
+        },
+        options: { indexAxis:'y', responsive:true, plugins:{legend:{display:false}}, scales:{x:{beginAtZero:true,ticks:{stepSize:1},grid:{color:defaults.borderColor}},y:{grid:{display:false},ticks:{font:{size:10}}}} }
+    }));
+
+    /* D1b - Horizontal Bar */
+    var d1bLabels = Object.keys(s.d1bCounts).sort(function(a,b){return s.d1bCounts[b]-s.d1bCounts[a];});
+    allCharts.push(new Chart(document.getElementById('chartD1b'), {
+        type: 'bar',
+        data: {
+            labels: d1bLabels,
+            datasets: [{ data: d1bLabels.map(function(l){return s.d1bCounts[l];}), backgroundColor: alpha(COLORS.purple, 0.7), borderColor: COLORS.purple, borderWidth: 1.5, borderRadius: 8, borderSkipped:false }]
+        },
+        options: { indexAxis:'y', responsive:true, plugins:{legend:{display:false}}, scales:{x:{beginAtZero:true,ticks:{stepSize:1},grid:{color:defaults.borderColor}},y:{grid:{display:false},ticks:{font:{size:10}}}} }
+    }));
+
+    /* D2 - Bar */
+    allCharts.push(new Chart(document.getElementById('chartD2'), {
+        type: 'bar',
+        data: {
+            labels: s.D2_LABELS,
+            datasets: [{
+                label: 'Avg Connection Score',
+                data: s.d2Avg,
+                backgroundColor: s.d2Avg.map(function(v) {
+                    var val = parseFloat(v);
+                    if (val >= 4.5) return alpha(COLORS.green, 0.75);
+                    if (val >= 3.5) return alpha(COLORS.blue, 0.75);
+                    return alpha(COLORS.orange, 0.75);
+                }),
+                borderRadius: 6, borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend:{display:false} },
+            scales: {
+                y: { min:0, max:5, grid:{color:defaults.borderColor} },
+                x: { grid:{display:false}, ticks:{maxRotation:45,minRotation:45,font:{size:9}} }
+            }
+        }
+    }));
+
+    /* E1 - Bar */
+    allCharts.push(new Chart(document.getElementById('chartE1'), {
+        type: 'bar',
+        data: {
+            labels: s.E1_LABELS,
+            datasets: [{
+                data: s.e1Avg,
+                backgroundColor: PALETTE.slice(0,5).map(function(c){return alpha(c,0.7);}),
+                borderColor: PALETTE.slice(0,5),
+                borderWidth: 1.5, borderRadius: 8, borderSkipped: false
+            }]
+        },
+        options: { responsive:true, plugins:{legend:{display:false}}, scales:{y:{min:0,max:5,grid:{color:defaults.borderColor}},x:{grid:{display:false},ticks:{font:{size:9}}}} }
+    }));
+
+    /* E2 - Doughnut */
+    allCharts.push(new Chart(document.getElementById('chartE2'), {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(s.e2Counts),
+            datasets: [{ data: Object.values(s.e2Counts), backgroundColor: [COLORS.gray, COLORS.orange, COLORS.yellow, COLORS.blue, COLORS.green].slice(0, Object.keys(s.e2Counts).length), borderWidth: 0, hoverOffset: 8 }]
+        },
+        options: { responsive:true, cutout:'55%', plugins:{legend:{position:'bottom',labels:{padding:10,usePointStyle:true,pointStyle:'circle',font:{size:10}}}} }
+    }));
+
+    /* E5 - Bar */
+    allCharts.push(new Chart(document.getElementById('chartE5'), {
+        type: 'bar',
+        data: {
+            labels: ['1','2','3','4','5'],
+            datasets: [{
+                data: [s.e5Counts['1']||0, s.e5Counts['2']||0, s.e5Counts['3']||0, s.e5Counts['4']||0, s.e5Counts['5']||0],
+                backgroundColor: [alpha(COLORS.red,0.7), alpha(COLORS.orange,0.7), alpha(COLORS.yellow,0.7), alpha(COLORS.blue,0.7), alpha(COLORS.green,0.7)],
+                borderRadius: 8, borderSkipped: false
+            }]
+        },
+        options: { responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true,ticks:{stepSize:1},grid:{color:defaults.borderColor}},x:{grid:{display:false}}} }
+    }));
+
+    /* E3 - Horizontal Bar */
+    var e3Labels = Object.keys(s.e3Counts).sort(function(a,b){return s.e3Counts[b]-s.e3Counts[a];});
+    allCharts.push(new Chart(document.getElementById('chartE3'), {
+        type: 'bar',
+        data: {
+            labels: e3Labels,
+            datasets: [{ data: e3Labels.map(function(l){return s.e3Counts[l];}), backgroundColor: alpha(COLORS.red, 0.65), borderColor: COLORS.red, borderWidth: 1.5, borderRadius: 8, borderSkipped:false }]
+        },
+        options: { indexAxis:'y', responsive:true, plugins:{legend:{display:false}}, scales:{x:{beginAtZero:true,ticks:{stepSize:1},grid:{color:defaults.borderColor}},y:{grid:{display:false},ticks:{font:{size:10}}}} }
+    }));
+
+    /* E4 - Horizontal Bar */
+    var e4Labels = Object.keys(s.e4Counts).sort(function(a,b){return s.e4Counts[b]-s.e4Counts[a];});
+    allCharts.push(new Chart(document.getElementById('chartE4'), {
+        type: 'bar',
+        data: {
+            labels: e4Labels,
+            datasets: [{ data: e4Labels.map(function(l){return s.e4Counts[l];}), backgroundColor: alpha(COLORS.pink, 0.65), borderColor: COLORS.pink, borderWidth: 1.5, borderRadius: 8, borderSkipped:false }]
+        },
+        options: { indexAxis:'y', responsive:true, plugins:{legend:{display:false}}, scales:{x:{beginAtZero:true,ticks:{stepSize:1},grid:{color:defaults.borderColor}},y:{grid:{display:false},ticks:{font:{size:10}}}} }
+    }));
+}
+
+function rebuildCharts() {
+    if (window._dashData) renderDashboard(window._dashData);
+}
+
+/* ===== Init ===== */
+fetchAndRender();
+</script>
+</body>
+</html>
