@@ -416,8 +416,9 @@ function fetchAndRender() {
             'Accept': 'application/vnd.github.v3+json'
         }
     })
-    .then(function(res) { return res.json(); })
+    .then(function(res) { if (!res.ok) throw new Error('GitHub API error: ' + res.status + ' ' + res.statusText); return res.json(); })
     .then(function(fileData) {
+        if (!fileData.content) throw new Error('No content found in API response');
         var csvText = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g, ''))));
         var parsed = parseCSV(csvText);
         renderDashboard(parsed.data);
@@ -563,7 +564,7 @@ function renderDashboard(data) {
     html += '<div class="response-list"><h3>Most Important Contribution of Music (F1)</h3>';
     data.forEach(function(row, i) {
         if (row.F1 && row.F1.trim()) {
-            html += '<div class="response-item"><div class="resp-meta">Respondent ' + (i+1) + ' — ' + row.A1 + '</div><div class="resp-text">' + escapeHtml(row.F1) + '</div></div>';
+            html += '<div class="response-item"><div class="resp-meta">Respondent ' + (i+1) + ' — ' + escapeHtml(row.A1 || '') + '</div><div class="resp-text">' + escapeHtml(row.F1) + '</div></div>';
         }
     });
     html += '</div>';
@@ -571,7 +572,7 @@ function renderDashboard(data) {
     html += '<div class="response-list"><h3>Suggestions for Vietnamese Context (F2)</h3>';
     data.forEach(function(row, i) {
         if (row.F2 && row.F2.trim()) {
-            html += '<div class="response-item"><div class="resp-meta">Respondent ' + (i+1) + ' — ' + row.A1 + '</div><div class="resp-text">' + escapeHtml(row.F2) + '</div></div>';
+            html += '<div class="response-item"><div class="resp-meta">Respondent ' + (i+1) + ' — ' + escapeHtml(row.A1 || '') + '</div><div class="resp-text">' + escapeHtml(row.F2) + '</div></div>';
         }
     });
     html += '</div>';
@@ -582,7 +583,7 @@ function renderDashboard(data) {
     html += '<div class="response-list" style="margin-top:16px"><h3>Song Suggestions for Preschoolers (C3)</h3>';
     data.forEach(function(row, i) {
         if (row.C3 && row.C3.trim()) {
-            html += '<div class="response-item"><div class="resp-meta">Respondent ' + (i+1) + ' — ' + row.A1 + '</div><div class="resp-text">' + escapeHtml(row.C3) + '</div></div>';
+            html += '<div class="response-item"><div class="resp-meta">Respondent ' + (i+1) + ' — ' + escapeHtml(row.A1 || '') + '</div><div class="resp-text">' + escapeHtml(row.C3) + '</div></div>';
         }
     });
     html += '</div>';
