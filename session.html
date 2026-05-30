@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HaFPES 2026 | Observation Form</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f2ec;
+    --surface: #ffffff;
+    --surface2: #f0ece3;
+    --border: #d9d0be;
+    --border2: #c8bda8;
+    --text: #1a1612;
+    --text2: #5a5047;
+    --text3: #8a7f72;
+    --accent: #c05e2a;
+    --accent2: #e8834a;
+    --accent-bg: #fdf0e8;
+    --green: #2a6c45;
+    --green-bg: #e8f5ee;
+    --blue: #1e4f7a;
+    --blue-bg: #e8f0f8;
+    --shadow: 0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.06);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+  }
+  [data-theme="dark"] {
+    --bg: #0f0d0a;
+    --surface: #1c1914;
+    --surface2: #252119;
+    --border: #3a342a;
+    --border2: #4a4238;
+    --text: #f0ece3;
+    --text2: #b8aa98;
+    --text3: #7a6e62;
+    --accent: #e8834a;
+    --accent2: #c05e2a;
+    --accent-bg: #2a1e14;
+    --green: #4aad72;
+    --green-bg: #0e2018;
+    --blue: #5a9fd4;
+    --blue-bg: #0e1824;
+    --shadow: 0 2px 8px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.3);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background var(--transition), color var(--transition);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow);
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .topbar-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--accent);
+    letter-spacing: 0.01em;
+    flex: 1 1 auto;
+    white-space: nowrap;
+  }
+  .topbar-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 99px;
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition);
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .toggle-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+  .toggle-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+  .save-btn {
+    padding: 7px 18px;
+    border-radius: 99px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    letter-spacing: 0.03em;
+  }
+  .save-btn:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(192,94,42,0.4); }
+
+  /* MAIN LAYOUT */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  /* HEADER */
+  .form-header {
+    text-align: center;
+    margin-bottom: 36px;
+    padding: 36px 28px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .form-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--green));
+  }
+  .form-header .study-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .form-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .form-header .subtitle {
+    font-size: 0.88rem;
+    color: var(--text2);
+    font-weight: 300;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .form-header .domains-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 18px;
+  }
+  .domain-chip {
+    padding: 3px 11px;
+    border-radius: 99px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    background: var(--surface2);
+    color: var(--text3);
+    border: 1px solid var(--border);
+  }
+
+  /* SECTION CARDS */
+  .section-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+    overflow: hidden;
+    transition: box-shadow var(--transition);
+  }
+  .section-card:hover { box-shadow: var(--shadow-lg); }
+
+  .section-header {
+    padding: 18px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface2);
+    cursor: pointer;
+    user-select: none;
+  }
+  .section-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title-text { flex: 1; }
+  .section-title-text h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.08rem;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .section-title-text p {
+    font-size: 0.78rem;
+    color: var(--text3);
+    margin-top: 2px;
+    font-weight: 300;
+  }
+  .collapse-arrow {
+    color: var(--text3);
+    transition: transform var(--transition);
+    flex-shrink: 0;
+  }
+  .section-card.collapsed .collapse-arrow { transform: rotate(-90deg); }
+  .section-body {
+    padding: 22px 24px;
+    transition: all var(--transition);
+  }
+  .section-card.collapsed .section-body { display: none; }
+
+  /* FORM ELEMENTS */
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } }
+
+  .field-group { display: flex; flex-direction: column; gap: 5px; }
+  label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text2);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  input[type="text"], input[type="date"], input[type="number"], select, textarea {
+    width: 100%;
+    padding: 9px 13px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(192,94,42,0.12);
+  }
+  textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
+
+  /* CHECKBOX GROUPS */
+  .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 13px;
+    border: 1.5px solid var(--border);
+    border-radius: 99px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--text2);
+    transition: all var(--transition);
+    background: var(--surface2);
+    user-select: none;
+  }
+  .checkbox-group input[type="checkbox"], .checkbox-group input[type="radio"] {
+    width: 14px; height: 14px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0;
+  }
+  .checkbox-group label:has(input:checked) {
+    border-color: var(--accent);
+    background: var(--accent-bg);
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* DOMAIN CODING TABLE */
+  .domain-block {
+    margin-bottom: 24px;
+  }
+  .domain-block:last-child { margin-bottom: 0; }
+  .domain-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .domain-letter {
+    width: 32px; height: 32px;
+    border-radius: var(--radius-sm);
+    background: var(--accent-bg);
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-family: 'DM Serif Display', serif;
+  }
+  .domain-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 0.98rem;
+    color: var(--text);
+  }
+  .domain-desc {
+    font-size: 0.78rem;
+    color: var(--text3);
+    font-style: italic;
+    margin-left: auto;
+  }
+
+  .coding-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+  .coding-table thead th {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 6px 8px;
+    text-align: center;
+    border-bottom: 1.5px solid var(--border);
+  }
+  .coding-table thead th:first-child { text-align: left; padding-left: 0; }
+  .coding-table tbody tr { transition: background var(--transition); }
+  .coding-table tbody tr:hover { background: var(--surface2); }
+  .coding-table tbody td {
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    font-size: 0.86rem;
+    color: var(--text);
+  }
+  .coding-table tbody td:first-child { padding-left: 0; font-size: 0.85rem; }
+  .coding-table tbody tr:last-child td { border-bottom: none; }
+
+  .scale-cell { text-align: center; }
+  .scale-radio-wrap {
+    display: flex;
+    gap: 0;
+    justify-content: center;
+    align-items: center;
+  }
+  .scale-option {
+    position: relative;
+  }
+  .scale-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+  }
+  .scale-option label {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text3);
+    border: 1.5px solid transparent;
+    transition: all var(--transition);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .scale-option input:checked + label {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .scale-option label:hover { background: var(--accent-bg); color: var(--accent); border-color: var(--accent); }
+  .na-option input:checked + label { background: var(--text3); color: #fff; border-color: var(--text3); }
+  .na-option label:hover { background: var(--surface2); color: var(--text2); border-color: var(--border2); }
+
+  @media (max-width: 600px) {
+    .coding-table thead th, .coding-table tbody td { padding: 6px 3px; font-size: 0.8rem; }
+    .scale-option label { width: 24px; height: 24px; font-size: 0.72rem; }
+    .coding-table tbody td:first-child { font-size: 0.78rem; }
+  }
+
+  /* SCALE LEGEND */
+  .scale-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+  .scale-legend span {
+    font-size: 0.75rem;
+    color: var(--text2);
+  }
+  .scale-legend strong { color: var(--accent); }
+
+  /* INCIDENTS */
+  .incident-card {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin-bottom: 14px;
+    background: var(--surface2);
+    transition: border-color var(--transition);
+  }
+  .incident-card:hover { border-color: var(--border2); }
+  .incident-num {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  /* GLOBAL RATINGS */
+  .rating-grid { display: flex; flex-direction: column; gap: 12px; }
+  .rating-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    flex-wrap: wrap;
+  }
+  .rating-label {
+    flex: 1 1 180px;
+    font-size: 0.87rem;
+    font-weight: 500;
+    color: var(--text);
+    min-width: 150px;
+  }
+  .rating-stars {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .star-option { position: relative; }
+  .star-option input { position: absolute; opacity: 0; width: 0; }
+  .star-option label {
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text3);
+    border: 1.5px solid var(--border);
+    transition: all var(--transition);
+    background: var(--bg);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .star-option input:checked + label { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .star-option label:hover { background: var(--accent-bg); color: var(--accent); border-color: var(--accent); }
+  .rating-min-max {
+    font-size: 0.72rem;
+    color: var(--text3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+
+  /* DIVIDER */
+  .field-divider { height: 1px; background: var(--border); margin: 18px 0; }
+
+  /* SIGNATURE ROW */
+  .sig-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 500px) { .sig-row { grid-template-columns: 1fr; } }
+
+  /* PRINT / EXPORT */
+  .export-area {
+    margin-top: 28px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .export-btn {
+    padding: 11px 26px;
+    border-radius: 99px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 7px;
+    transition: all var(--transition);
+  }
+  .export-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+  .export-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .export-btn.primary:hover { background: var(--accent2); }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    position: sticky;
+    top: 57px;
+    z-index: 99;
+    background: var(--bg);
+    padding: 6px 20px;
+    transition: background var(--transition);
+  }
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    border-radius: 99px;
+    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+    width: 0%;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .container { padding: 18px 12px 50px; }
+    .section-body { padding: 16px 14px; }
+    .section-header { padding: 14px 16px 12px; }
+    .form-header { padding: 24px 16px; }
+    .form-header h1 { font-size: 1.5rem; }
+  }
+
+  @media print {
+    .topbar, .progress-wrap, .export-area { display: none; }
+    .section-card.collapsed .section-body { display: block !important; }
+    body { background: #fff; color: #000; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-title" data-en="HaFPES 2026 · Observation Form" data-vi="HaFPES 2026 · Phiếu Quan Sát">HaFPES 2026 · Observation Form</div>
+  <div class="topbar-controls">
+    <button class="toggle-btn" onclick="toggleLang()" id="langBtn">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10" cy="10" r="8"/><path d="M10 2c0 0-4 3.5-4 8s4 8 4 8"/><path d="M10 2c0 0 4 3.5 4 8s-4 8-4 8"/><path d="M2 10h16"/></svg>
+      <span id="langLabel">Tiếng Việt</span>
+    </button>
+    <button class="toggle-btn" onclick="toggleTheme()" id="themeBtn">
+      <svg viewBox="0 0 20 20" fill="currentColor" id="themeIcon"><path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 14.5A6.5 6.5 0 0110 3.5V16.5z"/></svg>
+      <span id="themeLabel">Dark</span>
+    </button>
+    <button class="save-btn" onclick="saveForm()" data-en="Save JSON" data-vi="Lưu JSON">Save JSON</button>
+  </div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-wrap"><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div>
+
+<div class="container">
+
+<!-- FORM HEADER -->
+<div class="form-header">
+  <div class="study-label" data-en="Observation Protocol · Vietnam 2026" data-vi="Giao thức Quan sát · Việt Nam 2026">Observation Protocol · Vietnam 2026</div>
+  <h1 data-en="Classroom Behavioral Coding Form" data-vi="Phiếu Mã hóa Hành vi Lớp học">Classroom Behavioral Coding Form</h1>
+  <p class="subtitle" data-en="Music-Based Preschool Intervention · HaFPES 2026" data-vi="Can thiệp Mầm non dựa trên Âm nhạc · HaFPES 2026">Music-Based Preschool Intervention · HaFPES 2026</p>
+  <div class="domains-row">
+    <span class="domain-chip" data-en="Emergent Metacognition" data-vi="Siêu nhận thức mới nổi">Emergent Metacognition</span>
+    <span class="domain-chip" data-en="Self-Regulation" data-vi="Tự điều chỉnh">Self-Regulation</span>
+    <span class="domain-chip" data-en="Executive Function" data-vi="Chức năng điều hành">Executive Function</span>
+    <span class="domain-chip" data-en="Social Participation" data-vi="Tham gia xã hội">Social Participation</span>
+    <span class="domain-chip" data-en="Family Dynamics" data-vi="Động lực gia đình">Family Dynamics</span>
+  </div>
+</div>
+
+<!-- SECTION 1: SESSION INFO -->
+<div class="section-card" id="sec1">
+  <div class="section-header" onclick="toggleSection('sec1')">
+    <div class="section-num">1</div>
+    <div class="section-title-text">
+      <h2 data-en="Session Information" data-vi="Thông tin Buổi học">Session Information</h2>
+      <p data-en="Observer, date, classroom, and activity metadata" data-vi="Quan sát viên, ngày, lớp học và thông tin hoạt động">Observer, date, classroom, and activity metadata</p>
+    </div>
+    <svg class="collapse-arrow" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+  </div>
+  <div class="section-body">
+    <div class="field-row">
+      <div class="field-group">
+        <label data-en="Observer ID" data-vi="Mã Quan sát viên">Observer ID</label>
+        <input type="text" id="observerId" placeholder="e.g., OBS-01">
+      </div>
+      <div class="field-group">
+        <label data-en="Date" data-vi="Ngày">Date</label>
+        <input type="date" id="sessionDate">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label data-en="Classroom Code" data-vi="Mã Lớp học">Classroom Code</label>
+        <input type="text" id="classroomCode" placeholder="e.g., CL-A1">
+      </div>
+      <div class="field-group">
+        <label data-en="Observation Duration (min)" data-vi="Thời lượng Quan sát (phút)">Observation Duration (min)</label>
+        <input type="number" id="duration" min="1" max="300" placeholder="45">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label data-en="Video Recording ID" data-vi="Mã Video ghi hình">Video Recording ID</label>
+        <input type="text" id="videoId" placeholder="e.g., VID-20260530-01">
+      </div>
+      <div class="field-group">
+        <label data-en="Week of Intervention" data-vi="Tuần Can thiệp">Week of Intervention</label>
+        <div class="checkbox-group">
+          <label><input type="radio" name="week" value="1-2"> <span data-en="Wk 1–2" data-vi="T 1–2">Wk 1–2</span></label>
+          <label><input type="radio" name="week" value="3-4"> <span data-en="Wk 3–4" data-vi="T 3–4">Wk 3–4</span></label>
+          <label><input type="radio" name="week" value="5-6"> <span data-en="Wk 5–6" data-vi="T 5–6">Wk 5–6</span></label>
+          <label><input type="radio" name="week" value="7-8"> <span data-en="Wk 7–8" data-vi="T 7–8">Wk 7–8</span></label>
+          <label><input type="radio" name="week" value="9-10"> <span data-en="Wk 9–10" data-vi="T 9–10">Wk 9–10</span></label>
+          <label><input type="radio" name="week" value="11-12"> <span data-en="Wk 11–12" data-vi="T 11–12">Wk 11–12</span></label>
+        </div>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label data-en="Activity Type" data-vi="Loại Hoạt động">Activity Type</label>
+        <div class="checkbox-group">
+          <label><input type="radio" name="activityType" value="guided_listening"> <span data-en="Guided Listening" data-vi="Nghe có hướng dẫn">Guided Listening</span></label>
+          <label><input type="radio" name="activityType" value="collab_singing"> <span data-en="Collaborative Singing" data-vi="Hát hợp tác">Collaborative Singing</span></label>
+          <label><input type="radio" name="activityType" value="rhythmic_movement"> <span data-en="Rhythmic Movement" data-vi="Vận động nhịp điệu">Rhythmic Movement</span></label>
+          <label><input type="radio" name="activityType" value="parent_child_choir"> <span data-en="Parent–Child Choir" data-vi="Hợp xướng P–C">Parent–Child Choir</span></label>
+          <label><input type="radio" name="activityType" value="mixed"> <span data-en="Mixed" data-vi="Hỗn hợp">Mixed</span></label>
+        </div>
+      </div>
+    </div>
+    <div class="field-group" style="margin-top:4px;">
+      <label data-en="Lead Facilitator" data-vi="Người hướng dẫn chính">Lead Facilitator</label>
+      <div class="checkbox-group">
+        <label><input type="radio" name="facilitator" value="teacher"> <span data-en="Teacher" data-vi="Giáo viên">Teacher</span></label>
+        <label><input type="radio" name="facilitator" value="parent"> <span data-en="Parent" data-vi="Phụ huynh">Parent</span></label>
+        <label><input type="radio" name="facilitator" value="teacher_parent"> <span data-en="Teacher + Parent" data-vi="Giáo viên + Phụ huynh">Teacher + Parent</span></label>
+        <label><input type="radio" name="facilitator" value="other"> <span data-en="Other" data-vi="Khác">Other</span></label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 2: ACTIVITY CONTEXT -->
+<div class="section-card" id="sec2">
+  <div class="section-header" onclick="toggleSection('sec2')">
+    <div class="section-num">2</div>
+    <div class="section-title-text">
+      <h2 data-en="Activity Context" data-vi="Bối cảnh Hoạt động">Activity Context</h2>
+      <p data-en="Description and music used in this session" data-vi="Mô tả và âm nhạc sử dụng trong buổi học">Description and music used in this session</p>
+    </div>
+    <svg class="collapse-arrow" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+  </div>
+  <div class="section-body">
+    <div class="field-group" style="margin-bottom:16px;">
+      <label data-en="Activity Description (2–4 sentences)" data-vi="Mô tả Hoạt động (2–4 câu)">Activity Description (2–4 sentences)</label>
+      <textarea id="activityDesc" rows="4" data-placeholder-en="Brief description of the activity observed…" data-placeholder-vi="Mô tả ngắn gọn về hoạt động được quan sát…" placeholder="Brief description of the activity observed…"></textarea>
+    </div>
+    <div class="field-group">
+      <label data-en="Music Used (title / genre / characteristics)" data-vi="Âm nhạc sử dụng (tiêu đề / thể loại / đặc điểm)">Music Used (title / genre / characteristics)</label>
+      <textarea id="musicUsed" rows="3" data-placeholder-en="e.g., Traditional Vietnamese children's song, moderate tempo, call-and-response structure…" data-placeholder-vi="VD: Bài hát thiếu nhi Việt Nam truyền thống, nhịp vừa phải, cấu trúc hỏi-đáp…" placeholder="e.g., Traditional Vietnamese children's song, moderate tempo…"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 3: BEHAVIORAL CODING -->
+<div class="section-card" id="sec3">
+  <div class="section-header" onclick="toggleSection('sec3')">
+    <div class="section-num">3</div>
+    <div class="section-title-text">
+      <h2 data-en="Structured Behavioral Coding" data-vi="Mã hóa Hành vi có Cấu trúc">Structured Behavioral Coding</h2>
+      <p data-en="Rate each indicator using the 0–4 scale" data-vi="Đánh giá từng chỉ số theo thang điểm 0–4">Rate each indicator using the 0–4 scale</p>
+    </div>
+    <svg class="collapse-arrow" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+  </div>
+  <div class="section-body">
+    <div class="scale-legend">
+      <span><strong>0</strong> = <span data-en="Not observed" data-vi="Không quan sát được">Not observed</span></span>
+      <span style="margin:0 6px;color:var(--border2)">·</span>
+      <span><strong>1</strong> = <span data-en="Rarely" data-vi="Hiếm khi">Rarely</span></span>
+      <span style="margin:0 6px;color:var(--border2)">·</span>
+      <span><strong>2</strong> = <span data-en="Occasionally" data-vi="Thỉnh thoảng">Occasionally</span></span>
+      <span style="margin:0 6px;color:var(--border2)">·</span>
+      <span><strong>3</strong> = <span data-en="Frequently" data-vi="Thường xuyên">Frequently</span></span>
+      <span style="margin:0 6px;color:var(--border2)">·</span>
+      <span><strong>4</strong> = <span data-en="Consistently" data-vi="Nhất quán">Consistently</span></span>
+      <span style="margin:0 6px;color:var(--border2)">·</span>
+      <span><strong>NA</strong> = <span data-en="Not applicable" data-vi="Không áp dụng">Not applicable</span></span>
+    </div>
+
+    <!-- DOMAIN A -->
+    <div class="domain-block">
+      <div class="domain-header">
+        <div class="domain-letter">A</div>
+        <div class="domain-title" data-en="Attentional Monitoring" data-vi="Giám sát Sự chú ý">Attentional Monitoring</div>
+      </div>
+      <table class="coding-table">
+        <thead><tr>
+          <th data-en="Indicator" data-vi="Chỉ số">Indicator</th>
+          <th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>NA</th>
+        </tr></thead>
+        <tbody id="domainA">
+          <tr data-indicator="A1">
+            <td data-en="Sustains attention during activity" data-vi="Duy trì sự chú ý trong hoạt động">Sustains attention during activity</td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A1" value="0" id="A1-0"><label for="A1-0">0</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A1" value="1" id="A1-1"><label for="A1-1">1</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A1" value="2" id="A1-2"><label for="A1-2">2</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A1" value="3" id="A1-3"><label for="A1-3">3</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A1" value="4" id="A1-4"><label for="A1-4">4</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="A1" value="NA" id="A1-NA"><label for="A1-NA">NA</label></div></div></td>
+          </tr>
+          <tr data-indicator="A2">
+            <td data-en="Returns attention after distraction" data-vi="Lấy lại sự chú ý sau khi bị phân tâm">Returns attention after distraction</td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A2" value="0" id="A2-0"><label for="A2-0">0</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A2" value="1" id="A2-1"><label for="A2-1">1</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A2" value="2" id="A2-2"><label for="A2-2">2</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A2" value="3" id="A2-3"><label for="A2-3">3</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A2" value="4" id="A2-4"><label for="A2-4">4</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="A2" value="NA" id="A2-NA"><label for="A2-NA">NA</label></div></div></td>
+          </tr>
+          <tr data-indicator="A3">
+            <td data-en="Monitors musical cues (tempo, rhythm, signals)" data-vi="Theo dõi tín hiệu âm nhạc (nhịp, tiết tấu, hiệu lệnh)">Monitors musical cues (tempo, rhythm, signals)</td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A3" value="0" id="A3-0"><label for="A3-0">0</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A3" value="1" id="A3-1"><label for="A3-1">1</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A3" value="2" id="A3-2"><label for="A3-2">2</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A3" value="3" id="A3-3"><label for="A3-3">3</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A3" value="4" id="A3-4"><label for="A3-4">4</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="A3" value="NA" id="A3-NA"><label for="A3-NA">NA</label></div></div></td>
+          </tr>
+          <tr data-indicator="A4">
+            <td data-en="Waits for turn / cue appropriately" data-vi="Chờ đến lượt / tín hiệu đúng cách">Waits for turn / cue appropriately</td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A4" value="0" id="A4-0"><label for="A4-0">0</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A4" value="1" id="A4-1"><label for="A4-1">1</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A4" value="2" id="A4-2"><label for="A4-2">2</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A4" value="3" id="A4-3"><label for="A4-3">3</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="A4" value="4" id="A4-4"><label for="A4-4">4</label></div></div></td>
+            <td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="A4" value="NA" id="A4-NA"><label for="A4-NA">NA</label></div></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="field-group">
+        <label data-en="Behavioral Notes (Domain A)" data-vi="Ghi chú Hành vi (Lĩnh vực A)">Behavioral Notes (Domain A)</label>
+        <textarea id="notesA" rows="2" data-placeholder-en="Observational notes for Domain A…" data-placeholder-vi="Ghi chú quan sát cho Lĩnh vực A…" placeholder="Observational notes for Domain A…"></textarea>
+      </div>
+    </div>
+
+    <!-- DOMAIN B -->
+    <div class="domain-block">
+      <div class="domain-header">
+        <div class="domain-letter">B</div>
+        <div class="domain-title" data-en="Reflective Verbalization" data-vi="Lời nói Phản ánh">Reflective Verbalization</div>
+        <span class="domain-desc" data-en="Observable verbal evidence of self-monitoring" data-vi="Bằng chứng lời nói có thể quan sát về tự giám sát">Observable verbal evidence of self-monitoring</span>
+      </div>
+      <table class="coding-table">
+        <thead><tr><th data-en="Indicator" data-vi="Chỉ số">Indicator</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>NA</th></tr></thead>
+        <tbody>
+          <tr><td data-en='Talks about own actions ("I did…")' data-vi='"Nói về hành động của bản thân ("Tôi đã…")"'>Talks about own actions ("I did…")</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B1" value="0" id="B1-0"><label for="B1-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B1" value="1" id="B1-1"><label for="B1-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B1" value="2" id="B1-2"><label for="B1-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B1" value="3" id="B1-3"><label for="B1-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B1" value="4" id="B1-4"><label for="B1-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="B1" value="NA" id="B1-NA"><label for="B1-NA">NA</label></div></div></td></tr>
+          <tr><td data-en="Explains how task was performed" data-vi="Giải thích cách thực hiện nhiệm vụ">Explains how task was performed</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B2" value="0" id="B2-0"><label for="B2-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B2" value="1" id="B2-1"><label for="B2-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B2" value="2" id="B2-2"><label for="B2-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B2" value="3" id="B2-3"><label for="B2-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B2" value="4" id="B2-4"><label for="B2-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="B2" value="NA" id="B2-NA"><label for="B2-NA">NA</label></div></div></td></tr>
+          <tr><td data-en="Comments on success / error" data-vi="Nhận xét về thành công / lỗi">Comments on success / error</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B3" value="0" id="B3-0"><label for="B3-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B3" value="1" id="B3-1"><label for="B3-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B3" value="2" id="B3-2"><label for="B3-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B3" value="3" id="B3-3"><label for="B3-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B3" value="4" id="B3-4"><label for="B3-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="B3" value="NA" id="B3-NA"><label for="B3-NA">NA</label></div></div></td></tr>
+          <tr><td data-en='Uses reflective language ("I need to…", "Next time…")' data-vi='Dùng ngôn ngữ phản ánh ("Tôi cần…", "Lần sau…")'>Uses reflective language ("I need to…", "Next time…")</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B4" value="0" id="B4-0"><label for="B4-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B4" value="1" id="B4-1"><label for="B4-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B4" value="2" id="B4-2"><label for="B4-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B4" value="3" id="B4-3"><label for="B4-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="B4" value="4" id="B4-4"><label for="B4-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="B4" value="NA" id="B4-NA"><label for="B4-NA">NA</label></div></div></td></tr>
+        </tbody>
+      </table>
+      <div class="field-group">
+        <label data-en="Verbatim Examples (exact wording when possible)" data-vi="Ví dụ nguyên văn (từ ngữ chính xác nếu có thể)">Verbatim Examples (exact wording when possible)</label>
+        <textarea id="notesB" rows="3" data-placeholder-en="Record exact child utterances here…" data-placeholder-vi="Ghi lại lời nói chính xác của trẻ ở đây…" placeholder="Record exact child utterances here…"></textarea>
+      </div>
+    </div>
+
+    <!-- DOMAIN C -->
+    <div class="domain-block">
+      <div class="domain-header"><div class="domain-letter">C</div><div class="domain-title" data-en="Self-Correction" data-vi="Tự sửa lỗi">Self-Correction</div></div>
+      <table class="coding-table">
+        <thead><tr><th data-en="Indicator" data-vi="Chỉ số">Indicator</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>NA</th></tr></thead>
+        <tbody>
+          <tr><td data-en="Notices mismatch / error" data-vi="Nhận ra sự không khớp / lỗi">Notices mismatch / error</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C1" value="0" id="C1-0"><label for="C1-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C1" value="1" id="C1-1"><label for="C1-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C1" value="2" id="C1-2"><label for="C1-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C1" value="3" id="C1-3"><label for="C1-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C1" value="4" id="C1-4"><label for="C1-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="C1" value="NA" id="C1-NA"><label for="C1-NA">NA</label></div></div></td></tr>
+          <tr><td data-en="Adjusts singing / movement after mistake" data-vi="Điều chỉnh hát / vận động sau khi mắc lỗi">Adjusts singing / movement after mistake</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C2" value="0" id="C2-0"><label for="C2-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C2" value="1" id="C2-1"><label for="C2-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C2" value="2" id="C2-2"><label for="C2-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C2" value="3" id="C2-3"><label for="C2-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C2" value="4" id="C2-4"><label for="C2-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="C2" value="NA" id="C2-NA"><label for="C2-NA">NA</label></div></div></td></tr>
+          <tr><td data-en="Modifies behavior after feedback" data-vi="Thay đổi hành vi sau phản hồi">Modifies behavior after feedback</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C3" value="0" id="C3-0"><label for="C3-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C3" value="1" id="C3-1"><label for="C3-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C3" value="2" id="C3-2"><label for="C3-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C3" value="3" id="C3-3"><label for="C3-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C3" value="4" id="C3-4"><label for="C3-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="C3" value="NA" id="C3-NA"><label for="C3-NA">NA</label></div></div></td></tr>
+          <tr><td data-en="Demonstrates adaptive retry behavior" data-vi="Thể hiện hành vi thử lại thích nghi">Demonstrates adaptive retry behavior</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C4" value="0" id="C4-0"><label for="C4-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C4" value="1" id="C4-1"><label for="C4-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C4" value="2" id="C4-2"><label for="C4-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C4" value="3" id="C4-3"><label for="C4-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="C4" value="4" id="C4-4"><label for="C4-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="C4" value="NA" id="C4-NA"><label for="C4-NA">NA</label></div></div></td></tr>
+        </tbody>
+      </table>
+      <div class="field-group">
+        <label data-en="Behavioral Examples (Domain C)" data-vi="Ví dụ Hành vi (Lĩnh vực C)">Behavioral Examples (Domain C)</label>
+        <textarea id="notesC" rows="2" data-placeholder-en="Describe specific self-correction moments…" data-placeholder-vi="Mô tả các khoảnh khắc tự sửa lỗi cụ thể…" placeholder="Describe specific self-correction moments…"></textarea>
+      </div>
+    </div>
+
+    <!-- DOMAIN D -->
+    <div class="domain-block">
+      <div class="domain-header"><div class="domain-letter">D</div><div class="domain-title" data-en="Strategy Awareness / Planning" data-vi="Nhận thức Chiến lược / Lập kế hoạch">Strategy Awareness / Planning</div></div>
+      <table class="coding-table">
+        <thead><tr><th data-en="Indicator" data-vi="Chỉ số">Indicator</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>NA</th></tr></thead>
+        <tbody>
+          <tr><td data-en="Prepares approach before starting" data-vi="Chuẩn bị cách tiếp cận trước khi bắt đầu">Prepares approach before starting</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D1" value="0" id="D1-0"><label for="D1-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D1" value="1" id="D1-1"><label for="D1-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D1" value="2" id="D1-2"><label for="D1-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D1" value="3" id="D1-3"><label for="D1-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D1" value="4" id="D1-4"><label for="D1-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="D1" value="NA" id="D1-NA"><label for="D1-NA">NA</label></div></div></td></tr>
+          <tr><td data-en="Uses observable strategy (counting, pacing, imitation)" data-vi="Dùng chiến lược có thể quan sát (đếm, nhịp điệu, bắt chước)">Uses observable strategy (counting, pacing, imitation)</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D2" value="0" id="D2-0"><label for="D2-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D2" value="1" id="D2-1"><label for="D2-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D2" value="2" id="D2-2"><label for="D2-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D2" value="3" id="D2-3"><label for="D2-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D2" value="4" id="D2-4"><label for="D2-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="D2" value="NA" id="D2-NA"><label for="D2-NA">NA</label></div></div></td></tr>
+          <tr><td data-en="Changes strategy when activity changes" data-vi="Thay đổi chiến lược khi hoạt động thay đổi">Changes strategy when activity changes</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D3" value="0" id="D3-0"><label for="D3-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D3" value="1" id="D3-1"><label for="D3-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D3" value="2" id="D3-2"><label for="D3-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D3" value="3" id="D3-3"><label for="D3-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D3" value="4" id="D3-4"><label for="D3-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="D3" value="NA" id="D3-NA"><label for="D3-NA">NA</label></div></div></td></tr>
+          <tr><td data-en="Explains or demonstrates strategy choice" data-vi="Giải thích hoặc thể hiện sự lựa chọn chiến lược">Explains or demonstrates strategy choice</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D4" value="0" id="D4-0"><label for="D4-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D4" value="1" id="D4-1"><label for="D4-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D4" value="2" id="D4-2"><label for="D4-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D4" value="3" id="D4-3"><label for="D4-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="D4" value="4" id="D4-4"><label for="D4-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="D4" value="NA" id="D4-NA"><label for="D4-NA">NA</label></div></div></td></tr>
+        </tbody>
+      </table>
+      <div class="field-group">
+        <label data-en="Observed Strategies (Domain D)" data-vi="Chiến lược Quan sát được (Lĩnh vực D)">Observed Strategies (Domain D)</label>
+        <textarea id="notesD" rows="2" data-placeholder-en="Note specific strategies observed…" data-placeholder-vi="Ghi chú các chiến lược cụ thể được quan sát…" placeholder="Note specific strategies observed…"></textarea>
+      </div>
+    </div>
+
+    <!-- DOMAIN E -->
+    <div class="domain-block">
+      <div class="domain-header"><div class="domain-letter">E</div><div class="domain-title" data-en="Executive Function-Related Behaviors" data-vi="Hành vi liên quan đến Chức năng Điều hành">Executive Function-Related Behaviors</div></div>
+      <table class="coding-table">
+        <thead><tr><th data-en="Indicator" data-vi="Chỉ số">Indicator</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>NA</th></tr></thead>
+        <tbody>
+          <tr><td data-en="Inhibitory control (waits, controls impulsive responses)" data-vi="Kiểm soát ức chế (chờ đợi, kiểm soát phản ứng bốc đồng)">Inhibitory control (waits, controls impulsive responses)</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E1" value="0" id="E1-0"><label for="E1-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E1" value="1" id="E1-1"><label for="E1-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E1" value="2" id="E1-2"><label for="E1-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E1" value="3" id="E1-3"><label for="E1-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E1" value="4" id="E1-4"><label for="E1-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="E1" value="NA" id="E1-NA"><label for="E1-NA">NA</label></div></div></td></tr>
+          <tr><td data-en="Working memory behavior (remembers sequence/pattern)" data-vi="Hành vi trí nhớ làm việc (nhớ trình tự/mẫu)">Working memory behavior (remembers sequence/pattern)</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E2" value="0" id="E2-0"><label for="E2-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E2" value="1" id="E2-1"><label for="E2-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E2" value="2" id="E2-2"><label for="E2-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E2" value="3" id="E2-3"><label for="E2-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E2" value="4" id="E2-4"><label for="E2-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="E2" value="NA" id="E2-NA"><label for="E2-NA">NA</label></div></div></td></tr>
+          <tr><td data-en="Cognitive flexibility (adjusts to new rule/tempo)" data-vi="Linh hoạt nhận thức (điều chỉnh theo quy tắc/nhịp mới)">Cognitive flexibility (adjusts to new rule/tempo)</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E3" value="0" id="E3-0"><label for="E3-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E3" value="1" id="E3-1"><label for="E3-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E3" value="2" id="E3-2"><label for="E3-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E3" value="3" id="E3-3"><label for="E3-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E3" value="4" id="E3-4"><label for="E3-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="E3" value="NA" id="E3-NA"><label for="E3-NA">NA</label></div></div></td></tr>
+          <tr><td data-en="Task persistence" data-vi="Kiên trì với nhiệm vụ">Task persistence</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E4" value="0" id="E4-0"><label for="E4-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E4" value="1" id="E4-1"><label for="E4-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E4" value="2" id="E4-2"><label for="E4-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E4" value="3" id="E4-3"><label for="E4-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="E4" value="4" id="E4-4"><label for="E4-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="E4" value="NA" id="E4-NA"><label for="E4-NA">NA</label></div></div></td></tr>
+        </tbody>
+      </table>
+      <div class="field-group">
+        <label data-en="Notes (Domain E)" data-vi="Ghi chú (Lĩnh vực E)">Notes (Domain E)</label>
+        <textarea id="notesE" rows="2" data-placeholder-en="EF-related behavioral observations…" data-placeholder-vi="Quan sát hành vi liên quan đến chức năng điều hành…" placeholder="EF-related behavioral observations…"></textarea>
+      </div>
+    </div>
+
+    <!-- DOMAIN F -->
+    <div class="domain-block">
+      <div class="domain-header"><div class="domain-letter">F</div><div class="domain-title" data-en="Social & Participation Ecology" data-vi="Sinh thái Xã hội và Tham gia">Social & Participation Ecology</div></div>
+      <table class="coding-table">
+        <thead><tr><th data-en="Indicator" data-vi="Chỉ số">Indicator</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>NA</th></tr></thead>
+        <tbody>
+          <tr><td data-en="Cooperative participation" data-vi="Tham gia hợp tác">Cooperative participation</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F1" value="0" id="F1-0"><label for="F1-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F1" value="1" id="F1-1"><label for="F1-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F1" value="2" id="F1-2"><label for="F1-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F1" value="3" id="F1-3"><label for="F1-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F1" value="4" id="F1-4"><label for="F1-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="F1" value="NA" id="F1-NA"><label for="F1-NA">NA</label></div></div></td></tr>
+          <tr><td data-en="Responsive interaction with peers" data-vi="Tương tác đáp lại với bạn bè">Responsive interaction with peers</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F2" value="0" id="F2-0"><label for="F2-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F2" value="1" id="F2-1"><label for="F2-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F2" value="2" id="F2-2"><label for="F2-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F2" value="3" id="F2-3"><label for="F2-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F2" value="4" id="F2-4"><label for="F2-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="F2" value="NA" id="F2-NA"><label for="F2-NA">NA</label></div></div></td></tr>
+          <tr><td data-en="Positive teacher scaffolding observed" data-vi="Giàn giáo hỗ trợ tích cực của giáo viên được quan sát">Positive teacher scaffolding observed</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F3" value="0" id="F3-0"><label for="F3-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F3" value="1" id="F3-1"><label for="F3-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F3" value="2" id="F3-2"><label for="F3-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F3" value="3" id="F3-3"><label for="F3-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F3" value="4" id="F3-4"><label for="F3-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="F3" value="NA" id="F3-NA"><label for="F3-NA">NA</label></div></div></td></tr>
+          <tr><td data-en="Parent participation supports engagement" data-vi="Sự tham gia của phụ huynh hỗ trợ sự gắn kết">Parent participation supports engagement</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F4" value="0" id="F4-0"><label for="F4-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F4" value="1" id="F4-1"><label for="F4-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F4" value="2" id="F4-2"><label for="F4-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F4" value="3" id="F4-3"><label for="F4-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F4" value="4" id="F4-4"><label for="F4-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="F4" value="NA" id="F4-NA"><label for="F4-NA">NA</label></div></div></td></tr>
+          <tr><td data-en="Cultural familiarity relevant to engagement" data-vi="Sự quen thuộc văn hóa liên quan đến sự gắn kết">Cultural familiarity relevant to engagement</td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F5" value="0" id="F5-0"><label for="F5-0">0</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F5" value="1" id="F5-1"><label for="F5-1">1</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F5" value="2" id="F5-2"><label for="F5-2">2</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F5" value="3" id="F5-3"><label for="F5-3">3</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option"><input type="radio" name="F5" value="4" id="F5-4"><label for="F5-4">4</label></div></div></td><td class="scale-cell"><div class="scale-radio-wrap"><div class="scale-option na-option"><input type="radio" name="F5" value="NA" id="F5-NA"><label for="F5-NA">NA</label></div></div></td></tr>
+        </tbody>
+      </table>
+      <div class="field-group">
+        <label data-en="Examples (Domain F)" data-vi="Ví dụ (Lĩnh vực F)">Examples (Domain F)</label>
+        <textarea id="notesF" rows="2" data-placeholder-en="Social and participatory examples…" data-placeholder-vi="Ví dụ xã hội và tham gia…" placeholder="Social and participatory examples…"></textarea>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SECTION 4: EVENT SAMPLING -->
+<div class="section-card" id="sec4">
+  <div class="section-header" onclick="toggleSection('sec4')">
+    <div class="section-num">4</div>
+    <div class="section-title-text">
+      <h2 data-en="Event Sampling — Critical Incidents" data-vi="Lấy mẫu Sự kiện — Sự cố Quan trọng">Event Sampling — Critical Incidents</h2>
+      <p data-en="Up to 3 significant observation moments" data-vi="Tối đa 3 khoảnh khắc quan sát quan trọng">Up to 3 significant observation moments</p>
+    </div>
+    <svg class="collapse-arrow" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+  </div>
+  <div class="section-body">
+    <div class="incident-card">
+      <div class="incident-num" data-en="INCIDENT 1" data-vi="SỰ CỐ 1">INCIDENT 1</div>
+      <div class="field-row">
+        <div class="field-group">
+          <label data-en="Time Stamp" data-vi="Dấu thời gian">Time Stamp</label>
+          <input type="text" id="inc1time" placeholder="e.g., 00:12:34">
+        </div>
+      </div>
+      <div class="field-group" style="margin-bottom:12px;">
+        <label data-en="Description" data-vi="Mô tả">Description</label>
+        <textarea id="inc1desc" rows="3" data-placeholder-en="What happened? Who was involved? What was observable?" data-placeholder-vi="Điều gì đã xảy ra? Ai tham gia? Điều gì có thể quan sát được?" placeholder="What happened? Who was involved? What was observable?"></textarea>
+      </div>
+      <div class="field-group">
+        <label data-en="Interpretive Memo" data-vi="Ghi chú Giải thích">Interpretive Memo</label>
+        <textarea id="inc1memo" rows="2" data-placeholder-en="What does this incident suggest about the child's cognitive/social processes?" data-placeholder-vi="Sự cố này gợi ý điều gì về quá trình nhận thức/xã hội của trẻ?" placeholder="What does this incident suggest about the child's cognitive/social processes?"></textarea>
+      </div>
+    </div>
+    <div class="incident-card">
+      <div class="incident-num" data-en="INCIDENT 2" data-vi="SỰ CỐ 2">INCIDENT 2</div>
+      <div class="field-row">
+        <div class="field-group">
+          <label data-en="Time Stamp" data-vi="Dấu thời gian">Time Stamp</label>
+          <input type="text" id="inc2time" placeholder="e.g., 00:24:15">
+        </div>
+      </div>
+      <div class="field-group" style="margin-bottom:12px;">
+        <label data-en="Description" data-vi="Mô tả">Description</label>
+        <textarea id="inc2desc" rows="3" data-placeholder-en="What happened? Who was involved? What was observable?" data-placeholder-vi="Điều gì đã xảy ra? Ai tham gia? Điều gì có thể quan sát được?" placeholder="What happened? Who was involved? What was observable?"></textarea>
+      </div>
+      <div class="field-group">
+        <label data-en="Interpretive Memo" data-vi="Ghi chú Giải thích">Interpretive Memo</label>
+        <textarea id="inc2memo" rows="2" data-placeholder-en="What does this incident suggest about the child's cognitive/social processes?" data-placeholder-vi="Sự cố này gợi ý điều gì về quá trình nhận thức/xã hội của trẻ?" placeholder="What does this incident suggest?"></textarea>
+      </div>
+    </div>
+    <div class="incident-card">
+      <div class="incident-num" data-en="INCIDENT 3" data-vi="SỰ CỐ 3">INCIDENT 3</div>
+      <div class="field-row">
+        <div class="field-group">
+          <label data-en="Time Stamp" data-vi="Dấu thời gian">Time Stamp</label>
+          <input type="text" id="inc3time" placeholder="e.g., 00:38:50">
+        </div>
+      </div>
+      <div class="field-group" style="margin-bottom:12px;">
+        <label data-en="Description" data-vi="Mô tả">Description</label>
+        <textarea id="inc3desc" rows="3" data-placeholder-en="What happened? Who was involved? What was observable?" data-placeholder-vi="Điều gì đã xảy ra? Ai tham gia? Điều gì có thể quan sát được?" placeholder="What happened? Who was involved? What was observable?"></textarea>
+      </div>
+      <div class="field-group">
+        <label data-en="Interpretive Memo" data-vi="Ghi chú Giải thích">Interpretive Memo</label>
+        <textarea id="inc3memo" rows="2" data-placeholder-en="What does this incident suggest about the child's cognitive/social processes?" data-placeholder-vi="Sự cố này gợi ý điều gì về quá trình nhận thức/xã hội của trẻ?" placeholder="What does this incident suggest?"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5: GLOBAL RATINGS -->
+<div class="section-card" id="sec5">
+  <div class="section-header" onclick="toggleSection('sec5')">
+    <div class="section-num">5</div>
+    <div class="section-title-text">
+      <h2 data-en="Global Session Ratings" data-vi="Đánh giá Tổng quát Buổi học">Global Session Ratings</h2>
+      <p data-en="Rate each construct on a 1–5 scale" data-vi="Đánh giá từng cấu trúc theo thang 1–5">Rate each construct on a 1–5 scale</p>
+    </div>
+    <svg class="collapse-arrow" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+  </div>
+  <div class="section-body">
+    <div class="rating-grid">
+      <div class="rating-row">
+        <div class="rating-label" data-en="Child engagement" data-vi="Sự gắn kết của trẻ">Child engagement</div>
+        <div class="rating-stars">
+          <div class="star-option"><input type="radio" name="R1" value="1" id="R1-1"><label for="R1-1">1</label></div>
+          <div class="star-option"><input type="radio" name="R1" value="2" id="R1-2"><label for="R1-2">2</label></div>
+          <div class="star-option"><input type="radio" name="R1" value="3" id="R1-3"><label for="R1-3">3</label></div>
+          <div class="star-option"><input type="radio" name="R1" value="4" id="R1-4"><label for="R1-4">4</label></div>
+          <div class="star-option"><input type="radio" name="R1" value="5" id="R1-5"><label for="R1-5">5</label></div>
+        </div>
+        <div class="rating-min-max"><span style="color:var(--text3);font-size:0.7rem" data-en="Low" data-vi="Thấp">Low</span><span style="color:var(--text3);font-size:0.7rem" data-en="High" data-vi="Cao">High</span></div>
+      </div>
+      <div class="rating-row">
+        <div class="rating-label" data-en="Reflective participation" data-vi="Tham gia phản ánh">Reflective participation</div>
+        <div class="rating-stars">
+          <div class="star-option"><input type="radio" name="R2" value="1" id="R2-1"><label for="R2-1">1</label></div>
+          <div class="star-option"><input type="radio" name="R2" value="2" id="R2-2"><label for="R2-2">2</label></div>
+          <div class="star-option"><input type="radio" name="R2" value="3" id="R2-3"><label for="R2-3">3</label></div>
+          <div class="star-option"><input type="radio" name="R2" value="4" id="R2-4"><label for="R2-4">4</label></div>
+          <div class="star-option"><input type="radio" name="R2" value="5" id="R2-5"><label for="R2-5">5</label></div>
+        </div>
+        <div class="rating-min-max"><span style="color:var(--text3);font-size:0.7rem" data-en="Low" data-vi="Thấp">Low</span><span style="color:var(--text3);font-size:0.7rem" data-en="High" data-vi="Cao">High</span></div>
+      </div>
+      <div class="rating-row">
+        <div class="rating-label" data-en="Behavioral self-regulation" data-vi="Tự điều chỉnh hành vi">Behavioral self-regulation</div>
+        <div class="rating-stars">
+          <div class="star-option"><input type="radio" name="R3" value="1" id="R3-1"><label for="R3-1">1</label></div>
+          <div class="star-option"><input type="radio" name="R3" value="2" id="R3-2"><label for="R3-2">2</label></div>
+          <div class="star-option"><input type="radio" name="R3" value="3" id="R3-3"><label for="R3-3">3</label></div>
+          <div class="star-option"><input type="radio" name="R3" value="4" id="R3-4"><label for="R3-4">4</label></div>
+          <div class="star-option"><input type="radio" name="R3" value="5" id="R3-5"><label for="R3-5">5</label></div>
+        </div>
+        <div class="rating-min-max"><span style="color:var(--text3);font-size:0.7rem" data-en="Low" data-vi="Thấp">Low</span><span style="color:var(--text3);font-size:0.7rem" data-en="High" data-vi="Cao">High</span></div>
+      </div>
+      <div class="rating-row">
+        <div class="rating-label" data-en="Executive function demand of activity" data-vi="Yêu cầu chức năng điều hành của hoạt động">Executive function demand of activity</div>
+        <div class="rating-stars">
+          <div class="star-option"><input type="radio" name="R4" value="1" id="R4-1"><label for="R4-1">1</label></div>
+          <div class="star-option"><input type="radio" name="R4" value="2" id="R4-2"><label for="R4-2">2</label></div>
+          <div class="star-option"><input type="radio" name="R4" value="3" id="R4-3"><label for="R4-3">3</label></div>
+          <div class="star-option"><input type="radio" name="R4" value="4" id="R4-4"><label for="R4-4">4</label></div>
+          <div class="star-option"><input type="radio" name="R4" value="5" id="R4-5"><label for="R4-5">5</label></div>
+        </div>
+        <div class="rating-min-max"><span style="color:var(--text3);font-size:0.7rem" data-en="Low" data-vi="Thấp">Low</span><span style="color:var(--text3);font-size:0.7rem" data-en="High" data-vi="Cao">High</span></div>
+      </div>
+      <div class="rating-row">
+        <div class="rating-label" data-en="Family / community support visible" data-vi="Hỗ trợ gia đình / cộng đồng hiện diện">Family / community support visible</div>
+        <div class="rating-stars">
+          <div class="star-option"><input type="radio" name="R5" value="1" id="R5-1"><label for="R5-1">1</label></div>
+          <div class="star-option"><input type="radio" name="R5" value="2" id="R5-2"><label for="R5-2">2</label></div>
+          <div class="star-option"><input type="radio" name="R5" value="3" id="R5-3"><label for="R5-3">3</label></div>
+          <div class="star-option"><input type="radio" name="R5" value="4" id="R5-4"><label for="R5-4">4</label></div>
+          <div class="star-option"><input type="radio" name="R5" value="5" id="R5-5"><label for="R5-5">5</label></div>
+        </div>
+        <div class="rating-min-max"><span style="color:var(--text3);font-size:0.7rem" data-en="Low" data-vi="Thấp">Low</span><span style="color:var(--text3);font-size:0.7rem" data-en="High" data-vi="Cao">High</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 6: REFLEXIVE MEMO -->
+<div class="section-card" id="sec6">
+  <div class="section-header" onclick="toggleSection('sec6')">
+    <div class="section-num">6</div>
+    <div class="section-title-text">
+      <h2 data-en="Observer Reflexive Memo" data-vi="Ghi chú Phản ánh của Quan sát viên">Observer Reflexive Memo</h2>
+      <p data-en="Reflections, patterns, biases, and contextual factors" data-vi="Phản ánh, mẫu hình, định kiến và các yếu tố bối cảnh">Reflections, patterns, biases, and contextual factors</p>
+    </div>
+    <svg class="collapse-arrow" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+  </div>
+  <div class="section-body">
+    <div class="field-group" style="margin-bottom:16px;">
+      <label data-en="Observer Reflections" data-vi="Phản ánh của Quan sát viên">Observer Reflections</label>
+      <textarea id="memo1" rows="3" data-placeholder-en="What stood out? What surprised you?" data-placeholder-vi="Điều gì nổi bật? Điều gì khiến bạn ngạc nhiên?" placeholder="What stood out? What surprised you?"></textarea>
+    </div>
+    <div class="field-group" style="margin-bottom:16px;">
+      <label data-en="Unexpected Patterns" data-vi="Mẫu hình Bất ngờ">Unexpected Patterns</label>
+      <textarea id="memo2" rows="2" data-placeholder-en="Any patterns that diverged from expectations?" data-placeholder-vi="Có mẫu hình nào khác với kỳ vọng không?" placeholder="Any patterns that diverged from expectations?"></textarea>
+    </div>
+    <div class="field-group" style="margin-bottom:16px;">
+      <label data-en="Contextual Factors" data-vi="Các Yếu tố Bối cảnh">Contextual Factors</label>
+      <textarea id="memo3" rows="2" data-placeholder-en="Environmental, social, or situational factors that may have influenced observations…" data-placeholder-vi="Các yếu tố môi trường, xã hội hoặc tình huống có thể đã ảnh hưởng đến quan sát…" placeholder="Environmental, social, or situational factors…"></textarea>
+    </div>
+    <div class="field-group" style="margin-bottom:16px;">
+      <label data-en="Alternative Explanations" data-vi="Các Giải thích Thay thế">Alternative Explanations</label>
+      <textarea id="memo4" rows="2" data-placeholder-en="Could the observed behaviors be explained by factors other than the music intervention?" data-placeholder-vi="Hành vi quan sát được có thể được giải thích bởi các yếu tố khác ngoài can thiệp âm nhạc không?" placeholder="Could observed behaviors be explained differently?"></textarea>
+    </div>
+    <div class="field-group" style="margin-bottom:16px;">
+      <label data-en="Potential Biases" data-vi="Định kiến Tiềm ẩn">Potential Biases</label>
+      <textarea id="memo5" rows="2" data-placeholder-en="Any observer biases, assumptions, or limitations to note?" data-placeholder-vi="Có định kiến, giả định hoặc hạn chế nào của quan sát viên cần ghi chú không?" placeholder="Any observer biases or assumptions?"></textarea>
+    </div>
+    <div class="field-divider"></div>
+    <div class="sig-row">
+      <div class="field-group">
+        <label data-en="Observer Signature" data-vi="Chữ ký Quan sát viên">Observer Signature</label>
+        <input type="text" id="signature" data-placeholder-en="Type full name as signature" data-placeholder-vi="Nhập họ tên đầy đủ làm chữ ký" placeholder="Type full name as signature">
+      </div>
+      <div class="field-group">
+        <label data-en="Coding Completed On" data-vi="Hoàn thành Mã hóa vào">Coding Completed On</label>
+        <input type="date" id="completedDate">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 7: AGE GROUP CENSUS -->
+<div class="section-card" id="sec7">
+  <div class="section-header" onclick="toggleSection('sec7')">
+    <div class="section-num" style="background:var(--green)">7</div>
+    <div class="section-title-text">
+      <h2 data-en="Session Participant Census — Age Groups" data-vi="Thống kê Người tham gia — Nhóm Tuổi">Session Participant Census — Age Groups</h2>
+      <p data-en="Count of all individuals present in this session by age bracket" data-vi="Số lượng tất cả mọi người tham gia buổi học theo nhóm tuổi">Count of all individuals present in this session by age bracket</p>
+    </div>
+    <svg class="collapse-arrow" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+  </div>
+  <div class="section-body">
+
+    <div style="margin-bottom:18px;padding:12px 16px;background:var(--blue-bg);border:1px solid var(--blue);border-radius:var(--radius-sm);">
+      <p style="font-size:0.82rem;color:var(--blue);font-weight:500;" data-en="Enter the number of participants present in each age bracket. Use the stepper buttons or type directly. The chart updates live." data-vi="Nhập số lượng người tham gia có mặt trong mỗi nhóm tuổi. Dùng nút tăng/giảm hoặc gõ trực tiếp. Biểu đồ cập nhật theo thời gian thực.">Enter the number of participants present in each age bracket. Use the stepper buttons or type directly. The chart updates live.</p>
+    </div>
+
+    <!-- INPUT CARDS -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:24px;">
+
+      <div class="age-input-card" data-group="u10">
+        <div class="age-icon">👶</div>
+        <div class="age-range-label" data-en="Under 10" data-vi="Dưới 10 tuổi">Under 10</div>
+        <div class="age-sub" data-en="Young children" data-vi="Trẻ nhỏ">Young children</div>
+        <div class="age-stepper">
+          <button class="step-btn" onclick="stepAge('age_u10',-1)">−</button>
+          <input type="number" id="age_u10" class="age-num-input" min="0" max="999" value="0" oninput="updateAgeChart()">
+          <button class="step-btn" onclick="stepAge('age_u10',1)">+</button>
+        </div>
+      </div>
+
+      <div class="age-input-card" data-group="10to18">
+        <div class="age-icon">🧒</div>
+        <div class="age-range-label" data-en="10 – 18" data-vi="10 – 18 tuổi">10 – 18</div>
+        <div class="age-sub" data-en="Children & teens" data-vi="Trẻ em & thanh thiếu niên">Children & teens</div>
+        <div class="age-stepper">
+          <button class="step-btn" onclick="stepAge('age_10to18',-1)">−</button>
+          <input type="number" id="age_10to18" class="age-num-input" min="0" max="999" value="0" oninput="updateAgeChart()">
+          <button class="step-btn" onclick="stepAge('age_10to18',1)">+</button>
+        </div>
+      </div>
+
+      <div class="age-input-card" data-group="18to30">
+        <div class="age-icon">🧑</div>
+        <div class="age-range-label" data-en="18 – 30" data-vi="18 – 30 tuổi">18 – 30</div>
+        <div class="age-sub" data-en="Young adults" data-vi="Thanh niên">Young adults</div>
+        <div class="age-stepper">
+          <button class="step-btn" onclick="stepAge('age_18to30',-1)">−</button>
+          <input type="number" id="age_18to30" class="age-num-input" min="0" max="999" value="0" oninput="updateAgeChart()">
+          <button class="step-btn" onclick="stepAge('age_18to30',1)">+</button>
+        </div>
+      </div>
+
+      <div class="age-input-card" data-group="a30">
+        <div class="age-icon">🧓</div>
+        <div class="age-range-label" data-en="Above 30" data-vi="Trên 30 tuổi">Above 30</div>
+        <div class="age-sub" data-en="Adults & seniors" data-vi="Người lớn & cao tuổi">Adults & seniors</div>
+        <div class="age-stepper">
+          <button class="step-btn" onclick="stepAge('age_a30',-1)">−</button>
+          <input type="number" id="age_a30" class="age-num-input" min="0" max="999" value="0" oninput="updateAgeChart()">
+          <button class="step-btn" onclick="stepAge('age_a30',1)">+</button>
+        </div>
+      </div>
+
+    </div><!-- /grid -->
+
+    <!-- TOTAL + CHART -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+      <div>
+        <span style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);" data-en="Total Participants" data-vi="Tổng số Người tham gia">Total Participants</span>
+        <span id="ageTotal" style="font-family:'DM Serif Display',serif;font-size:2rem;color:var(--accent);margin-left:12px;font-weight:400;">0</span>
+      </div>
+      <div id="agePctRow" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
+    </div>
+
+    <!-- BAR CHART -->
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px 14px 12px;margin-bottom:4px;">
+      <div id="ageBarChart" style="display:flex;flex-direction:column;gap:10px;">
+        <div class="age-bar-row" id="bar_u10">
+          <div class="age-bar-label" data-en="Under 10" data-vi="Dưới 10">Under 10</div>
+          <div class="age-bar-track"><div class="age-bar-fill" style="width:0%;background:var(--accent);"></div></div>
+          <div class="age-bar-val">0</div>
+        </div>
+        <div class="age-bar-row" id="bar_10to18">
+          <div class="age-bar-label" data-en="10–18" data-vi="10–18">10–18</div>
+          <div class="age-bar-track"><div class="age-bar-fill" style="width:0%;background:var(--blue);"></div></div>
+          <div class="age-bar-val">0</div>
+        </div>
+        <div class="age-bar-row" id="bar_18to30">
+          <div class="age-bar-label" data-en="18–30" data-vi="18–30">18–30</div>
+          <div class="age-bar-track"><div class="age-bar-fill" style="width:0%;background:var(--green);"></div></div>
+          <div class="age-bar-val">0</div>
+        </div>
+        <div class="age-bar-row" id="bar_a30">
+          <div class="age-bar-label" data-en="Above 30" data-vi="Trên 30">Above 30</div>
+          <div class="age-bar-track"><div class="age-bar-fill" style="width:0%;background:#9b59b6;"></div></div>
+          <div class="age-bar-val">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-group" style="margin-top:14px;">
+      <label data-en="Census Notes (optional)" data-vi="Ghi chú Thống kê (tùy chọn)">Census Notes (optional)</label>
+      <textarea id="ageNotes" rows="2" data-placeholder-en="Any notes about participant composition, attendance variation, etc." data-placeholder-vi="Ghi chú về thành phần người tham gia, sự thay đổi điểm danh, v.v." placeholder="Any notes about participant composition…"></textarea>
+    </div>
+  </div>
+</div>
+
+<style>
+  .age-input-card {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  .age-input-card:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(192,94,42,0.1);
+  }
+  .age-icon { font-size: 1.8rem; line-height: 1; margin-bottom: 2px; }
+  .age-range-label {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--text);
+    font-weight: 400;
+  }
+  .age-sub {
+    font-size: 0.72rem;
+    color: var(--text3);
+    font-style: italic;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .age-stepper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--bg);
+  }
+  .step-btn {
+    width: 34px; height: 38px;
+    border: none;
+    background: var(--surface2);
+    color: var(--text2);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all var(--transition);
+    font-family: 'DM Sans', sans-serif;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-btn:hover { background: var(--accent-bg); color: var(--accent); }
+  .age-num-input {
+    width: 52px !important;
+    text-align: center;
+    border: none !important;
+    border-left: 1px solid var(--border) !important;
+    border-right: 1px solid var(--border) !important;
+    border-radius: 0 !important;
+    font-size: 1.05rem !important;
+    font-weight: 600;
+    padding: 6px 4px !important;
+    background: var(--bg);
+    color: var(--text);
+    box-shadow: none !important;
+  }
+  .age-num-input:focus { border-color: var(--border) !important; box-shadow: none !important; }
+  .age-num-input::-webkit-outer-spin-button,
+  .age-num-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  /* Bar chart */
+  .age-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .age-bar-label {
+    width: 68px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text2);
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .age-bar-track {
+    flex: 1;
+    height: 18px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .age-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+    min-width: 0%;
+  }
+  .age-bar-val {
+    width: 32px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text);
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .pct-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid currentColor;
+  }
+
+  /* ── AUDIO RECORDER ── */
+  .recorder-status-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .rec-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--text3);
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+  .rec-dot.active { background: #e74c3c; animation: pulse-dot 1s ease-in-out infinite; }
+  @keyframes pulse-dot {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:.5; transform:scale(1.3); }
+  }
+  .rec-status-text { font-size:0.85rem; font-weight:500; color:var(--text2); flex:1; }
+  .rec-timer { font-family:'DM Serif Display',serif; font-size:1.1rem; color:var(--accent); letter-spacing:.08em; }
+
+  .recorder-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .rec-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 20px;
+    border-radius: 99px;
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+  }
+  .rec-btn:disabled { opacity: .4; cursor: not-allowed; }
+  .rec-btn:not(:disabled):hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+  .rec-btn.danger:not(:disabled):hover { border-color: #e74c3c; color: #e74c3c; background: #fdf2f2; }
+  .rec-btn.success { background: var(--green); color: #fff; border-color: var(--green); }
+  .rec-btn.success:not(:disabled):hover { background: #1e5435; border-color:#1e5435; color:#fff; }
+  .rec-btn svg { width:15px; height:15px; flex-shrink:0; }
+
+  #waveformCanvas {
+    width: 100%;
+    height: 56px;
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .recordings-list { display: flex; flex-direction: column; gap: 10px; }
+  .recording-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface2);
+    flex-wrap: wrap;
+    transition: border-color var(--transition);
+  }
+  .recording-item.uploading { border-color: var(--accent); animation: shimmer 1.5s linear infinite; }
+  .recording-item.success { border-color: var(--green); }
+  .recording-item.error { border-color: #e74c3c; }
+  @keyframes shimmer {
+    0%,100% { opacity:1; } 50% { opacity:.7; }
+  }
+  .rec-item-icon { font-size:1.3rem; flex-shrink:0; }
+  .rec-item-info { flex: 1; min-width: 0; }
+  .rec-item-name { font-size:0.82rem; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .rec-item-meta { font-size:0.73rem; color:var(--text3); margin-top:1px; }
+  .rec-item-status {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 99px;
+    flex-shrink: 0;
+  }
+  .rec-item-status.uploading { background:var(--accent-bg); color:var(--accent); }
+  .rec-item-status.success { background:var(--green-bg); color:var(--green); }
+  .rec-item-status.error { background:#fdf2f2; color:#e74c3c; }
+
+  .github-toast {
+    position: fixed;
+    bottom: 28px;
+    right: 24px;
+    z-index: 9999;
+    max-width: 380px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1.5px solid var(--green);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    pointer-events: none;
+  }
+  .github-toast.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+  .github-toast.error { border-color: #e74c3c; }
+  .toast-icon { font-size:1.4rem; flex-shrink:0; margin-top:1px; }
+  .toast-body { flex:1; }
+  .toast-title { font-size:0.88rem; font-weight:700; color:var(--text); margin-bottom:3px; }
+  .toast-msg { font-size:0.78rem; color:var(--text2); line-height:1.4; }
+  .toast-link { font-size:0.75rem; color:var(--accent); text-decoration:none; margin-top:4px; display:inline-block; }
+  .toast-link:hover { text-decoration:underline; }
+  .toast-close { background:none; border:none; cursor:pointer; color:var(--text3); font-size:1rem; padding:0; line-height:1; flex-shrink:0; }
+  .server-warning {
+    padding: 10px 14px;
+    background: #fff8e8;
+    border: 1px solid #f0c040;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    color: #7a5800;
+    margin-bottom: 14px;
+    display: none;
+  }
+  [data-theme="dark"] .server-warning { background:#2a2010; color:#e0b840; border-color:#5a4a10; }
+  .server-warning.visible { display: block; }
+</style>
+
+<!-- SECTION 8: AUDIO RECORDING -->
+<div class="section-card" id="sec8">
+  <div class="section-header" onclick="toggleSection('sec8')">
+    <div class="section-num" style="background:var(--blue)">8</div>
+    <div class="section-title-text">
+      <h2 data-en="Audio Recording" data-vi="Ghi âm">Audio Recording</h2>
+      <p data-en="Optional — record session audio, auto-saved to GitHub" data-vi="Tùy chọn — ghi âm buổi học, tự động lưu lên GitHub">Optional — record session audio, auto-saved to GitHub</p>
+    </div>
+    <svg class="collapse-arrow" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+  </div>
+  <div class="section-body">
+
+    <!-- Server connection warning -->
+    <div class="server-warning" id="serverWarning">
+      ⚠️ <strong data-en="Proxy server not detected." data-vi="Không phát hiện máy chủ proxy.">Proxy server not detected.</strong>
+      <span data-en="Run start_server.sh to enable GitHub upload. Recordings will still download locally." data-vi="Chạy start_server.sh để bật tải lên GitHub. Bản ghi vẫn sẽ được tải xuống cục bộ.">Run start_server.sh to enable GitHub upload. Recordings will still download locally.</span>
+    </div>
+
+    <!-- Status bar -->
+    <div class="recorder-status-bar">
+      <div class="rec-dot" id="recDot"></div>
+      <div class="rec-status-text" id="recStatusText" data-en="Ready to record" data-vi="Sẵn sàng ghi âm">Ready to record</div>
+      <div class="rec-timer" id="recTimer">00:00</div>
+    </div>
+
+    <!-- Label input -->
+    <div class="field-row" style="margin-bottom:14px;">
+      <div class="field-group">
+        <label data-en="Recording Label (optional)" data-vi="Nhãn Ghi âm (tùy chọn)">Recording Label (optional)</label>
+        <input type="text" id="recLabel" data-placeholder-en="e.g., incident-1, whole-session, debrief" data-placeholder-vi="VD: sự-cố-1, toàn-buổi, tổng-kết" placeholder="e.g., incident-1, whole-session, debrief">
+      </div>
+    </div>
+
+    <!-- Waveform canvas -->
+    <canvas id="waveformCanvas"></canvas>
+
+    <!-- Controls -->
+    <div class="recorder-controls">
+      <button class="rec-btn" id="btnStart" onclick="startRecording()">
+        <svg viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="10" r="6"/></svg>
+        <span data-en="Start Recording" data-vi="Bắt đầu Ghi âm">Start Recording</span>
+      </button>
+      <button class="rec-btn danger" id="btnStop" onclick="stopRecording()" disabled>
+        <svg viewBox="0 0 20 20" fill="currentColor"><rect x="4" y="4" width="12" height="12" rx="2"/></svg>
+        <span data-en="Stop &amp; Save" data-vi="Dừng &amp; Lưu">Stop &amp; Save</span>
+      </button>
+      <button class="rec-btn" id="btnDiscard" onclick="discardRecording()" disabled>
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h12M8 6V4h4v2M7 6l1 11h4l1-11"/></svg>
+        <span data-en="Discard" data-vi="Hủy bỏ">Discard</span>
+      </button>
+    </div>
+
+    <!-- Recordings list -->
+    <div>
+      <div style="font-size:0.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;" data-en="This Session's Recordings" data-vi="Bản ghi của Buổi này">This Session's Recordings</div>
+      <div class="recordings-list" id="recordingsList">
+        <div style="font-size:0.82rem;color:var(--text3);font-style:italic;padding:10px 0;" id="noRecordings"
+             data-en="No recordings yet." data-vi="Chưa có bản ghi nào.">No recordings yet.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- GitHub Toast Notification -->
+<div class="github-toast" id="githubToast">
+  <div class="toast-icon" id="toastIcon">✅</div>
+  <div class="toast-body">
+    <div class="toast-title" id="toastTitle">Uploaded to GitHub</div>
+    <div class="toast-msg" id="toastMsg"></div>
+    <a class="toast-link" id="toastLink" href="#" target="_blank" rel="noopener"></a>
+  </div>
+  <button class="toast-close" onclick="closeToast()">✕</button>
+</div>
+
+<!-- EXPORT BUTTONS -->
+<div class="export-area">
+  <button class="export-btn" onclick="window.print()">
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 7V3h10v4M5 17H3a1 1 0 01-1-1V8a1 1 0 011-1h14a1 1 0 011 1v8a1 1 0 01-1 1h-2M5 12h10v5H5v-5z"/></svg>
+    <span data-en="Print Form" data-vi="In Biểu mẫu">Print Form</span>
+  </button>
+  <button class="export-btn primary" onclick="saveForm()">
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h8l4 4v8a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1z"/><polyline points="15 15 9 15 9 11"/><polyline points="7 7 7 4 13 4"/></svg>
+    <span data-en="Download JSON" data-vi="Tải JSON">Download JSON</span>
+  </button>
+  <button class="export-btn" onclick="clearForm()">
+    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h12M8 6V4h4v2M7 6l1 11h4l1-11"/></svg>
+    <span data-en="Clear Form" data-vi="Xóa Biểu mẫu">Clear Form</span>
+  </button>
+</div>
+
+</div><!-- /container -->
+
+<script>
+  // THEME TOGGLE
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('themeLabel').textContent = isDark ? (currentLang === 'en' ? 'Dark' : 'Tối') : (currentLang === 'en' ? 'Light' : 'Sáng');
+    document.getElementById('themeIcon').innerHTML = isDark
+      ? '<path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 14.5A6.5 6.5 0 0110 3.5V16.5z"/>'
+      : '<circle cx="10" cy="10" r="4"/><path d="M10 1v2M10 17v2M1 10h2M17 10h2M3.22 3.22l1.42 1.42M15.36 15.36l1.42 1.42M3.22 16.78l1.42-1.42M15.36 4.64l1.42-1.42" stroke="currentColor" stroke-width="1.8" fill="none"/>';
+  }
+
+  // LANGUAGE TOGGLE
+  let currentLang = 'en';
+  function toggleLang() {
+    currentLang = currentLang === 'en' ? 'vi' : 'en';
+    document.documentElement.setAttribute('data-lang', currentLang);
+    document.getElementById('langLabel').textContent = currentLang === 'en' ? 'Tiếng Việt' : 'English';
+    // Update all data-en / data-vi elements
+    document.querySelectorAll('[data-en]').forEach(el => {
+      if (el.tagName !== 'INPUT' && el.tagName !== 'TEXTAREA') {
+        el.textContent = el.getAttribute('data-' + currentLang);
+      }
+    });
+    // Update placeholders
+    document.querySelectorAll('[data-placeholder-en]').forEach(el => {
+      el.setAttribute('placeholder', el.getAttribute('data-placeholder-' + currentLang));
+    });
+    // Update save btn in topbar
+    const saveBtn = document.querySelector('.save-btn');
+    saveBtn.textContent = currentLang === 'en' ? 'Save JSON' : 'Lưu JSON';
+    // Update theme label
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.getElementById('themeLabel').textContent = isDark
+      ? (currentLang === 'en' ? 'Light' : 'Sáng')
+      : (currentLang === 'en' ? 'Dark' : 'Tối');
+  }
+
+  // COLLAPSE SECTIONS
+  function toggleSection(id) {
+    const card = document.getElementById(id);
+    card.classList.toggle('collapsed');
+    updateProgress();
+  }
+
+  // PROGRESS
+  function updateProgress() {
+    const inputs = document.querySelectorAll('input:not([type="radio"]), textarea, select');
+    const radios = {};
+    document.querySelectorAll('input[type="radio"]').forEach(r => { if (r.checked) radios[r.name] = true; });
+    let filled = 0, total = inputs.length + Object.keys(document.querySelectorAll('input[type="radio"]').__proto__ === NodeList.prototype ? {} : {}).length;
+    inputs.forEach(el => { if (el.value.trim()) filled++; });
+    const radioNames = new Set(Array.from(document.querySelectorAll('input[type="radio"]')).map(r => r.name));
+    const radioFilled = Object.keys(radios).length;
+    const radioTotal = radioNames.size;
+    const pct = Math.round(((filled + radioFilled) / (inputs.length + radioTotal)) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+  }
+
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    el.addEventListener('input', updateProgress);
+    el.addEventListener('change', updateProgress);
+  });
+
+  // SAVE JSON
+  function saveForm() {
+    const data = {
+      meta: { formVersion: 'HaFPES-2026-v1', exportedAt: new Date().toISOString() },
+      section1: {
+        observerId: document.getElementById('observerId').value,
+        sessionDate: document.getElementById('sessionDate').value,
+        classroomCode: document.getElementById('classroomCode').value,
+        duration: document.getElementById('duration').value,
+        videoId: document.getElementById('videoId').value,
+        week: document.querySelector('input[name="week"]:checked')?.value || '',
+        ageGroup: document.querySelector('input[name="ageGroup"]:checked')?.value || '',
+        activityType: document.querySelector('input[name="activityType"]:checked')?.value || '',
+        facilitator: document.querySelector('input[name="facilitator"]:checked')?.value || ''
+      },
+      section2: {
+        activityDesc: document.getElementById('activityDesc').value,
+        musicUsed: document.getElementById('musicUsed').value
+      },
+      section3: { coding: {}, notes: {} },
+      section4: {
+        incident1: { time: document.getElementById('inc1time').value, description: document.getElementById('inc1desc').value, memo: document.getElementById('inc1memo').value },
+        incident2: { time: document.getElementById('inc2time').value, description: document.getElementById('inc2desc').value, memo: document.getElementById('inc2memo').value },
+        incident3: { time: document.getElementById('inc3time').value, description: document.getElementById('inc3desc').value, memo: document.getElementById('inc3memo').value }
+      },
+      section5: {},
+      section6: {
+        reflections: document.getElementById('memo1').value,
+        unexpectedPatterns: document.getElementById('memo2').value,
+        contextualFactors: document.getElementById('memo3').value,
+        alternativeExplanations: document.getElementById('memo4').value,
+        potentialBiases: document.getElementById('memo5').value,
+        signature: document.getElementById('signature').value,
+        completedDate: document.getElementById('completedDate').value
+      }
+    };
+    // Collect coding
+    ['A1','A2','A3','A4','B1','B2','B3','B4','C1','C2','C3','C4','D1','D2','D3','D4','E1','E2','E3','E4','F1','F2','F3','F4','F5'].forEach(k => {
+      data.section3.coding[k] = document.querySelector(`input[name="${k}"]:checked`)?.value || '';
+    });
+    ['A','B','C','D','E','F'].forEach(d => {
+      data.section3.notes[d] = document.getElementById('notes' + d)?.value || '';
+    });
+    // Global ratings
+    ['R1','R2','R3','R4','R5'].forEach(k => {
+      data.section5[k] = document.querySelector(`input[name="${k}"]:checked`)?.value || '';
+    });
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    const obsId = data.section1.observerId || 'OBS';
+    const date = data.section1.sessionDate || new Date().toISOString().slice(0,10);
+    a.download = `HaFPES2026_${obsId}_${date}.json`;
+    a.click();
+  }
+
+  // CLEAR FORM
+  function clearForm() {
+    const msg = currentLang === 'en' ? 'Clear all form data? This cannot be undone.' : 'Xóa tất cả dữ liệu biểu mẫu? Không thể hoàn tác.';
+    if (!confirm(msg)) return;
+    document.querySelectorAll('input[type="text"], input[type="date"], input[type="number"], textarea').forEach(el => el.value = '');
+    document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => el.checked = false);
+    updateProgress();
+  }
+
+  // AGE GROUP FUNCTIONS
+  function stepAge(id, delta) {
+    const el = document.getElementById(id);
+    const val = Math.max(0, (parseInt(el.value) || 0) + delta);
+    el.value = val;
+    updateAgeChart();
+    updateProgress();
+  }
+
+  function updateAgeChart() {
+    const ids = ['age_u10','age_10to18','age_18to30','age_a30'];
+    const barIds = ['bar_u10','bar_10to18','bar_18to30','bar_a30'];
+    const colors = ['var(--accent)','var(--blue)','var(--green)','#9b59b6'];
+    const pctColors = ['#c05e2a','#1e4f7a','#2a6c45','#9b59b6'];
+    const labelEn = ['Under 10','10–18','18–30','Above 30'];
+    const labelVi = ['Dưới 10','10–18','18–30','Trên 30'];
+    const values = ids.map(id => Math.max(0, parseInt(document.getElementById(id).value) || 0));
+    const total = values.reduce((a,b)=>a+b,0);
+    document.getElementById('ageTotal').textContent = total;
+
+    const maxVal = Math.max(...values, 1);
+
+    barIds.forEach((barId, i) => {
+      const row = document.getElementById(barId);
+      const fill = row.querySelector('.age-bar-fill');
+      const valEl = row.querySelector('.age-bar-val');
+      fill.style.width = ((values[i] / maxVal) * 100) + '%';
+      valEl.textContent = values[i];
+    });
+
+    // Pct badges
+    const pctRow = document.getElementById('agePctRow');
+    pctRow.innerHTML = '';
+    const labels = currentLang === 'vi' ? labelVi : labelEn;
+    values.forEach((v, i) => {
+      if (total === 0) return;
+      const pct = Math.round((v/total)*100);
+      const badge = document.createElement('span');
+      badge.className = 'pct-badge';
+      badge.style.color = pctColors[i];
+      badge.style.borderColor = pctColors[i];
+      badge.style.background = 'transparent';
+      badge.textContent = `${labels[i]}: ${pct}%`;
+      pctRow.appendChild(badge);
+    });
+    updateProgress();
+  }
+
+  // Extend saveForm to include age data
+  const _origSave = saveForm;
+  saveForm = function() {
+    // patch age into data before download
+    const origBlob = Blob;
+    const origFetch = JSON.stringify;
+    // We'll reconstruct saveForm inline to inject age data
+    const data = {
+      meta: { formVersion: 'HaFPES-2026-v1', exportedAt: new Date().toISOString() },
+      section1: {
+        observerId: document.getElementById('observerId').value,
+        sessionDate: document.getElementById('sessionDate').value,
+        classroomCode: document.getElementById('classroomCode').value,
+        duration: document.getElementById('duration').value,
+        videoId: document.getElementById('videoId').value,
+        week: document.querySelector('input[name="week"]:checked')?.value || '',
+        ageGroup: document.querySelector('input[name="ageGroup"]:checked')?.value || '',
+        activityType: document.querySelector('input[name="activityType"]:checked')?.value || '',
+        facilitator: document.querySelector('input[name="facilitator"]:checked')?.value || ''
+      },
+      section2: {
+        activityDesc: document.getElementById('activityDesc').value,
+        musicUsed: document.getElementById('musicUsed').value
+      },
+      section3: { coding: {}, notes: {} },
+      section4: {
+        incident1: { time: document.getElementById('inc1time').value, description: document.getElementById('inc1desc').value, memo: document.getElementById('inc1memo').value },
+        incident2: { time: document.getElementById('inc2time').value, description: document.getElementById('inc2desc').value, memo: document.getElementById('inc2memo').value },
+        incident3: { time: document.getElementById('inc3time').value, description: document.getElementById('inc3desc').value, memo: document.getElementById('inc3memo').value }
+      },
+      section5: {},
+      section6: {
+        reflections: document.getElementById('memo1').value,
+        unexpectedPatterns: document.getElementById('memo2').value,
+        contextualFactors: document.getElementById('memo3').value,
+        alternativeExplanations: document.getElementById('memo4').value,
+        potentialBiases: document.getElementById('memo5').value,
+        signature: document.getElementById('signature').value,
+        completedDate: document.getElementById('completedDate').value
+      },
+      section7_participantCensus: {
+        under10: parseInt(document.getElementById('age_u10').value) || 0,
+        age10to18: parseInt(document.getElementById('age_10to18').value) || 0,
+        age18to30: parseInt(document.getElementById('age_18to30').value) || 0,
+        above30: parseInt(document.getElementById('age_a30').value) || 0,
+        total: (['age_u10','age_10to18','age_18to30','age_a30'].reduce((s,id)=>s+(parseInt(document.getElementById(id).value)||0),0)),
+        notes: document.getElementById('ageNotes').value
+      }
+    };
+    ['A1','A2','A3','A4','B1','B2','B3','B4','C1','C2','C3','C4','D1','D2','D3','D4','E1','E2','E3','E4','F1','F2','F3','F4','F5'].forEach(k => {
+      data.section3.coding[k] = document.querySelector(`input[name="${k}"]:checked`)?.value || '';
+    });
+    ['A','B','C','D','E','F'].forEach(d => {
+      data.section3.notes[d] = document.getElementById('notes' + d)?.value || '';
+    });
+    ['R1','R2','R3','R4','R5'].forEach(k => {
+      data.section5[k] = document.querySelector(`input[name="${k}"]:checked`)?.value || '';
+    });
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    const obsId = data.section1.observerId || 'OBS';
+    const date = data.section1.sessionDate || new Date().toISOString().slice(0,10);
+    a.download = `HaFPES2026_${obsId}_${date}.json`;
+    a.click();
+  };
+
+  // Patch clearForm to also reset age inputs
+  const _origClear = clearForm;
+  clearForm = function() {
+    const msg = currentLang === 'en' ? 'Clear all form data? This cannot be undone.' : 'Xóa tất cả dữ liệu biểu mẫu? Không thể hoàn tác.';
+    if (!confirm(msg)) return;
+    document.querySelectorAll('input[type="text"], input[type="date"], input[type="number"], textarea').forEach(el => {
+      el.value = el.classList.contains('age-num-input') ? '0' : '';
+    });
+    document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => el.checked = false);
+    updateAgeChart();
+    updateProgress();
+  };
+
+  // Re-run lang toggle to update age bar labels
+  const _origToggleLang = toggleLang;
+  toggleLang = function() {
+    _origToggleLang();
+    updateAgeChart();
+  };
+
+  // Wire age inputs to progress
+  ['age_u10','age_10to18','age_18to30','age_a30'].forEach(id => {
+    document.getElementById(id).addEventListener('input', updateAgeChart);
+  });
+
+  // ═══════════════════════════════════════════════════════
+  //  AUDIO RECORDING ENGINE
+  // ═══════════════════════════════════════════════════════
+  const PROXY_URL   = 'http://localhost:5050';
+  let mediaRecorder  = null;
+  let audioChunks    = [];
+  let recStartTime   = null;
+  let recTimerInterval = null;
+  let audioContext   = null;
+  let analyser       = null;
+  let waveAnim       = null;
+  let serverOnline   = false;
+  let recCount       = 0;
+
+  // ── Canvas waveform ──
+  const canvas  = document.getElementById('waveformCanvas');
+  const ctx2d   = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    canvas.width  = canvas.offsetWidth * window.devicePixelRatio;
+    canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+    ctx2d.scale(window.devicePixelRatio, window.devicePixelRatio);
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  function drawIdle() {
+    const W = canvas.offsetWidth, H = canvas.offsetHeight;
+    ctx2d.clearRect(0, 0, W, H);
+    ctx2d.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--border').trim();
+    ctx2d.lineWidth = 1.5;
+    ctx2d.setLineDash([4, 4]);
+    ctx2d.beginPath();
+    ctx2d.moveTo(0, H / 2);
+    ctx2d.lineTo(W, H / 2);
+    ctx2d.stroke();
+    ctx2d.setLineDash([]);
+  }
+  drawIdle();
+
+  function drawWaveform() {
+    if (!analyser) return;
+    const W = canvas.offsetWidth, H = canvas.offsetHeight;
+    const bufLen = analyser.frequencyBinCount;
+    const data   = new Uint8Array(bufLen);
+    analyser.getByteTimeDomainData(data);
+
+    ctx2d.clearRect(0, 0, W, H);
+    const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+    ctx2d.strokeStyle = accent;
+    ctx2d.lineWidth   = 2;
+    ctx2d.beginPath();
+    const sliceW = W / bufLen;
+    let x = 0;
+    for (let i = 0; i < bufLen; i++) {
+      const v = data[i] / 128.0;
+      const y = (v * H) / 2;
+      i === 0 ? ctx2d.moveTo(x, y) : ctx2d.lineTo(x, y);
+      x += sliceW;
+    }
+    ctx2d.lineTo(W, H / 2);
+    ctx2d.stroke();
+    waveAnim = requestAnimationFrame(drawWaveform);
+  }
+
+  // ── Timer ──
+  function formatTime(ms) {
+    const s = Math.floor(ms / 1000);
+    const m = Math.floor(s / 60);
+    return `${String(m).padStart(2,'0')}:${String(s % 60).padStart(2,'0')}`;
+  }
+
+  // ── Server health check ──
+  async function checkServer() {
+    try {
+      const r = await fetch(`${PROXY_URL}/health`, { signal: AbortSignal.timeout(2000) });
+      serverOnline = r.ok;
+    } catch { serverOnline = false; }
+    const warn = document.getElementById('serverWarning');
+    serverOnline ? warn.classList.remove('visible') : warn.classList.add('visible');
+  }
+  checkServer();
+
+  // ── Start recording ──
+  async function startRecording() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+
+      // Web Audio analyser for waveform
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const source = audioContext.createMediaStreamSource(stream);
+      analyser = audioContext.createAnalyser();
+      analyser.fftSize = 1024;
+      source.connect(analyser);
+
+      // Pick best supported MIME
+      const mime = ['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/mp4']
+                     .find(m => MediaRecorder.isTypeSupported(m)) || '';
+      const opts = mime ? { mimeType: mime } : {};
+      mediaRecorder = new MediaRecorder(stream, opts);
+      audioChunks   = [];
+
+      mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+      mediaRecorder.start(250);  // collect chunks every 250 ms
+
+      recStartTime = Date.now();
+      recTimerInterval = setInterval(() => {
+        document.getElementById('recTimer').textContent = formatTime(Date.now() - recStartTime);
+      }, 500);
+
+      document.getElementById('recDot').classList.add('active');
+      const statusEl = document.getElementById('recStatusText');
+      statusEl.setAttribute('data-en','Recording…');
+      statusEl.setAttribute('data-vi','Đang ghi âm…');
+      statusEl.textContent = currentLang === 'vi' ? 'Đang ghi âm…' : 'Recording…';
+
+      document.getElementById('btnStart').disabled   = true;
+      document.getElementById('btnStop').disabled    = false;
+      document.getElementById('btnDiscard').disabled = false;
+
+      drawWaveform();
+    } catch (err) {
+      alert('Microphone access denied or unavailable: ' + err.message);
+    }
+  }
+
+  // ── Stop recording ──
+  function stopRecording() {
+    if (!mediaRecorder || mediaRecorder.state === 'inactive') return;
+    mediaRecorder.onstop = async () => {
+      cancelAnimationFrame(waveAnim);
+      clearInterval(recTimerInterval);
+      drawIdle();
+
+      const mime = mediaRecorder.mimeType || 'audio/webm';
+      const blob = new Blob(audioChunks, { type: mime });
+      const durationMs = Date.now() - recStartTime;
+
+      document.getElementById('recDot').classList.remove('active');
+      document.getElementById('recTimer').textContent = '00:00';
+      const statusEl = document.getElementById('recStatusText');
+      statusEl.setAttribute('data-en','Ready to record');
+      statusEl.setAttribute('data-vi','Sẵn sàng ghi âm');
+      statusEl.textContent = currentLang === 'vi' ? 'Sẵn sàng ghi âm' : 'Ready to record';
+
+      document.getElementById('btnStart').disabled   = false;
+      document.getElementById('btnStop').disabled    = true;
+      document.getElementById('btnDiscard').disabled = true;
+
+      // Stop mic tracks
+      mediaRecorder.stream.getTracks().forEach(t => t.stop());
+      if (audioContext) { audioContext.close(); audioContext = null; analyser = null; }
+
+      await saveAndUpload(blob, mime, durationMs);
+    };
+    mediaRecorder.stop();
+  }
+
+  // ── Discard ──
+  function discardRecording() {
+    if (!mediaRecorder) return;
+    if (!confirm(currentLang === 'vi' ? 'Hủy bản ghi này?' : 'Discard this recording?')) return;
+    mediaRecorder.onstop = () => {
+      cancelAnimationFrame(waveAnim);
+      clearInterval(recTimerInterval);
+      drawIdle();
+      audioChunks = [];
+      document.getElementById('recDot').classList.remove('active');
+      document.getElementById('recTimer').textContent = '00:00';
+      document.getElementById('btnStart').disabled   = false;
+      document.getElementById('btnStop').disabled    = true;
+      document.getElementById('btnDiscard').disabled = true;
+      mediaRecorder.stream.getTracks().forEach(t => t.stop());
+      if (audioContext) { audioContext.close(); audioContext = null; analyser = null; }
+    };
+    if (mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+  }
+
+  // ── Save & upload ──
+  async function saveAndUpload(blob, mime, durationMs) {
+    recCount++;
+    const observerId   = document.getElementById('observerId').value || 'OBS';
+    const sessionDate  = document.getElementById('sessionDate').value || new Date().toISOString().slice(0,10);
+    const label        = document.getElementById('recLabel').value.trim().replace(/\s+/g,'-') || `rec-${recCount}`;
+    const ext          = mime.includes('ogg') ? 'ogg' : mime.includes('mp4') ? 'm4a' : 'webm';
+    const localName    = `${observerId}_${sessionDate}_${label}.${ext}`;
+    const sizeKB       = (blob.size / 1024).toFixed(1);
+    const durStr       = formatTime(durationMs);
+
+    // Add to UI list
+    const listEl   = document.getElementById('recordingsList');
+    const noRecEl  = document.getElementById('noRecordings');
+    if (noRecEl) noRecEl.style.display = 'none';
+
+    const itemId = `recItem-${Date.now()}`;
+    const item   = document.createElement('div');
+    item.className = 'recording-item uploading';
+    item.id = itemId;
+    item.innerHTML = `
+      <div class="rec-item-icon">🎙️</div>
+      <div class="rec-item-info">
+        <div class="rec-item-name">${localName}</div>
+        <div class="rec-item-meta">${durStr} · ${sizeKB} KB</div>
+      </div>
+      <span class="rec-item-status uploading" id="status-${itemId}">${currentLang==='vi'?'Đang tải…':'Uploading…'}</span>
+    `;
+    listEl.prepend(item);
+
+    // Always offer local download first
+    const localUrl = URL.createObjectURL(blob);
+    const dlLink   = document.createElement('a');
+    dlLink.href    = localUrl;
+    dlLink.download = localName;
+    dlLink.click();
+
+    // Try proxy upload
+    await checkServer();
+    if (!serverOnline) {
+      item.className = 'recording-item error';
+      document.getElementById(`status-${itemId}`).className = 'rec-item-status error';
+      document.getElementById(`status-${itemId}`).textContent = currentLang==='vi' ? 'Cục bộ' : 'Local only';
+      showToast(false, currentLang==='vi'?'Đã lưu cục bộ':'Saved locally',
+        currentLang==='vi'?`Máy chủ proxy ngoại tuyến. Tệp đã tải xuống: ${localName}`:
+        `Proxy server offline. File downloaded: ${localName}`, '', false);
+      return;
+    }
+
+    try {
+      const fd = new FormData();
+      fd.append('file', blob, localName);
+      fd.append('observer_id',  observerId);
+      fd.append('session_date', sessionDate);
+      fd.append('label',        label);
+
+      document.getElementById(`status-${itemId}`).textContent = currentLang==='vi'?'Đang tải lên GitHub…':'Pushing to GitHub…';
+
+      const resp = await fetch(`${PROXY_URL}/upload-audio`, { method: 'POST', body: fd });
+      const data = await resp.json();
+
+      if (data.ok) {
+        item.className = 'recording-item success';
+        const st = document.getElementById(`status-${itemId}`);
+        st.className = 'rec-item-status success';
+        st.textContent = currentLang==='vi'?'✓ GitHub':'✓ GitHub';
+
+        // Add GitHub link to item
+        if (data.github_url) {
+          const link = document.createElement('a');
+          link.href = data.github_url;
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.style.cssText = 'font-size:.72rem;color:var(--green);text-decoration:none;flex-shrink:0;';
+          link.textContent = currentLang==='vi'?'Xem trên GitHub':'View on GitHub';
+          link.onmouseover = () => link.style.textDecoration='underline';
+          link.onmouseout  = () => link.style.textDecoration='none';
+          item.appendChild(link);
+        }
+
+        showToast(true,
+          currentLang==='vi'?'✅ Đã tải lên GitHub thành công!':'✅ Successfully uploaded to GitHub!',
+          currentLang==='vi'
+            ? `${localName} (${sizeKB} KB · ${durStr}) đã được lưu an toàn trong repo.`
+            : `${localName} (${sizeKB} KB · ${durStr}) safely committed to the repo.`,
+          data.github_url || data.commit_url || '',
+          true
+        );
+      } else {
+        throw new Error(data.error || 'Unknown error');
+      }
+    } catch (err) {
+      item.className = 'recording-item error';
+      const st = document.getElementById(`status-${itemId}`);
+      st.className = 'rec-item-status error';
+      st.textContent = currentLang==='vi'?'Lỗi tải lên':'Upload failed';
+      showToast(false,
+        currentLang==='vi'?'❌ Tải lên GitHub thất bại':'❌ GitHub upload failed',
+        String(err.message || err), '', false);
+    }
+  }
+
+  // ── Toast notification ──
+  let toastTimeout = null;
+  function showToast(success, title, msg, link, hasLink) {
+    const toast = document.getElementById('githubToast');
+    document.getElementById('toastIcon').textContent  = success ? '✅' : '⚠️';
+    document.getElementById('toastTitle').textContent = title;
+    document.getElementById('toastMsg').textContent   = msg;
+    const toastLink = document.getElementById('toastLink');
+    if (hasLink && link) {
+      toastLink.href = link;
+      toastLink.textContent = currentLang === 'vi' ? '→ Xem trên GitHub' : '→ View on GitHub';
+      toastLink.style.display = 'inline-block';
+    } else {
+      toastLink.style.display = 'none';
+    }
+    toast.className = `github-toast${success ? '' : ' error'} show`;
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(closeToast, success ? 8000 : 12000);
+  }
+  function closeToast() {
+    document.getElementById('githubToast').classList.remove('show');
+  }
+
+  // Set today's date
+  document.getElementById('sessionDate').valueAsDate = new Date();
+  document.getElementById('completedDate').valueAsDate = new Date();
+  updateAgeChart();
+  updateProgress();
+</script>
+</body>
+</html>
