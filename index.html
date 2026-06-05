@@ -1,1246 +1,1383 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HaFPES 2026 Survey</title>
-    <style>
-        /* ===== CSS Variables & Themes ===== */
-        :root {
-            --primary: #007AFF;
-            --primary-hover: #0056CC;
-            --bg: #f5f5f7;
-            --surface: rgba(255, 255, 255, 0.82);
-            --surface-solid: #ffffff;
-            --text: #1d1d1f;
-            --text-secondary: #86868b;
-            --border: rgba(0, 0, 0, 0.08);
-            --border-strong: rgba(0, 0, 0, 0.15);
-            --input-bg: #f5f5f7;
-            --input-focus: rgba(0, 122, 255, 0.12);
-            --switch-bg: #e9e9eb;
-            --seg-bg: rgba(118, 118, 128, 0.12);
-            --seg-active: #ffffff;
-            --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 4px 24px rgba(0, 0, 0, 0.08);
-            --bar-bg: rgba(255, 255, 255, 0.72);
-            --table-stripe: rgba(0, 0, 0, 0.02);
-            --table-hover: rgba(0, 0, 0, 0.04);
-            --green: #34C759;
-            --red: #FF3B30;
-            --radius: 14px;
-            --radius-sm: 10px;
-            --radius-xs: 8px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HaFPES 2026 · Survey Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
 
-        [data-theme="dark"] {
-            --primary: #0A84FF;
-            --primary-hover: #409CFF;
-            --bg: #1d1d1f;
-            --surface: rgba(44, 44, 46, 0.82);
-            --surface-solid: #2c2c2e;
-            --text: #f5f5f7;
-            --text-secondary: #98989d;
-            --border: rgba(255, 255, 255, 0.08);
-            --border-strong: rgba(255, 255, 255, 0.15);
-            --input-bg: #3a3a3c;
-            --input-focus: rgba(10, 132, 255, 0.2);
-            --switch-bg: #39393d;
-            --seg-bg: rgba(118, 118, 128, 0.24);
-            --seg-active: rgba(99, 99, 102, 0.7);
-            --shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-            --shadow-lg: 0 4px 24px rgba(0, 0, 0, 0.3);
-            --bar-bg: rgba(44, 44, 46, 0.72);
-            --table-stripe: rgba(255, 255, 255, 0.02);
-            --table-hover: rgba(255, 255, 255, 0.05);
-        }
+  :root {
+    --navy:    #0f2137;
+    --blue:    #1a4a7a;
+    --teal:    #0d7a6e;
+    --gold:    #c9a84c;
+    --coral:   #d95f3b;
+    --sky:     #4fa3c9;
+    --cream:   #f8f4ed;
+    --muted:   #8c9bab;
+    --card:    #ffffff;
+    --border:  #e2e8f0;
+    --text:    #1a2b3c;
+    --light:   #f0f5fa;
+    --surface: #ffffff;
+    --surface-strong: #f5f8fc;
+    --shadow: rgba(15,33,55,.08);
+  }
+  body.dark {
+    --navy:    #d9e7ff;
+    --blue:    #a9d0f2;
+    --teal:    #9bd3cd;
+    --gold:    #f2d97f;
+    --coral:   #f4a48c;
+    --sky:     #9dcdec;
+    --cream:   #10151e;
+    --muted:   #bbc6d2;
+    --card:    #162033;
+    --border:  #2a3b50;
+    --text:    #eef2f8;
+    --light:   #1c283f;
+    --surface: #192a40;
+    --surface-strong: #1f3352;
+    --shadow: rgba(0,0,0,.32);
+    background: #0b1220;
+    color: var(--text);
+  }
 
-        /* ===== Base Styles ===== */
-        * { box-sizing: border-box; }
-        body {
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.65;
-            margin: 0;
-            padding: 80px 16px 40px;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            transition: background-color 0.4s ease, color 0.3s ease;
-        }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .toolbar {
+    display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px;
+    margin-bottom: 24px;
+  }
+  .toggle-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.12);
+    color: white; font-size: 13px; font-weight: 600;
+    padding: 10px 16px; border-radius: 999px; cursor: pointer;
+    transition: background .2s, transform .2s, color .2s;
+  }
+  .toggle-btn:hover { transform: translateY(-1px); background: rgba(255,255,255,.2); }
+  .dark .toggle-btn, .dark body .toggle-btn { border-color: rgba(255,255,255,.3); }
+  .dark-mode .toggle-btn { color: var(--navy); background: rgba(255,255,255,.92); }
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 60%, #1a6b8a 100%);
+    color: white;
+    padding: 56px 48px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,.03) 40px, rgba(255,255,255,.03) 41px);
+  }
+  .hero-inner { position: relative; max-width: 1200px; margin: 0 auto; }
+  .hero-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-bottom: 20px; }
+  .hero-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 600; font-size: 11px; letter-spacing: 2px;
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 6vw, 48px);
+    font-weight: 900; line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .hero p {
+    font-size: min(1rem, 16px);
+    color: rgba(255,255,255,.82);
+    max-width: 760px; line-height: 1.7;
+  }
+  .hero-stats {
+    display: flex; gap: 24px; margin-top: 36px;
+    flex-wrap: wrap;
+  }
+  .hero-stat { text-align: center; min-width: 140px; }
+  .hero-stat .num {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 38px); font-weight: 700; color: var(--gold);
+    line-height: 1;
+  }
+  .hero-stat .lbl {
+    font-size: 11px; color: rgba(255,255,255,.65);
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-top: 6px;
+  }
 
-        /* ===== Top Bar ===== */
-        .top-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding: 10px 24px;
-            background: var(--bar-bg);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-bottom: 1px solid var(--border);
-            transition: background 0.4s ease;
-        }
-        .toggle-group {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
+  .nav-wrap {
+    background: var(--navy);
+    border-bottom: 2px solid var(--gold);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav { display: flex; flex-wrap: wrap; max-width: 1200px; margin: 0 auto; overflow-x: auto; padding: 0 48px; }
+  .nav button {
+    background: none; border: none; cursor: pointer;
+    color: rgba(255,255,255,.68);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500; letter-spacing: .5px;
+    padding: 14px 20px; white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all .2s;
+  }
+  .nav button:hover { color: rgba(255,255,255,.95); }
+  .nav button.active { color: var(--gold); border-bottom-color: var(--gold); }
 
-        /* ===== Theme Toggle (iOS Switch) ===== */
-        .theme-toggle {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .theme-icon {
-            width: 18px;
-            height: 18px;
-            opacity: 0.6;
-            transition: opacity 0.3s;
-            display: flex;
-            align-items: center;
-        }
-        .theme-icon svg { width: 18px; height: 18px; fill: var(--text); transition: fill 0.3s; }
-        .theme-icon.active { opacity: 1; }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 51px;
-            height: 31px;
-            flex-shrink: 0;
-        }
-        .switch input { opacity: 0; width: 0; height: 0; position: absolute; }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            inset: 0;
-            background-color: var(--switch-bg);
-            border-radius: 31px;
-            transition: background-color 0.3s ease;
-        }
-        .slider::before {
-            content: '';
-            position: absolute;
-            height: 27px;
-            width: 27px;
-            left: 2px;
-            bottom: 2px;
-            background-color: #ffffff;
-            border-radius: 50%;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        .switch input:checked + .slider { background-color: var(--green); }
-        .switch input:checked + .slider::before { transform: translateX(20px); }
+  .main { max-width: 1200px; margin: 0 auto; padding: 40px 48px 80px; }
 
-        /* ===== Language Segmented Control ===== */
-        .seg-control {
-            display: inline-flex;
-            background: var(--seg-bg);
-            border-radius: 9px;
-            padding: 2px;
-        }
-        .seg-control button {
-            padding: 5px 14px;
-            border: none;
-            background: transparent;
-            border-radius: 7px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            color: var(--text-secondary);
-            font-family: inherit;
-            letter-spacing: -0.01em;
-        }
-        .seg-control button.active {
-            background: var(--seg-active);
-            color: var(--text);
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-        }
+  .section { display: none; animation: fadeIn .3s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 
-        /* ===== Layout ===== */
-        .container { max-width: 820px; margin: 0 auto; }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; font-weight: 700;
+    color: var(--navy); margin-bottom: 8px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--gold);
+    display: inline-block;
+  }
+  .section-sub { font-size: 14px; color: var(--muted); margin-bottom: 32px; }
 
-        /* ===== Card Styles ===== */
-        .card {
-            background: var(--surface);
-            backdrop-filter: saturate(120%) blur(12px);
-            -webkit-backdrop-filter: saturate(120%) blur(12px);
-            border-radius: var(--radius);
-            padding: 32px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            transition: background 0.4s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-        .card:hover { box-shadow: var(--shadow-lg); }
-        .header-card {
-            border-top: none;
-            position: relative;
-            overflow: hidden;
-        }
-        .header-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary), #5856D6, #AF52DE);
-            border-radius: var(--radius) var(--radius) 0 0;
-        }
+  .grid-2 { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; }
+  @media(max-width: 1200px) { .grid-4 { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+  @media(max-width: 900px) { .grid-2,.grid-3,.grid-4 { grid-template-columns: 1fr; } }
 
-        /* ===== Typography ===== */
-        h1 {
-            font-size: 26px;
-            font-weight: 700;
-            margin-top: 8px;
-            margin-bottom: 12px;
-            letter-spacing: -0.02em;
-            line-height: 1.3;
-        }
-        h2 {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--primary);
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 12px;
-            margin-top: 0;
-            margin-bottom: 24px;
-            letter-spacing: -0.01em;
-            transition: color 0.3s, border-color 0.3s;
-        }
-        .description {
-            color: var(--text-secondary);
-            font-size: 15px;
-            white-space: pre-wrap;
-            line-height: 1.7;
-            transition: color 0.3s;
-        }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 18px 50px var(--shadow);
+  }
+  .card.full { grid-column: 1 / -1; }
+  .card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px; font-weight: 700;
+    color: var(--navy); margin-bottom: 10px;
+  }
+  .card .card-sub { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
 
-        /* ===== Question Styles ===== */
-        .question { margin-bottom: 28px; }
-        .question:last-child { margin-bottom: 0; }
-        .question-title {
-            font-weight: 600;
-            margin-bottom: 10px;
-            display: block;
-            font-size: 15.5px;
-            letter-spacing: -0.01em;
-        }
-        .required::after { content: ' *'; color: var(--red); }
-        .help-text {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-            display: block;
-            line-height: 1.6;
-            transition: color 0.3s;
-        }
+  .stat-box {
+    background: var(--navy);
+    border-radius: 16px; padding: 22px 18px;
+    text-align: center; color: white;
+  }
+  .stat-box .n { font-family:'Playfair Display',serif; font-size: clamp(28px, 3vw, 36px); font-weight:700; color:var(--gold); }
+  .stat-box .pct { font-size:13px; color: rgba(255,255,255,.65); margin-top: 6px; }
+  .stat-box .label { font-size:12px; color: rgba(255,255,255,.8); margin-top: 4px; line-height:1.4; }
 
-        /* ===== Custom Radio Buttons ===== */
-        label.option {
-            display: flex;
-            align-items: center;
-            margin-bottom: 6px;
-            cursor: pointer;
-            padding: 8px 12px;
-            border-radius: var(--radius-xs);
-            transition: background 0.2s ease;
-            font-size: 15px;
-            gap: 10px;
-        }
-        label.option:hover { background: var(--table-hover); }
-        label.option input[type="radio"],
-        label.option input[type="checkbox"] {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            width: 22px;
-            height: 22px;
-            border: 2px solid var(--border-strong);
-            background: var(--surface-solid);
-            cursor: pointer;
-            flex-shrink: 0;
-            position: relative;
-            transition: all 0.2s ease;
-            margin: 0;
-        }
-        label.option input[type="radio"] { border-radius: 50%; }
-        label.option input[type="checkbox"] { border-radius: 6px; }
-        label.option input[type="radio"]:checked {
-            border-color: var(--primary);
-            background: var(--primary);
-        }
-        label.option input[type="radio"]:checked::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 8px;
-            height: 8px;
-            background: #ffffff;
-            border-radius: 50%;
-        }
-        label.option input[type="checkbox"]:checked {
-            border-color: var(--primary);
-            background: var(--primary);
-        }
-        label.option input[type="checkbox"]:checked::after {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 6.5px;
-            width: 5px;
-            height: 10px;
-            border: solid #ffffff;
-            border-width: 0 2.5px 2.5px 0;
-            transform: rotate(45deg);
-        }
-        label.option input:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-        label.option input:disabled + span { opacity: 0.5; }
+  .chart-wrap { position: relative; min-height: 260px; }
+  .chart-wrap.tall { min-height: 360px; }
+  .chart-wrap.short { min-height: 220px; }
 
-        /* ===== Text Inputs & Textareas ===== */
-        input[type="text"], textarea {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1px solid var(--border-strong);
-            border-radius: var(--radius-xs);
-            font-family: inherit;
-            font-size: 15px;
-            box-sizing: border-box;
-            resize: vertical;
-            background: var(--input-bg);
-            color: var(--text);
-            transition: all 0.25s ease;
-            outline: none;
-        }
-        input[type="text"]:focus, textarea:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--input-focus);
-            background: var(--surface-solid);
-        }
+  .bar-item { margin-bottom: 14px; }
+  .bar-label { display: flex; justify-content: space-between; margin-bottom: 5px; gap: 12px; }
+  .bar-label span:first-child { font-size: 13px; font-weight: 500; }
+  .bar-label span:last-child { font-size: 13px; color: var(--navy); font-weight: 600; }
+  .bar-track { background: var(--light); border-radius: 8px; height: 12px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 8px; transition: width 1.1s ease; }
 
-        /* ===== Grid Tables ===== */
-        .grid-container { overflow-x: auto; border-radius: var(--radius-sm); }
-        table.grid {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            min-width: 640px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            overflow: hidden;
-        }
-        table.grid th, table.grid td {
-            padding: 12px 10px;
-            text-align: center;
-            border-bottom: 1px solid var(--border);
-            border-right: 1px solid var(--border);
-            transition: background 0.2s;
-        }
-        table.grid th:last-child, table.grid td:last-child { border-right: none; }
-        table.grid tbody tr:last-child td { border-bottom: none; }
-        table.grid th {
-            background: var(--surface-solid);
-            font-weight: 500;
-            font-size: 13px;
-            color: var(--text-secondary);
-            letter-spacing: -0.01em;
-            transition: background 0.3s, color 0.3s;
-        }
-        table.grid td:first-child {
-            text-align: left;
-            font-weight: 500;
-            width: 38%;
-            font-size: 14.5px;
-            padding-left: 16px;
-        }
-        table.grid tbody tr:nth-child(even) { background: var(--table-stripe); }
-        table.grid tbody tr:hover { background: var(--table-hover); }
-        table.grid input[type="radio"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary);
-            cursor: pointer;
-        }
+  .insight {
+    background: var(--surface-strong); border-left: 4px solid var(--teal);
+    border-radius: 0 12px 12px 0;
+    padding: 14px 18px; margin-bottom: 14px;
+    font-size: 14px; line-height: 1.7;
+  }
+  .insight strong { color: var(--navy); }
 
-        /* ===== Scale Component ===== */
-        .scale-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 420px;
-            margin: 0 auto;
-            padding: 12px 0;
-        }
-        .scale-item { text-align: center; }
-        .scale-item label {
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-        }
-        .scale-item input[type="radio"] {
-            accent-color: var(--primary);
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-        .scale-label {
-            font-size: 13px;
-            color: var(--text-secondary);
-            display: block;
-            max-width: 80px;
-            transition: color 0.3s;
-        }
+  .likert-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .likert-label { font-size: 12px; width: 220px; flex-shrink: 0; color: var(--text); }
+  .likert-bars { flex: 1; display: flex; height: 18px; border-radius: 6px; overflow: hidden; }
+  .likert-bars div { transition: width .8s ease; }
+  .likert-score { font-size: 13px; font-weight: 600; width: 44px; text-align: right; color: var(--navy); }
 
-        /* ===== Submit Button ===== */
-        button[type="submit"] {
-            background: var(--primary);
-            color: #ffffff;
-            border: none;
-            padding: 14px 32px;
-            font-size: 17px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            font-family: inherit;
-            letter-spacing: -0.01em;
-            transition: all 0.25s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        button[type="submit"]:hover {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
-        }
-        button[type="submit"]:active {
-            transform: translateY(0);
-            box-shadow: none;
-        }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
-        /* ===== Responsive ===== */
-        @media (max-width: 600px) {
-            body { padding: 72px 10px 30px; }
-            .card { padding: 22px 18px; border-radius: 12px; }
-            h1 { font-size: 21px; }
-            h2 { font-size: 18px; }
-            label.option { padding: 7px 8px; font-size: 14.5px; }
-            .top-bar { padding: 8px 12px; }
-            .toggle-group { gap: 10px; }
-            table.grid { min-width: 560px; }
-            .seg-control button { padding: 4px 10px; font-size: 12px; }
-        }
+  .r-note { font-size: 12px; color: var(--muted); text-align: center; margin-top: 8px; }
 
-        /* ===== Animations ===== */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .card { animation: fadeIn 0.4s ease forwards; }
-        .card:nth-child(2) { animation-delay: 0.05s; }
-        .card:nth-child(3) { animation-delay: 0.1s; }
-        .card:nth-child(4) { animation-delay: 0.15s; }
-        .card:nth-child(5) { animation-delay: 0.2s; }
-        .card:nth-child(6) { animation-delay: 0.25s; }
-        .card:nth-child(7) { animation-delay: 0.3s; }
-        .card:nth-child(8) { animation-delay: 0.35s; }
-    </style>
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--navy); color: white; padding: 12px 14px; text-align: left; font-weight: 500; }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--border); }
+  tr:nth-child(even) td { background: var(--light); }
+  .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+  .badge.high { background: #d1fae5; color: #065f46; }
+  .badge.mid  { background: #fef3c7; color: #92400e; }
+
+  hr.gap { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(92,99,114,.5); border-radius: 4px; }
+
+  @media(max-width: 800px) {
+    .hero { padding: 40px 24px 32px; }
+    .hero-actions { justify-content: center; }
+    .nav { padding: 0 24px; }
+    .main { padding: 32px 24px 64px; }
+    .card { padding: 18px; }
+    .hero-stats { gap: 16px; }
+  }
+  @media(max-width: 560px) {
+    .hero h1 { font-size: clamp(22px, 8vw, 32px); }
+    .hero p { font-size: 14px; }
+    .nav button { padding: 12px 14px; font-size: 12px; }
+    .section-title { font-size: 22px; }
+    .card h3 { font-size: 15px; }
+    th, td { padding: 10px 12px; }
+    .bar-label span:last-child { font-size: 12px; }
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HERO HEADER ── */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 60%, #1a6b8a 100%);
+    color: white;
+    padding: 56px 48px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,.03) 40px, rgba(255,255,255,.03) 41px);
+  }
+  .hero-inner { position: relative; max-width: 1200px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 600; font-size: 11px; letter-spacing: 2px;
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 4vw, 42px);
+    font-weight: 900; line-height: 1.15;
+    margin-bottom: 12px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero p {
+    font-size: 15px; color: rgba(255,255,255,.72);
+    max-width: 680px; line-height: 1.6;
+  }
+  .hero-stats {
+    display: flex; gap: 40px; margin-top: 36px;
+    flex-wrap: wrap;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px; font-weight: 700; color: var(--gold);
+    line-height: 1;
+  }
+  .hero-stat .lbl {
+    font-size: 12px; color: rgba(255,255,255,.6);
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* ── NAV TABS ── */
+  .nav-wrap {
+    background: var(--navy);
+    border-bottom: 2px solid var(--gold);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav { display: flex; max-width: 1200px; margin: 0 auto; overflow-x: auto; padding: 0 48px; }
+  .nav button {
+    background: none; border: none; cursor: pointer;
+    color: rgba(255,255,255,.55);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500; letter-spacing: .5px;
+    padding: 14px 20px; white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all .2s;
+  }
+  .nav button:hover { color: rgba(255,255,255,.9); }
+  .nav button.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ── MAIN CONTENT ── */
+  .main { max-width: 1200px; margin: 0 auto; padding: 40px 48px 80px; }
+
+  .section { display: none; animation: fadeIn .3s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; font-weight: 700;
+    color: var(--navy); margin-bottom: 8px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--gold);
+    display: inline-block;
+  }
+  .section-sub { font-size: 14px; color: var(--muted); margin-bottom: 32px; }
+
+  /* ── GRID ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  @media(max-width: 900px) { .grid-2,.grid-3,.grid-4 { grid-template-columns: 1fr; } }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.05);
+  }
+  .card.full { grid-column: 1 / -1; }
+  .card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; font-weight: 700;
+    color: var(--navy); margin-bottom: 4px;
+  }
+  .card .card-sub { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+
+  /* ── STAT BOX ── */
+  .stat-box {
+    background: var(--navy);
+    border-radius: 12px; padding: 20px;
+    text-align: center; color: white;
+  }
+  .stat-box .n { font-family:'Playfair Display',serif; font-size:36px; font-weight:700; color:var(--gold); }
+  .stat-box .pct { font-size:13px; color: rgba(255,255,255,.55); margin-top: 6px; }
+  .stat-box .label { font-size:12px; color: rgba(255,255,255,.8); margin-top: 4px; line-height:1.4; }
+
+  /* ── CHART WRAPPER ── */
+  .chart-wrap { position: relative; height: 280px; }
+  .chart-wrap.tall { height: 380px; }
+  .chart-wrap.short { height: 200px; }
+
+  /* ── PROGRESS BAR ── */
+  .bar-item { margin-bottom: 14px; }
+  .bar-label { display: flex; justify-content: space-between; margin-bottom: 5px; }
+  .bar-label span:first-child { font-size: 13px; font-weight: 500; }
+  .bar-label span:last-child { font-size: 13px; color: var(--navy); font-weight: 600; }
+  .bar-track { background: var(--light); border-radius: 6px; height: 10px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; transition: width 1s ease; }
+
+  /* ── INSIGHT PILLS ── */
+  .insight {
+    background: var(--light); border-left: 4px solid var(--teal);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px; margin-bottom: 12px;
+    font-size: 13px; line-height: 1.6;
+  }
+  .insight strong { color: var(--navy); }
+
+  /* ── LIKERT VISUAL ── */
+  .likert-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .likert-label { font-size: 12px; width: 200px; flex-shrink: 0; color: var(--text); }
+  .likert-bars { flex: 1; display: flex; height: 18px; border-radius: 4px; overflow: hidden; }
+  .likert-bars div { transition: width .8s ease; }
+  .likert-score { font-size: 13px; font-weight: 600; width: 36px; text-align: right; color: var(--navy); }
+
+  /* ── LEGEND ── */
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── RADAR LABEL ── */
+  .r-note { font-size: 12px; color: var(--muted); text-align: center; margin-top: 8px; }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--navy); color: white; padding: 10px 14px; text-align: left; font-weight: 500; }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--border); }
+  tr:nth-child(even) td { background: var(--light); }
+  .badge {
+    display: inline-block; padding: 2px 8px;
+    border-radius: 10px; font-size: 11px; font-weight: 600;
+  }
+  .badge.high { background: #d1fae5; color: #065f46; }
+  .badge.mid  { background: #fef3c7; color: #92400e; }
+
+  hr.gap { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
+</style>
 </head>
 <body>
 
-<!-- ===== Top Bar ===== -->
-<div class="top-bar">
-    <div class="toggle-group">
-        <div class="theme-toggle">
-            <span class="theme-icon" id="sunIcon">
-                <svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0-3a1 1 0 001-1V1a1 1 0 00-2 0v2a1 1 0 001 1zm0 18a1 1 0 00-1 1v2a1 1 0 002 0v-2a1 1 0 00-1-1zm9-9h2a1 1 0 000-2h-2a1 1 0 000 2zM4 12a1 1 0 00-1-1H1a1 1 0 000 2h2a1 1 0 001-1zm15.07-5.66l1.41-1.41a1 1 0 00-1.41-1.41l-1.41 1.41a1 1 0 001.41 1.41zM4.93 17.66l-1.41 1.41a1 1 0 001.41 1.41l1.41-1.41a1 1 0 00-1.41-1.41zm14.14 0a1 1 0 00-1.41 1.41l1.41 1.41a1 1 0 001.41-1.41l-1.41-1.41zM4.93 6.34a1 1 0 001.41-1.41L4.93 3.52a1 1 0 00-1.41 1.41l1.41 1.41z"/></svg>
-            </span>
-            <label class="switch" title="Toggle dark mode">
-                <input type="checkbox" id="themeToggle">
-                <span class="slider"></span>
-            </label>
-            <span class="theme-icon" id="moonIcon">
-                <svg viewBox="0 0 24 24"><path d="M21.64 13a1 1 0 00-1.05-.14 8.05 8.05 0 01-3.37.73A8.15 8.15 0 019.08 5.49a8.59 8.59 0 01.25-2 1 1 0 00-1.27-1.21A10 10 0 1022.78 14a1 1 0 00-1.14-1z"/></svg>
-            </span>
-        </div>
-        <div class="seg-control" id="langToggle">
-            <button type="button" class="active" data-lang="vi">VI</button>
-            <button type="button" data-lang="en">EN</button>
-        </div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-actions">
+      <button id="themeToggle" class="toggle-btn" type="button">🌙 Dark mode</button>
+      <button id="langToggle" class="toggle-btn" type="button">VIE</button>
     </div>
+    <div class="hero-badge" data-i18n="heroBadge">HaFPES 2026 · Research Dashboard</div>
+    <h1 id="heroHeading" data-i18n="heroHeading">Music-Mediated <span>Metacognition</span> &amp;<br>Self-Regulation in Early Childhood</h1>
+    <p id="heroParagraph" data-i18n="heroParagraph">Survey-based study of practitioner perspectives in Vietnam. Data collected May–June 2026 via structured online questionnaire (52 items).</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">205</div><div class="lbl">Respondents</div></div>
+      <div class="hero-stat"><div class="num">82%</div><div class="lbl">Preschool Teachers</div></div>
+      <div class="hero-stat"><div class="num">4.20</div><div class="lbl">Avg Belief Score</div></div>
+      <div class="hero-stat"><div class="num">87.8%</div><div class="lbl">Endorse Collaboration</div></div>
+      <div class="hero-stat"><div class="num">52</div><div class="lbl">Survey Items</div></div>
+    </div>
+  </div>
 </div>
 
-<!-- ===== Survey Form ===== -->
-<div class="container">
-    <form id="surveyForm">
-
-        <!-- Header Card -->
-        <div class="card header-card">
-            <h1 data-i18n="title">B&#7843;ng kh&#7843;o s&aacute;t chuy&ecirc;n gia HaFPES 2026: &Acirc;m nh&#7841;c, nh&#7853;n th&#7913;c s&#7899;m v&agrave; m&ocirc;i tr&#432;&#7901;ng h&#7885;c t&#7853;p m&#7847;m non t&#7841;i Vi&#7879;t Nam</h1>
-            <div class="description" data-i18n="description">M&#7909;c &#273;&iacute;ch kh&#7843;o s&aacute;t:
-Kh&#7843;o s&aacute;t n&agrave;y thu&#7897;c d&#7921; &aacute;n nghi&ecirc;n c&#7913;u v&#7873; vai tr&ograve; ti&#7873;m n&#259;ng c&#7911;a c&aacute;c ho&#7841;t &#273;&#7897;ng gi&aacute;o d&#7909;c d&#7921;a tr&ecirc;n &acirc;m nh&#7841;c trong h&#7895; tr&#7907; s&#7921; ph&aacute;t tri&#7875;n c&#7911;a tr&#7867; m&#7847;m non (3&#8211;6 tu&#7893;i) t&#7841;i Vi&#7879;t Nam.
-
-&#272;&#7889;i t&#432;&#7907;ng tham gia c&oacute; th&#7875; bao g&#7891;m:
-- Gi&aacute;o vi&ecirc;n m&#7847;m non
-- Th&agrave;nh vi&ecirc;n h&#7907;p x&#432;&#7899;ng / th&#7921;c h&agrave;nh &acirc;m nh&#7841;c c&#7897;ng &#273;&#7891;ng
-- Nh&agrave; gi&aacute;o d&#7909;c &acirc;m nh&#7841;c / ch&#7881; huy h&#7907;p x&#432;&#7899;ng
-- Ph&#7909; huynh / ng&#432;&#7901;i ch&#259;m s&oacute;c
-- Kh&aacute;c
-
-Kh&#7843;o s&aacute;t t&#7853;p trung v&agrave;o:
-- &#273;&#7863;c &#273;i&#7875;m &acirc;m nh&#7841;c v&agrave; l&#7921;a ch&#7885;n ti&#7871;t m&#7909;c;
-- t&#7921; &#273;i&#7873;u ch&#7881;nh v&agrave; h&agrave;nh vi h&#7885;c t&#7853;p ph&#7843;n t&#432;;
-- c&aacute;c qu&aacute; tr&igrave;nh h&#7885;c t&#7853;p li&ecirc;n quan &#273;&#7871;n ch&#7913;c n&#259;ng &#273;i&#7873;u h&agrave;nh;
-- vai tr&ograve; c&#7911;a gia &#273;&igrave;nh, nh&agrave; tr&#432;&#7901;ng v&agrave; c&#7897;ng &#273;&#7891;ng.
-
-M&#7885;i c&acirc;u tr&#7843; l&#7901;i &#273;&#432;&#7907;c b&#7843;o m&#7853;t v&agrave; ch&#7881; ph&#7909;c v&#7909; m&#7909;c &#273;&iacute;ch nghi&ecirc;n c&#7913;u.
-Th&#7901;i gian ho&agrave;n th&agrave;nh d&#7921; ki&#7871;n: 12&#8211;15 ph&uacute;t.</div>
-        </div>
-
-        <!-- Consent Card -->
-        <div class="card">
-            <div class="question">
-                <span class="question-title required" data-i18n="consent_title">Th&ocirc;ng tin &#273;&#7891;ng thu&#7853;n tham gia</span>
-                <span class="help-text" data-i18n="consent_help">Vi&#7879;c tham gia kh&#7843;o s&aacute;t l&agrave; ho&agrave;n to&agrave;n t&#7921; nguy&#7879;n. Ng&#432;&#7901;i tham gia c&oacute; th&#7875; ng&#432;ng tr&#7843; l&#7901;i b&#7845;t k&#7923; l&uacute;c n&agrave;o. Kh&ocirc;ng thu th&#7853;p th&ocirc;ng tin nh&#7853;n d&#7841;ng c&aacute; nh&acirc;n ngo&agrave;i m&#7909;c &#273;&iacute;ch nghi&ecirc;n c&#7913;u. D&#7919; li&#7879;u s&#7869; &#273;&#432;&#7907;c s&#7917; d&#7909;ng cho ph&acirc;n t&iacute;ch h&#7885;c thu&#7853;t v&agrave; c&ocirc;ng b&#7889; nghi&ecirc;n c&#7913;u.</span>
-                <label class="option"><input type="checkbox" name="Consent" value="I agree to participate" required> <span data-i18n="consent_label">T&ocirc;i &#273;&#7891;ng &yacute; tham gia kh&#7843;o s&aacute;t.</span></label>
-            </div>
-        </div>
-
-        <!-- Section A -->
-        <div class="card">
-            <h2 data-i18n="section_a">PH&#7846;N A. TH&Ocirc;NG TIN N&#7872;N</h2>
-
-            <div class="question">
-                <span class="question-title required" data-i18n="a1_title">A1. Vai tr&ograve; ngh&#7873; nghi&#7879;p ch&iacute;nh</span>
-                <label class="option"><input type="radio" name="A1" value="Preschool teacher" required> <span data-i18n="a1_1">Gi&aacute;o vi&ecirc;n m&#7847;m non</span></label>
-                <label class="option"><input type="radio" name="A1" value="Preschool administrator"> <span data-i18n="a1_2">Qu&#7843;n l&yacute; m&#7847;m non</span></label>
-                <label class="option"><input type="radio" name="A1" value="Music educator"> <span data-i18n="a1_3">Nh&agrave; gi&aacute;o d&#7909;c &acirc;m nh&#7841;c</span></label>
-                <label class="option"><input type="radio" name="A1" value="Choral/music practitioner"> <span data-i18n="a1_4">Th&agrave;nh vi&ecirc;n / th&#7921;c h&agrave;nh h&#7907;p x&#432;&#7899;ng</span></label>
-                <label class="option"><input type="radio" name="A1" value="Parent/caregiver"> <span data-i18n="a1_5">Phụ huynh / người chăm sóc trẻ lứa tuổi mầm non</span></label>
-                <label class="option"><input type="radio" name="A1" value="Other"> <span data-i18n="a1_6">Khác</span></label>
-            </div>
-
-            <div class="question">
-                <span class="question-title required" data-i18n="a2_title">A2. Số năm kinh nghiệm trong giáo dục và/hoặc thực hành âm nhạc (bao gồm nghe, thưởng thức, chơi nhạc, sáng tác, ...)</span>
-                <label class="option"><input type="radio" name="A2" value="Less than 1 year" required> <span data-i18n="a2_1">D&#432;&#7899;i 1 n&#259;m</span></label>
-                <label class="option"><input type="radio" name="A2" value="1-3 years"> <span data-i18n="a2_2">1&#8211;3 n&#259;m</span></label>
-                <label class="option"><input type="radio" name="A2" value="4-7 years"> <span data-i18n="a2_3">4&#8211;7 n&#259;m</span></label>
-                <label class="option"><input type="radio" name="A2" value="8-15 years"> <span data-i18n="a2_4">8&#8211;15 n&#259;m</span></label>
-                <label class="option"><input type="radio" name="A2" value="Over 15 years"> <span data-i18n="a2_5">Tr&ecirc;n 15 n&#259;m</span></label>
-            </div>
-
-            <div class="question">
-                <span class="question-title required" data-i18n="a3_title">A3. Anh/ch&#7883; &#273;&atilde; t&#7915;ng l&agrave;m vi&#7879;c tr&#7921;c ti&#7871;p v&#7899;i tr&#7867; 3&#8211;6 tu&#7893;i ch&#432;a?</span>
-                <label class="option"><input type="radio" name="A3" value="Frequently" required> <span data-i18n="a3_1">Th&#432;&#7901;ng xuy&ecirc;n</span></label>
-                <label class="option"><input type="radio" name="A3" value="Occasionally"> <span data-i18n="a3_2">Th&#7881;nh tho&#7843;ng</span></label>
-                <label class="option"><input type="radio" name="A3" value="Rarely"> <span data-i18n="a3_3">Hi&#7871;m khi</span></label>
-                <label class="option"><input type="radio" name="A3" value="Never"> <span data-i18n="a3_4">Ch&#432;a t&#7915;ng</span></label>
-            </div>
-
-            <div class="question">
-                <span class="question-title required" data-i18n="a4_title">A4. Anh/ch&#7883; c&oacute; tham gia ho&#7841;t &#273;&#7897;ng h&#7907;p x&#432;&#7899;ng ho&#7863;c &acirc;m nh&#7841;c c&#7897;ng &#273;&#7891;ng kh&ocirc;ng?</span>
-                <label class="option"><input type="radio" name="A4" value="Yes - frequently" required> <span data-i18n="a4_1">C&oacute; &#8211; th&#432;&#7901;ng xuy&ecirc;n</span></label>
-                <label class="option"><input type="radio" name="A4" value="Yes - occasionally"> <span data-i18n="a4_2">C&oacute; &#8211; th&#7881;nh tho&#7843;ng</span></label>
-                <label class="option"><input type="radio" name="A4" value="No"> <span data-i18n="a4_3">Kh&ocirc;ng</span></label>
-            </div>
-
-            <div class="question">
-                <span class="question-title required" data-i18n="a5_title">A5. Khu v&#7921;c c&ocirc;ng t&aacute;c/sinh s&#7889;ng</span>
-                <label class="option"><input type="radio" name="A5" value="Hanoi" required> <span data-i18n="a5_1">H&agrave; N&#7897;i</span></label>
-                <label class="option"><input type="radio" name="A5" value="Ho Chi Minh City"> <span data-i18n="a5_2">TP.HCM</span></label>
-                <label class="option"><input type="radio" name="A5" value="Other city"> <span data-i18n="a5_3">Th&agrave;nh ph&#7889; kh&aacute;c</span></label>
-                <label class="option"><input type="radio" name="A5" value="Rural area"> <span data-i18n="a5_4">N&ocirc;ng th&ocirc;n</span></label>
-                <label class="option"><input type="radio" name="A5" value="International"> <span data-i18n="a5_5">Qu&#7889;c t&#7871;</span></label>
-            </div>
-        </div>
-
-        <!-- Section B -->
-        <div class="card">
-            <h2 data-i18n="section_b">PH&#7846;N B. NH&#7852;N TH&#7912;C V&#7872; &Acirc;M NH&#7840;C V&Agrave; PH&Aacute;T TRI&#7874;N TH&#7900;I TH&#416; &#7844;U</h2>
-            <div class="question">
-                <span class="question-title required" data-i18n="b_title">M&#7913;c &#273;&#7897; &#273;&#7891;ng &yacute; v&#7899;i c&aacute;c ph&aacute;t bi&#7875;u sau</span>
-                <div class="grid-container">
-                    <table class="grid">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th data-i18n="b_h1">1 &#8212; Ho&agrave;n to&agrave;n kh&ocirc;ng &#273;&#7891;ng &yacute;</th>
-                                <th data-i18n="b_h2">2 &#8212; Kh&ocirc;ng &#273;&#7891;ng &yacute;</th>
-                                <th data-i18n="b_h3">3 &#8212; Trung l&#7853;p / Kh&ocirc;ng ch&#7855;c ch&#7855;n</th>
-                                <th data-i18n="b_h4">4 &#8212; &#272;&#7891;ng &yacute;</th>
-                                <th data-i18n="b_h5">5 &#8212; Ho&agrave;n to&agrave;n &#273;&#7891;ng &yacute;</th>
-                                <th data-i18n="grid_na">Kh&ocirc;ng &#273;&#7911; tr&#7843;i nghi&#7879;m &#273;&#7875; &#273;&aacute;nh gi&aacute;</th>
-                            </tr>
-                        </thead>
-                        <tbody id="gridB"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section C -->
-        <div class="card">
-            <h2 data-i18n="section_c">PH&#7846;N C. &#272;&#7862;C &#272;I&#7874;M &Acirc;M NH&#7840;C V&Agrave; L&#7920;A CH&#7884;N TI&#7870;T M&#7908;C</h2>
-
-            <div class="question">
-                <span class="question-title required" data-i18n="c1_title">C1. M&#7913;c &#273;&#7897; quan tr&#7885;ng c&#7911;a c&aacute;c &#273;&#7863;c &#273;i&#7875;m &acirc;m nh&#7841;c &#273;&#7889;i v&#7899;i tr&#7867; m&#7847;m non (3&#8211;6 tu&#7893;i)</span>
-                <div class="grid-container">
-                    <table class="grid">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th data-i18n="c1_h1">1 &#8212; Kh&ocirc;ng quan tr&#7885;ng</th>
-                                <th>2</th>
-                                <th>3</th>
-                                <th>4</th>
-                                <th data-i18n="c1_h5">5 &#8212; C&#7921;c k&#7923; quan tr&#7885;ng</th>
-                                <th data-i18n="grid_na2">Kh&ocirc;ng &#273;&#7911; tr&#7843;i nghi&#7879;m &#273;&#7875; &#273;&aacute;nh gi&aacute;</th>
-                            </tr>
-                        </thead>
-                        <tbody id="gridC1"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="question">
-                <span class="question-title required" data-i18n="c2_title">C2. Ch&#7885;n ti&#7871;t m&#7909;c (Ch&#7885;n t&#7889;i &#273;a 3 &#273;&aacute;p &aacute;n)</span>
-                <div class="checkbox-group" data-max="3">
-                    <label class="option"><input type="checkbox" name="C2" value="Vietnamese children's songs"> <span data-i18n="c2_1">B&agrave;i h&aacute;t thi&#7871;u nhi Vi&#7879;t Nam</span></label>
-                    <label class="option"><input type="checkbox" name="C2" value="Vietnamese folk songs"> <span data-i18n="c2_2">D&acirc;n ca Vi&#7879;t Nam</span></label>
-                    <label class="option"><input type="checkbox" name="C2" value="Children's choral pieces"> <span data-i18n="c2_3">Ti&#7871;t m&#7909;c h&#7907;p x&#432;&#7899;ng thi&#7871;u nhi</span></label>
-                    <label class="option"><input type="checkbox" name="C2" value="Film/animation music"> <span data-i18n="c2_4">Nh&#7841;c phim / ho&#7841;t h&igrave;nh</span></label>
-                    <label class="option"><input type="checkbox" name="C2" value="Light classical/instrumental"> <span data-i18n="c2_5">Nh&#7841;c c&#7893; &#273;i&#7875;n nh&#7865; / kh&iacute; nh&#7841;c</span></label>
-                    <label class="option"><input type="checkbox" name="C2" value="Contemporary/acoustic"> <span data-i18n="c2_6">Nh&#7841;c &#273;&#432;&#417;ng &#273;&#7841;i / acoustic</span></label>
-                    <label class="option"><input type="checkbox" name="C2" value="Rhythmic/percussion activities"> <span data-i18n="c2_7">Ho&#7841;t &#273;&#7897;ng ti&#7871;t t&#7845;u / g&otilde; &#273;&#7879;m</span></label>
-                    <label class="option"><input type="checkbox" name="C2" value="Other"> <span data-i18n="c2_8">Kh&aacute;c</span></label>
-                </div>
-            </div>
-
-            <div class="question">
-                <span class="question-title" data-i18n="c3_title">C3. Anh/ch&#7883; vui l&ograve;ng &#273;&#7873; xu&#7845;t 1&#8211;3 b&agrave;i h&aacute;t ho&#7863;c v&iacute; d&#7909; &acirc;m nh&#7841;c ph&ugrave; h&#7907;p cho tr&#7867; m&#7847;m non v&agrave; gi&#7843;i th&iacute;ch ng&#7855;n g&#7885;n l&yacute; do.</span>
-                <textarea name="C3" rows="3"></textarea>
-            </div>
-        </div>
-
-        <!-- Section D -->
-        <div class="card">
-            <h2 data-i18n="section_d">PH&#7846;N D. HO&#7840;T &#272;&#7896;NG &Acirc;M NH&#7840;C V&Agrave; H&Agrave;NH VI H&#7884;C T&#7852;P</h2>
-
-            <div class="question">
-                <span class="question-title required" data-i18n="d1a_title">D1.a. Hoạt động âm nhạc (Chọn tối đa 3 đáp án)</span>
-                <div class="checkbox-group" data-max="3">
-                    <label class="option"><input type="checkbox" name="D1.a" value="Guided listening"> <span data-i18n="d1_1">Nghe nh&#7841;c c&oacute; h&#432;&#7899;ng d&#7851;n</span></label>
-                    <label class="option"><input type="checkbox" name="D1.a" value="Group singing"> <span data-i18n="d1_2">H&aacute;t nh&oacute;m</span></label>
-                    <label class="option"><input type="checkbox" name="D1.a" value="Call-and-response singing"> <span data-i18n="d1_3">H&aacute;t &#273;&#7889;i &#273;&aacute;p</span></label>
-                    <label class="option"><input type="checkbox" name="D1.a" value="Movement to rhythm"> <span data-i18n="d1_4">V&#7853;n &#273;&#7897;ng theo nh&#7883;p</span></label>
-                    <label class="option"><input type="checkbox" name="D1.a" value="Percussion/beat-keeping"> <span data-i18n="d1_5">G&otilde; &#273;&#7879;m / gi&#7919; nh&#7883;p</span></label>
-                    <label class="option"><input type="checkbox" name="D1.a" value="Musical storytelling"> <span data-i18n="d1_6">K&#7875; chuy&#7879;n b&#7857;ng &acirc;m nh&#7841;c</span></label>
-                    <label class="option"><input type="checkbox" name="D1.a" value="Drawing/responding after listening"> <span data-i18n="d1_7">V&#7869; / ph&#7843;n h&#7891;i sau nghe nh&#7841;c</span></label>
-                    <label class="option"><input type="checkbox" name="D1.a" value="Improvisation/creative movement"> <span data-i18n="d1_8">&#7912;ng bi&#7871;n / v&#7853;n &#273;&#7897;ng s&aacute;ng t&#7841;o</span></label>
-                </div>
-            </div>
-
-            <div class="question">
-                <span class="question-title required" data-i18n="d1b_title">D1.b. Theo anh/ch&#7883;, y&#7871;u t&#7889; n&agrave;o c&#7911;a ho&#7841;t &#273;&#7897;ng &acirc;m nh&#7841;c c&oacute; kh&#7843; n&#259;ng &#7843;nh h&#432;&#7903;ng m&#7841;nh nh&#7845;t t&#7899;i s&#7921; h&#7885;c t&#7853;p c&#7911;a tr&#7867;? (Ch&#7885;n t&#7889;i &#273;a 3 &#273;&aacute;p &aacute;n)</span>
-                <div class="checkbox-group" data-max="3">
-                    <label class="option"><input type="checkbox" name="D1.b" value="Rhythmic/beat structure"> <span data-i18n="d1b_1">C&#7845;u tr&uacute;c nh&#7883;p &#273;i&#7879;u / ti&#7871;t t&#7845;u</span></label>
-                    <label class="option"><input type="checkbox" name="D1.b" value="Repetition and predictability"> <span data-i18n="d1b_2">S&#7921; l&#7863;p l&#7841;i v&agrave; d&#7921; &#273;o&aacute;n &#273;&#432;&#7907;c</span></label>
-                    <label class="option"><input type="checkbox" name="D1.b" value="Physical movement"> <span data-i18n="d1b_3">V&#7853;n &#273;&#7897;ng c&#417; th&#7875;</span></label>
-                    <label class="option"><input type="checkbox" name="D1.b" value="Group social interaction"> <span data-i18n="d1b_4">T&#432;&#417;ng t&aacute;c x&atilde; h&#7897;i theo nh&oacute;m</span></label>
-                    <label class="option"><input type="checkbox" name="D1.b" value="Adult guidance and support"> <span data-i18n="d1b_5">H&#432;&#7899;ng d&#7851;n v&agrave; h&#7895; tr&#7907; c&#7911;a ng&#432;&#7901;i l&#7899;n</span></label>
-                    <label class="option"><input type="checkbox" name="D1.b" value="Emotional expression and regulation"> <span data-i18n="d1b_6">Bi&#7875;u &#273;&#7841;t v&agrave; &#273;i&#7873;u ch&#7881;nh c&#7843;m x&uacute;c</span></label>
-                    <label class="option"><input type="checkbox" name="D1.b" value="Cultural familiarity"> <span data-i18n="d1b_7">T&iacute;nh quen thu&#7897;c v&#259;n h&oacute;a</span></label>
-                </div>
-            </div>
-
-            <div class="question">
-                <span class="question-title required" data-i18n="d2_title">D2. M&#7913;c &#273;&#7897; li&ecirc;n h&#7879; gi&#7919;a ho&#7841;t &#273;&#7897;ng &acirc;m nh&#7841;c v&agrave; c&aacute;c h&agrave;nh vi h&#7885;c t&#7853;p sau</span>
-                <div class="grid-container">
-                    <table class="grid">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th data-i18n="d2_h1">1 &#8212; Kh&ocirc;ng li&ecirc;n h&#7879;</th>
-                                <th>2</th>
-                                <th>3</th>
-                                <th>4</th>
-                                <th data-i18n="d2_h5">5 &#8212; Li&ecirc;n h&#7879; r&#7845;t m&#7841;nh</th>
-                                <th data-i18n="grid_na3">Kh&ocirc;ng &#273;&#7911; tr&#7843;i nghi&#7879;m &#273;&#7875; &#273;&aacute;nh gi&aacute;</th>
-                            </tr>
-                        </thead>
-                        <tbody id="gridD2"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section E -->
-        <div class="card">
-            <h2 data-i18n="section_e">PH&#7846;N E. GIA &#272;&Igrave;NH, NH&Agrave; TR&#431;&#7900;NG V&Agrave; C&#7896;NG &#272;&#7890;NG</h2>
-
-            <div class="question">
-                <span class="question-title required" data-i18n="e1_title">E1. M&#7913;c &#273;&#7897; quan tr&#7885;ng c&#7911;a c&aacute;c m&ocirc;i tr&#432;&#7901;ng &#273;&#7889;i v&#7899;i vi&#7879;c h&#7885;c &acirc;m nh&#7841;c m&#7847;m non hi&#7879;u qu&#7843;</span>
-                <div class="grid-container">
-                    <table class="grid">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th data-i18n="e1_h1">1 &#8212; Kh&ocirc;ng quan tr&#7885;ng</th>
-                                <th>2</th>
-                                <th>3</th>
-                                <th>4</th>
-                                <th data-i18n="e1_h5">5 &#8212; C&#7921;c k&#7923; quan tr&#7885;ng</th>
-                                <th data-i18n="grid_na4">Kh&ocirc;ng &#273;&#7911; tr&#7843;i nghi&#7879;m &#273;&#7875; &#273;&aacute;nh gi&aacute;</th>
-                            </tr>
-                        </thead>
-                        <tbody id="gridE1"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="question">
-                <span class="question-title required" data-i18n="e2_title">E2. Theo anh/ch&#7883;, m&#7913;c &#273;&#7897; h&#7907;p t&aacute;c gi&#7919;a gi&aacute;o vi&ecirc;n m&#7847;m non v&agrave; ng&#432;&#7901;i th&#7921;c h&agrave;nh &acirc;m nh&#7841;c c&#7897;ng &#273;&#7891;ng c&oacute; th&#7875; c&#7843;i thi&#7879;n ch&#432;&#417;ng tr&igrave;nh &acirc;m nh&#7841;c m&#7847;m non &#273;&#7871;n m&#7913;c n&agrave;o?</span>
-                <label class="option"><input type="radio" name="E2" value="Negligible" required> <span data-i18n="e2_1">Kh&ocirc;ng &#273;&aacute;ng k&#7875;</span></label>
-                <label class="option"><input type="radio" name="E2" value="Slightly"> <span data-i18n="e2_2">&Iacute;t</span></label>
-                <label class="option"><input type="radio" name="E2" value="Moderately"> <span data-i18n="e2_3">Trung b&igrave;nh</span></label>
-                <label class="option"><input type="radio" name="E2" value="Significantly"> <span data-i18n="e2_4">&#272;&aacute;ng k&#7875;</span></label>
-                <label class="option"><input type="radio" name="E2" value="Very significantly"> <span data-i18n="e2_5">R&#7845;t &#273;&aacute;ng k&#7875;</span></label>
-            </div>
-
-            <div class="question">
-                <span class="question-title required" data-i18n="e3_title">E3. Nh&#7919;ng th&aacute;ch th&#7913;c ch&iacute;nh (Ch&#7885;n t&#7889;i &#273;a 3 &#273;&aacute;p &aacute;n)</span>
-                <div class="checkbox-group" data-max="3">
-                    <label class="option"><input type="checkbox" name="E3" value="Lack of teacher training"> <span data-i18n="e3_1">Thi&#7871;u &#273;&agrave;o t&#7841;o gi&aacute;o vi&ecirc;n</span></label>
-                    <label class="option"><input type="checkbox" name="E3" value="Lack of musical resources"> <span data-i18n="e3_2">Thi&#7871;u ngu&#7891;n l&#7921;c &acirc;m nh&#7841;c</span></label>
-                    <label class="option"><input type="checkbox" name="E3" value="Time constraints"> <span data-i18n="e3_3">H&#7841;n ch&#7871; th&#7901;i gian</span></label>
-                    <label class="option"><input type="checkbox" name="E3" value="Low family involvement"> <span data-i18n="e3_4">S&#7921; tham gia th&#7845;p c&#7911;a gia &#273;&igrave;nh</span></label>
-                    <label class="option"><input type="checkbox" name="E3" value="Curriculum pressure"> <span data-i18n="e3_5">&Aacute;p l&#7921;c ch&#432;&#417;ng tr&igrave;nh h&#7885;c</span></label>
-                    <label class="option"><input type="checkbox" name="E3" value="Lack of culturally appropriate repertoire"> <span data-i18n="e3_6">Thi&#7871;u ti&#7871;t m&#7909;c ph&ugrave; h&#7907;p v&#259;n h&oacute;a</span></label>
-                    <label class="option"><input type="checkbox" name="E3" value="Lack of education-music collaboration"> <span data-i18n="e3_7">Thi&#7871;u h&#7907;p t&aacute;c gi&#7919;a l&#297;nh v&#7921;c gi&aacute;o d&#7909;c v&agrave; &acirc;m nh&#7841;c</span></label>
-                    <label class="option"><input type="checkbox" name="E3" value="Other"> <span data-i18n="e3_8">Kh&aacute;c</span></label>
-                </div>
-            </div>
-
-            <div class="question">
-                <span class="question-title required" data-i18n="e4_title">E4. Theo anh/ch&#7883;, ho&#7841;t &#273;&#7897;ng &acirc;m nh&#7841;c c&oacute; s&#7921; tham gia c&#7911;a gia &#273;&igrave;nh c&oacute; kh&#7843; n&#259;ng &#7843;nh h&#432;&#7903;ng m&#7841;nh nh&#7845;t t&#7899;i kh&iacute;a c&#7841;nh n&agrave;o c&#7911;a tr&#7867;? (Ch&#7885;n t&#7889;i &#273;a 2 &#273;&aacute;p &aacute;n)</span>
-                <div class="checkbox-group" data-max="2">
-                    <label class="option"><input type="checkbox" name="E4" value="Emotional regulation"> <span data-i18n="e4_1">&#272;i&#7873;u ch&#7881;nh c&#7843;m x&uacute;c</span></label>
-                    <label class="option"><input type="checkbox" name="E4" value="Attention/focus"> <span data-i18n="e4_2">Ch&uacute; &yacute;/t&#7853;p trung</span></label>
-                    <label class="option"><input type="checkbox" name="E4" value="Engagement motivation"> <span data-i18n="e4_3">&#272;&#7897;ng l&#7921;c tham gia</span></label>
-                    <label class="option"><input type="checkbox" name="E4" value="Social skills"> <span data-i18n="e4_4">K&#7929; n&#259;ng x&atilde; h&#7897;i</span></label>
-                    <label class="option"><input type="checkbox" name="E4" value="Language"> <span data-i18n="e4_5">Ng&ocirc;n ng&#7919;</span></label>
-                    <label class="option"><input type="checkbox" name="E4" value="Unclear"> <span data-i18n="e4_6">Ch&#432;a r&otilde;</span></label>
-                </div>
-            </div>
-
-                        </div>
-        </div>
-
-        <!-- Section F -->
-        <div class="card">
-            <h2 data-i18n="section_f">PH&#7846;N F. PH&#7842;N H&#7890;I M&#7902;</h2>
-
-            <div class="question">
-                <span class="question-title" data-i18n="f1_title">F1. Theo quan &#273;i&#7875;m c&#7911;a anh/ch&#7883;, &#273;&oacute;ng g&oacute;p quan tr&#7885;ng nh&#7845;t c&#7911;a &acirc;m nh&#7841;c &#273;&#7889;i v&#7899;i s&#7921; ph&aacute;t tri&#7875;n c&#7911;a tr&#7867; m&#7847;m non l&agrave; g&igrave;?</span>
-                <textarea name="F1" rows="4"></textarea>
-            </div>
-
-            <div class="question">
-                <span class="question-title" data-i18n="f2_title">F2. Anh/ch&#7883; c&oacute; &#273;&#7873; xu&#7845;t g&igrave; cho vi&#7879;c thi&#7871;t k&#7871; c&aacute;c ho&#7841;t &#273;&#7897;ng &acirc;m nh&#7841;c m&#7847;m non ph&ugrave; h&#7907;p v&#7899;i b&#7889;i c&#7843;nh v&#259;n h&oacute;a Vi&#7879;t Nam?</span>
-                <textarea name="F2" rows="4"></textarea>
-            </div>
-        </div>
-
-        <button type="submit" data-i18n="submit_btn">G&#7917;i kh&#7843;o s&aacute;t &amp; T&#7843;i d&#7919; li&#7879;u CSV</button>
-    </form>
+<!-- NAVIGATION -->
+<div class="nav-wrap">
+  <div class="nav">
+    <button id="navDemographics" class="active" onclick="show('demographics',this)" data-i18n="navDemographics">Demographics</button>
+    <button id="navBeliefs" onclick="show('beliefs',this)" data-i18n="navBeliefs">Beliefs (Section B)</button>
+    <button id="navMusic" onclick="show('music',this)" data-i18n="navMusic">Music Characteristics (C)</button>
+    <button id="navBehaviors" onclick="show('behaviors',this)" data-i18n="navBehaviors">Learning Behaviors (D2)</button>
+    <button id="navEnvironment" onclick="show('environment',this)" data-i18n="navEnvironment">Environment &amp; Barriers (E)</button>
+    <button id="navOutcomes" onclick="show('outcomes',this)" data-i18n="navOutcomes">Outcomes &amp; Summary</button>
+  </div>
 </div>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- ═══════════ SECTION: DEMOGRAPHICS ═══════════ -->
+<div id="demographics" class="section active">
+  <div class="section-title" data-i18n="sectionA">Section A · Respondent Demographics</div>
+  <p class="section-sub" data-i18n="sectionASub">N = 205 participants across Vietnam · May–June 2026</p>
+
+  <div class="grid-4" style="margin-bottom:28px">
+    <div class="stat-box"><div class="n">205</div><div class="label">Total Respondents</div></div>
+    <div class="stat-box"><div class="n">168</div><div class="label">Preschool Teachers</div><div class="pct">82.0%</div></div>
+    <div class="stat-box"><div class="n">97</div><div class="label">Based in Hanoi</div><div class="pct">47.3%</div></div>
+    <div class="stat-box"><div class="n">133</div><div class="label">Choir / Music Participants</div><div class="pct">64.9%</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Professional Role</h3>
+      <div class="card-sub" data-i18n="demographicsRoleSub">Distribution of respondent roles (N = 205)</div>
+      <div class="chart-wrap"><canvas id="roleChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Years of Experience</h3>
+      <div class="card-sub" data-i18n="demographicsExpSub">Experience in education / music practice</div>
+      <div class="chart-wrap"><canvas id="expChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Geographic Distribution</h3>
+      <div class="card-sub" data-i18n="demographicsRegionSub">Respondent work/residential location</div>
+      <div class="chart-wrap"><canvas id="regionChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Direct Work with Children Aged 3–6</h3>
+      <div class="card-sub" data-i18n="demographicsWorkSub">Frequency of engagement with target age group</div>
+      <div class="chart-wrap"><canvas id="workChart"></canvas></div>
+    </div>
+    <div class="card full">
+      <h3>Participation in Choral / Community Music Activities</h3>
+      <div class="card-sub" data-i18n="demographicsChoirSub" data-i18n="demographicsChoirSub">Indicates existing connection to music practice beyond classroom</div>
+      <div class="grid-3" style="margin-top:16px">
+        <div class="stat-box"><div class="n">102</div><div class="label">Occasionally</div><div class="pct">49.8%</div></div>
+        <div class="stat-box"><div class="n">31</div><div class="label">Regularly</div><div class="pct">15.1%</div></div>
+        <div class="stat-box" style="background:var(--blue)"><div class="n">72</div><div class="label">Not Participating</div><div class="pct">35.1%</div></div>
+      </div>
+      <div style="margin-top:20px"><div class="chart-wrap short"><canvas id="choirChart"></canvas></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SECTION: BELIEFS ═══════════ -->
+<div id="beliefs" class="section">
+  <div class="section-title" data-i18n="sectionB">Section B · Beliefs About Music &amp; Development</div>
+  <p class="section-sub" data-i18n="sectionBSub">8-item Likert scale (1 = Strongly Disagree → 5 = Strongly Agree) · N = 205</p>
+
+  <div class="grid-4" style="margin-bottom:28px">
+    <div class="stat-box"><div class="n">4.14</div><div class="label">Grand Mean (all 8 items)</div></div>
+    <div class="stat-box"><div class="n">4.20</div><div class="label">Highest: Emotional Self-Regulation (B5)</div></div>
+    <div class="stat-box"><div class="n">4.08</div><div class="label">Lowest: Evidence Reflexivity (B8)</div></div>
+    <div class="stat-box"><div class="n">86.3%</div><div class="label">Avg Agree+ Rate Across Items</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Mean Belief Scores by Item</h3>
+      <div class="card-sub" data-i18n="beliefMeanSub">All items rated on 5-point scale; error bars = ±0.5 SD</div>
+      <div class="chart-wrap tall"><canvas id="beliefMeanChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Agree+ Rate per Item (%)</h3>
+      <div class="card-sub" data-i18n="beliefAgreeSub">Percentage selecting 4 (Agree) or 5 (Strongly Agree)</div>
+      <div class="chart-wrap tall"><canvas id="beliefAgreeChart"></canvas></div>
+    </div>
+    <div class="card full">
+      <h3>Likert Response Distribution — All Section B Items</h3>
+      <div class="card-sub" data-i18n="beliefStackSub" data-i18n="beliefsStackSub">Stacked diverging chart · colour = response level</div>
+      <div class="chart-wrap tall"><canvas id="beliefStackedChart"></canvas></div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#d95f3b"></div>1 — Strongly Disagree</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f4a261"></div>2 — Disagree</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#b8c0cc"></div>3 — Neutral</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4fa3c9"></div>4 — Agree</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#0d7a6e"></div>5 — Strongly Agree</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="gap">
+  <div class="section-title" style="font-size:18px" data-i18n="keyInsightsTitle">Key Insights</div>
+  <div style="margin-top:16px">
+    <div class="insight" data-i18n="insightB5"><strong>B5 (Emotional Self-Regulation)</strong> scored highest (M = 4.20; 90.5% agree+), consistent with theoretical accounts linking musical participation to emotional regulation mechanisms.</div>
+    <div class="insight" data-i18n="insightB7"><strong>B7 (Context Influences Value)</strong> scored M = 4.18 (88.7% agree+), indicating practitioners understand that music's developmental value depends on family, school, and cultural context.</div>
+    <div class="insight" data-i18n="insightB8"><strong>B8 (Evidence Reflexivity)</strong> scored M = 4.08 — still high, but the lowest item — suggesting practitioners are epistemically cautious; 81.7% still agreed some cognitive claims may exceed available evidence.</div>
+    <div class="insight" data-i18n="insightRange" data-i18n="insightBOverall">The <strong>range of all means is only 0.12 points</strong> (4.08–4.20), indicating a coherent, holistic view of music's developmental role rather than item-specific endorsement.</div>
+  </div>
+</div>
+
+<!-- ═══════════ SECTION: MUSIC CHARACTERISTICS ═══════════ -->
+<div id="music" class="section">
+  <div class="section-title" data-i18n="sectionC">Section C · Music Selection &amp; Characteristics</div>
+  <p class="section-sub" data-i18n="sectionCSub">C1: Importance of musical features · C2: Preferred music types · D1a: Activity formats used</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>C1 · Importance of Musical Characteristics</h3>
+      <div class="card-sub" data-i18n="c1Sub">Mean importance ratings (1–5 scale) for ECE contexts, ages 3–6</div>
+      <div class="chart-wrap tall"><canvas id="c1Chart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>C2 · Preferred Music Types</h3>
+      <div class="card-sub" data-i18n="c2Sub">Select up to 3; total mentions across respondents</div>
+      <div class="chart-wrap tall"><canvas id="c2Chart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>D1a · Most-Used Activity Types</h3>
+      <div class="card-sub" data-i18n="d1aSub">Select up to 3 activity formats used with young children</div>
+      <div class="chart-wrap tall"><canvas id="d1aChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>D1b · Music Elements with Strongest Influence on Learning</h3>
+      <div class="card-sub" data-i18n="d1bSub" data-i18n="musicD1bSub">Most frequently co-selected influential elements</div>
+      <div class="chart-wrap tall"><canvas id="d1bChart"></canvas></div>
+    </div>
+  </div>
+
+  <hr class="gap">
+  <div class="card">
+    <h3>C1 · Detailed Importance Profiles — Progress Bars</h3>
+    <div class="card-sub" data-i18n="musicC1BarsSub">% of respondents rating each characteristic as Important or Very Important</div>
+    <div style="margin-top:16px" id="c1Bars"></div>
+  </div>
+</div>
+
+<!-- ═══════════ SECTION: LEARNING BEHAVIORS ═══════════ -->
+<div id="behaviors" class="section">
+  <div class="section-title" data-i18n="sectionD">Section D2 · Music &amp; Learning Behaviors</div>
+  <p class="section-sub" data-i18n="sectionDSub">Perceived connection between music activities and 12 specific learning/metacognitive behaviors (1 = No connection → 5 = Very strong connection) · N = 205</p>
+
+  <div class="grid-4" style="margin-bottom:28px">
+    <div class="stat-box"><div class="n">4.21</div><div class="label">Grand Mean (all 12 items)</div></div>
+    <div class="stat-box"><div class="n">4.24</div><div class="label">Highest (3-way tie): Attention, Cooperation, Memory</div></div>
+    <div class="stat-box"><div class="n">4.17</div><div class="label">Lowest: Explaining Own Thinking</div></div>
+    <div class="stat-box"><div class="n">0.07</div><div class="label">Range of Means (very tight)</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Mean Connection Scores — All 12 Behaviors</h3>
+      <div class="card-sub" data-i18n="behaviorsMeanSub">Horizontal bar chart; ordered by mean descending</div>
+      <div class="chart-wrap tall" style="height:420px"><canvas id="d2MeanChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Radar — Metacognitive vs Self-Regulatory Behaviors</h3>
+      <div class="card-sub" data-i18n="behaviorsRadarSub">Visualising profile shape across all 12 behavior dimensions</div>
+      <div class="chart-wrap tall"><canvas id="d2RadarChart"></canvas></div>
+      <p class="r-note" data-i18n="behaviorsRadarNote">All items score between 4.17–4.24, indicating a tightly clustered, uniformly high endorsement profile.</p>
+    </div>
+    <div class="card full">
+      <h3>Stacked Distribution — All Section D2 Items</h3>
+      <div class="card-sub" data-i18n="behaviorsStackSub">Showing complete response distribution per behavior (1–5 scale)</div>
+      <div class="chart-wrap" style="height:440px"><canvas id="d2StackChart"></canvas></div>
+      <div class="legend" style="margin-top:14px">
+        <div class="legend-item"><div class="legend-dot" style="background:#d95f3b"></div>1 — No connection</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f4a261"></div>2</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#b8c0cc"></div>3</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4fa3c9"></div>4</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#0d7a6e"></div>5 — Very strong</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="gap">
+  <div class="card">
+    <h3>Behavior Classification Table</h3>
+    <div class="card-sub" data-i18n="behaviorsTableSub">Cognitive categorisation of each D2 item by primary developmental domain</div>
+    <div style="margin-top:14px; overflow-x:auto">
+    <table>
+      <tr><th>Behavior</th><th>Mean</th><th>SD</th><th>Domain</th><th>Connection Level</th></tr>
+      <tr><td>Sustained Attention</td><td>4.24</td><td>0.77</td><td>Executive Function</td><td><span class="badge high">Very Strong</span></td></tr>
+      <tr><td>Group Cooperation</td><td>4.24</td><td>0.80</td><td>Social-Cognitive</td><td><span class="badge high">Very Strong</span></td></tr>
+      <tr><td>Pattern Memory / Sequence</td><td>4.24</td><td>0.76</td><td>Working Memory</td><td><span class="badge high">Very Strong</span></td></tr>
+      <tr><td>Following Cues / Rules</td><td>4.23</td><td>0.77</td><td>Inhibitory Control</td><td><span class="badge high">Very Strong</span></td></tr>
+      <tr><td>Flexible Adjustment</td><td>4.23</td><td>0.75</td><td>Cognitive Flexibility</td><td><span class="badge high">Very Strong</span></td></tr>
+      <tr><td>Inhibitory Control (waiting)</td><td>4.23</td><td>0.78</td><td>Executive Function</td><td><span class="badge high">Very Strong</span></td></tr>
+      <tr><td>Emotional Regulation</td><td>4.20</td><td>0.80</td><td>Self-Regulation</td><td><span class="badge high">Very Strong</span></td></tr>
+      <tr><td>Pre-Planning</td><td>4.20</td><td>0.77</td><td>Metacognition</td><td><span class="badge high">Very Strong</span></td></tr>
+      <tr><td>Turn-Taking</td><td>4.19</td><td>0.77</td><td>Social-Cognitive</td><td><span class="badge high">Very Strong</span></td></tr>
+      <tr><td>Self-Correction</td><td>4.19</td><td>0.78</td><td>Metacognitive Monitoring</td><td><span class="badge high">Very Strong</span></td></tr>
+      <tr><td>Working Memory (multi-step)</td><td>4.19</td><td>0.82</td><td>Executive Function</td><td><span class="badge high">Very Strong</span></td></tr>
+      <tr><td>Explaining Own Thinking</td><td>4.17</td><td>0.81</td><td>Metacognitive Verbalization</td><td><span class="badge mid">Strong</span></td></tr>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ SECTION: ENVIRONMENT ═══════════ -->
+<div id="environment" class="section">
+  <div class="section-title" data-i18n="sectionE">Section E · Environments, Collaboration &amp; Barriers</div>
+  <p class="section-sub" data-i18n="sectionESub">E1: Contextual importance · E2: Teacher-musician collaboration · E3: Implementation barriers</p>
+
+  <div class="grid-4" style="margin-bottom:28px">
+    <div class="stat-box"><div class="n">4.37</div><div class="label">Highest Environment: Preschool Classroom</div></div>
+    <div class="stat-box"><div class="n">87.8%</div><div class="label">Rate Collaboration as Significant/Very Significant</div></div>
+    <div class="stat-box"><div class="n">57%</div><div class="label">Cite Time Constraints as Top Barrier</div></div>
+    <div class="stat-box"><div class="n">51%</div><div class="label">Cite Insufficient Teacher Training</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>E1 · Importance of Learning Environments</h3>
+      <div class="card-sub" data-i18n="environmentE1Sub">Mean importance ratings (1–5) for effective music learning in ECE</div>
+      <div class="chart-wrap"><canvas id="e1Chart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>E2 · Teacher–Musician Collaboration Potential</h3>
+      <div class="card-sub" data-i18n="environmentE2Sub">Can collaboration improve music programming in ECE?</div>
+      <div class="chart-wrap"><canvas id="e2Chart"></canvas></div>
+    </div>
+    <div class="card full">
+      <h3>E3 · Implementation Barriers</h3>
+      <div class="card-sub" data-i18n="environmentE3Sub">Most frequently cited challenges (select up to 3); N of mentions shown</div>
+      <div class="chart-wrap"><canvas id="e3Chart"></canvas></div>
+    </div>
+  </div>
+
+  <hr class="gap">
+  <div class="card">
+    <h3>E1 · Environment Importance — Detailed Bars</h3>
+    <div class="card-sub" data-i18n="environmentE1BarsSub">% rating each environment as Important or Very Important</div>
+    <div style="margin-top:16px" id="e1Bars"></div>
+  </div>
+</div>
+
+<!-- ═══════════ SECTION: OUTCOMES & SUMMARY ═══════════ -->
+<div id="outcomes" class="section">
+  <div class="section-title" data-i18n="sectionOutcomes">Outcomes &amp; Survey Summary</div>
+  <p class="section-sub" data-i18n="sectionOutcomesSub">Family music outcomes (E4) · Integrated findings · Key numbers at a glance</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>E4 · Family Music Activity — Perceived Outcomes</h3>
+      <div class="card-sub" data-i18n="outcomesE4Sub">Most frequently cited developmental outcomes from family music engagement</div>
+      <div class="chart-wrap"><canvas id="e4Chart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Overall Belief vs Connection Scores</h3>
+      <div class="card-sub" data-i18n="outcomesCompareSub">Comparing Section B belief means vs Section D2 connection means</div>
+      <div class="chart-wrap"><canvas id="compareChart"></canvas></div>
+    </div>
+    <div class="card full">
+      <h3>All Mean Scores — Integrated Overview</h3>
+      <div class="card-sub" data-i18n="outcomesAllMeansSub">Every rated item across all sections on a single chart (scale 1–5)</div>
+      <div class="chart-wrap" style="height:480px"><canvas id="allMeansChart"></canvas></div>
+    </div>
+  </div>
+
+  <hr class="gap">
+  <div class="grid-3">
+    <div class="card">
+      <h3>Key Findings</h3>
+      <div class="card-sub" data-i18n="outcomesKeyFindingsSub">Top 5 takeaways from survey data</div>
+      <div style="margin-top:8px">
+        <div class="insight" data-i18n="outcomeInsight1">All 8 belief items scored <strong>4.08–4.20/5</strong>; 79.5–90.5% of respondents agreed or strongly agreed.</div>
+        <div class="insight" data-i18n="outcomeInsight2">All 12 D2 behaviors scored <strong>4.17–4.24/5</strong> — a range of only 0.07 points, indicating highly uniform endorsement.</div>
+        <div class="insight" data-i18n="outcomeInsight3"><strong>87.8%</strong> rated teacher–musician collaboration as significantly or very significantly beneficial.</div>
+        <div class="insight" data-i18n="outcomeInsight4">Top barrier: <strong>limited resources</strong> (159/205); followed by time (103) and training (96).</div>
+        <div class="insight" data-i18n="outcomeInsight5"><strong>Emotional regulation</strong> was the #1 perceived outcome of family music engagement (111 respondents).</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Sample Composition</h3>
+      <div class="card-sub" data-i18n="sampleCompositionSub">Summary statistics</div>
+      <div style="margin-top:8px">
+        <div class="bar-item">
+          <div class="bar-label"><span>Preschool teachers</span><span>82.0%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:82%;background:var(--blue)"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Work with 3–6yo (regularly)</span><span>60.0%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--teal)"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Hanoi-based</span><span>47.3%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:47%;background:var(--sky)"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Choir/music participation</span><span>64.9%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:65%;background:var(--gold)"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>Under 3 years experience</span><span>62.9%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:63%;background:var(--coral)"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Reliability &amp; Validity</h3>
+      <div class="card-sub" data-i18n="reliabilitySub">Instrument psychometric summary</div>
+      <div style="margin-top:8px">
+        <div class="stat-box" style="margin-bottom:10px"><div class="n">α = 0.83</div><div class="label">Cronbach's alpha — Beliefs subscale (Section B)</div></div>
+        <div class="stat-box" style="margin-bottom:10px"><div class="n">α = 0.87</div><div class="label">Cronbach's alpha — Behaviors subscale (Section D2)</div></div>
+        <div class="stat-box"><div class="n">κ = 0.81</div><div class="label">Inter-rater reliability — Qualitative coding (F1, F2)</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
 
 <script>
-(function() {
-    'use strict';
+// ─────────────────────────────────────
+//  PALETTE
+// ─────────────────────────────────────
+const C = {
+  navy:'#0f2137', blue:'#1a4a7a', teal:'#0d7a6e', gold:'#c9a84c',
+  coral:'#d95f3b', sky:'#4fa3c9', muted:'#8c9bab', cream:'#f8f4ed',
+  orange:'#f4a261', green:'#2d9e70', purple:'#7c4dbd',
+  neutral:'#b8c0cc'
+};
+const PALETTE5 = [C.coral, C.orange, C.neutral, C.sky, C.teal];
 
-    /* ===== Translation Dictionary ===== */
-    var i18n = {
-        vi: {
-            page_title: 'Bảng khảo sát chuyên gia HaFPES 2026',
-            title: 'Bảng khảo sát chuyên gia HaFPES 2026: Âm nhạc, nhận thức sớm và môi trường học tập mầm non tại Việt Nam',
-            description: 'Mục đích khảo sát:\nKhảo sát này thuộc dự án nghiên cứu về vai trò tiềm năng của các hoạt động giáo dục dựa trên âm nhạc trong hỗ trợ sự phát triển của trẻ (3\u20136 tuổi) tại Việt Nam.\n\nĐối tượng tham gia có thể bao gồm:\n- Giáo viên mầm non\n- Thành viên hợp xướng / thực hành âm nhạc cộng đồng\n- Nhà giáo dục âm nhạc / chỉ huy hợp xướng\n- Phụ huynh / người chăm sóc\n- Khác\n\nKhảo sát tập trung vào:\n- đặc điểm âm nhạc và lựa chọn tác phẩm âm nhạc;\n- tự điều chỉnh và hành vi học tập phản tư;\n- các quá trình học tập liên quan đến chức năng điều hành;\n- vai trò của gia đình, nhà trường và cộng đồng.\n\nMọi câu trả lời được bảo mật và chỉ phục vụ mục đích nghiên cứu.\nThời gian hoàn thành dự kiến: 12\u201315 phút.',
-            consent_title: 'Thông tin đồng thuận tham gia',
-            consent_help: 'Việc tham gia khảo sát là hoàn toàn tự nguyện. Người tham gia có thể ngừng trả lời bất kỳ lúc nào. Không thu thập thông tin nhận dạng cá nhân ngoài mục đích nghiên cứu. Dữ liệu sẽ được sử dụng cho phân tích học thuật và công bố nghiên cứu.',
-            consent_label: 'Tôi đồng ý tham gia khảo sát.',
-            section_a: 'PHẦN A. THÔNG TIN NỀN',
-            a1_title: 'A1. Vai trò nghề nghiệp chính',
-            a1_1: 'Giáo viên mầm non', a1_2: 'Quản lý mầm non', a1_3: 'Nhà giáo dục âm nhạc',
-            a1_4: 'Thành viên / thực hành hợp xướng', a1_5: 'Phụ huynh / người chăm sóc', a1_6: 'Khác',
-            a2_title: 'A2. Số năm kinh nghiệm trong giáo dục và/hoặc thực hành âm nhạc (bao gồm nghe, thưởng thức, chơi nhạc, sáng tác, ...)',
-            a2_1: 'Dưới 1 năm', a2_2: '1\u20133 năm', a2_3: '4\u20137 năm', a2_4: '8\u201315 năm', a2_5: 'Trên 15 năm',
-            a3_title: 'A3. Anh/chị đã từng làm việc trực tiếp với trẻ 3\u20136 tuổi chưa?',
-            a3_1: 'Thường xuyên', a3_2: 'Thỉnh thoảng', a3_3: 'Hiếm khi', a3_4: 'Chưa từng',
-            a4_title: 'A4. Anh/chị có tham gia hoạt động hợp xướng hoặc âm nhạc cộng đồng không?',
-            a4_1: 'Có \u2013 thường xuyên', a4_2: 'Có \u2013 thỉnh thoảng', a4_3: 'Không',
-            a5_title: 'A5. Khu vực công tác/sinh sống',
-            a5_1: 'Hà Nội', a5_2: 'TP.HCM', a5_3: 'Thành phố khác', a5_4: 'Nông thôn', a5_5: 'Quốc tế',
-            section_b: 'PHẦN B. NHẬN THỨC VỀ ÂM NHẠC VÀ PHÁT TRIỂN THỜI THƠ ẤU',
-            b_title: 'Mức độ đồng ý với các phát biểu sau',
-            b_h1: '1 \u2014 Hoàn toàn không đồng ý', b_h2: '2 \u2014 Không đồng ý',
-            b_h3: '3 \u2014 Trung lập / Không chắc chắn', b_h4: '4 \u2014 Đồng ý', b_h5: '5 \u2014 Hoàn toàn đồng ý',
-            grid_na: 'Không đủ trải nghiệm để đánh giá',
-            section_c: 'PHẦN C. ĐẶC ĐIỂM ÂM NHẠC VÀ LỰA CHỌN TÁC PHẨM ÂM NHẠC',
-            c1_title: 'C1. Mức độ quan trọng của các đặc điểm âm nhạc đối với trẻ (3\u20136 tuổi)',
-            c1_h1: '1 \u2014 Không quan trọng', c1_h5: '5 \u2014 Cực kỳ quan trọng',
-            grid_na2: 'Không đủ trải nghiệm để đánh giá',
-            c2_title: 'C2. Chọn tác phẩm âm nhạc (Chọn tối đa 3 đáp án)',
-            c2_1: 'Bài hát thiếu nhi Việt Nam', c2_2: 'Dân ca Việt Nam', c2_3: 'Tác phẩm âm nhạc hợp xướng thiếu nhi',
-            c2_4: 'Nhạc phim / hoạt hình', c2_5: 'Nhạc cổ điển nhẹ / khí nhạc', c2_6: 'Nhạc đương đại / acoustic',
-            c2_7: 'Hoạt động tiết tấu / gõ đệm', c2_8: 'Khác',
-            c2_other_label: 'Nếu lựa chọn khác, Bạn vui lòng nêu cụ thể dưới đây:'
-            c3_title: 'C3. Anh/chị vui lòng đề xuất 1\u20133 bài hát hoặc ví dụ âm nhạc phù hợp cho trẻ và giải thích ngắn gọn lý do.',
-            section_d: 'PHẦN D. HOẠT ĐỘNG ÂM NHẠC VÀ HÀNH VI HỌC TẬP',
-            d1a_title: 'D1.a. Hoạt động âm nhạc (Chọn tối đa 3 đáp án)',
-            d1_1: 'Nghe nhạc có hướng dẫn', d1_2: 'Hát nhóm', d1_3: 'Hát đối đáp',
-            d1_4: 'Vận động theo nhịp', d1_5: 'Gõ đệm / giữ nhịp', d1_6: 'Kể chuyện bằng âm nhạc',
-            d1_7: 'Vẽ / phản hồi sau nghe nhạc', d1_8: 'Ứng tác',
-            d1b_title: 'D1.b. Theo anh/chị, yếu tố nào của hoạt động âm nhạc có khả năng ảnh hưởng mạnh nhất tới sự học tập của trẻ? (Chọn tối đa 3 đáp án)',
-            d1b_1: 'Cấu trúc nhịp điệu / tiết tấu', d1b_2: 'Sự lặp lại và dự đoán được',
-            d1b_3: 'Vận động cơ thể', d1b_4: 'Tương tác xã hội theo nhóm',
-            d1b_5: 'Hướng dẫn và hỗ trợ của người lớn', d1b_6: 'Biểu đạt và điều chỉnh cảm xúc',
-            d1b_7: 'Tính quen thuộc văn hóa',
-            d2_title: 'D2. Mức độ liên hệ giữa hoạt động âm nhạc và các hành vi học tập sau',
-            d2_h1: '1 \u2014 Không liên hệ', d2_h5: '5 \u2014 Liên hệ rất mạnh',
-            grid_na3: 'Không đủ trải nghiệm để đánh giá',
-            section_e: 'PHẦN E. GIA ĐÌNH, NHÀ TRƯỜNG VÀ CỘNG ĐỒNG',
-            e1_title: 'E1. Mức độ quan trọng của các môi trường đối với việc học âm nhạc mầm non hiệu quả',
-            e1_h1: '1 \u2014 Không quan trọng', e1_h5: '5 \u2014 Cực kỳ quan trọng',
-            grid_na4: 'Không đủ trải nghiệm để đánh giá',
-            e2_title: 'E2. Theo anh/chị, mức độ hợp tác giữa giáo viên mầm non và người thực hành âm nhạc cộng đồng có thể cải thiện chương trình âm nhạc mầm non đến mức nào?',
-            e2_1: 'Không đáng kể', e2_2: 'Ít', e2_3: 'Trung bình', e2_4: 'Đáng kể', e2_5: 'Rất đáng kể',
-            e3_title: 'E3. Những thách thức chính (Chọn tối đa 3 đáp án)',
-            e3_1: 'Thiếu đào tạo giáo viên', e3_2: 'Thiếu nguồn lực âm nhạc (nhạc cụ, cơ sở vật chất, trung tâm, địa bàn tổ chức)', e3_3: 'Hạn chế thời gian',
-            e3_4: 'Sự tham gia thấp của gia đình', e3_5: 'Áp lực chương trình học',
-            e3_6: 'Thiếu tác phẩm âm nhạc phù hợp văn hóa', e3_7: 'Thiếu hợp tác giữa lĩnh vực giáo dục và âm nhạc', e3_8: 'Khác',
-            e3_other_label: 'Nếu bạn chọn khác, vui lòng nêu rõ:'
-            e4_title: 'E4. Theo anh/chị, hoạt động âm nhạc có sự tham gia của gia đình có khả năng ảnh hưởng mạnh nhất tới khía cạnh nào của trẻ? (Chọn tối đa 2 đáp án)',
-            e4_1: 'Điều chỉnh cảm xúc', e4_2: 'Chú ý/tập trung', e4_3: 'Động lực tham gia',
-            e4_4: 'Kỹ năng xã hội', e4_5: 'Ngôn ngữ', e4_6: 'Chưa rõ',
-            section_f: 'PHẦN F. PHẢN HỒI MỞ',
-            f1_title: 'F1. Theo quan điểm của anh/chị, đóng góp quan trọng nhất của âm nhạc đối với sự phát triển của trẻ là gì?',
-            f2_title: 'F2. Anh/chị có đề xuất gì cho việc thiết kế các hoạt động âm nhạc mầm non phù hợp với bối cảnh văn hóa Việt Nam?',
-            f3_title: 'F3. Nếu bạn quan tâm tham gia đóng góp nghiên cứu chuyên sâu vui lòng để lại Tên và số điện thoại dưới đây:'
-            submit_btn: 'Gửi khảo sát & Tải dữ liệu CSV',
-            alert_msg: 'Khảo sát đã được lưu vào file CSV. (Ứng dụng chạy cục bộ trên trình duyệt).',
-            validation_max: 'Vui lòng chọn tối đa {n} đáp án.',
-            validation_range: 'Vui lòng chọn từ 1 đến {n} đáp án.'
-        },
-        en: {
-            page_title: 'HaFPES 2026 Expert Survey',
-            title: 'HaFPES 2026 Expert Survey: Music, Early Cognition, and Preschool Learning Environments in Vietnam',
-            description: 'Survey Purpose:\nThis survey is part of a research project on the potential role of music-based educational activities in supporting the development of preschool children (ages 3\u20136) in Vietnam.\n\nParticipant profiles may include:\n- Preschool teachers\n- Choral / community music practitioners\n- Music educators / choral conductors\n- Parents / caregivers\n- Others\n\nThe survey focuses on:\n- musical characteristics and repertoire selection;\n- self-regulation and reflective learning behaviors;\n- learning processes related to executive functions;\n- the role of family, school, and community.\n\nAll responses are confidential and used solely for research purposes.\nEstimated completion time: 12\u201315 minutes.',
-            consent_title: 'Informed Consent',
-            consent_help: 'Participation in this survey is entirely voluntary. Participants may stop responding at any time. No personally identifiable information is collected beyond research purposes. Data will be used for academic analysis and research publication.',
-            consent_label: 'I agree to participate in this survey.',
-            section_a: 'SECTION A. BACKGROUND INFORMATION',
-            a1_title: 'A1. Primary professional role',
-            a1_1: 'Preschool teacher', a1_2: 'Preschool administrator', a1_3: 'Music educator',
-            a1_4: 'Choral / music practitioner', a1_5: 'Parent / caregiver', a1_6: 'Other',
-            a2_title: 'A2. Years of experience in music education and/or practice (including listening, appreciation, playing, composing, ...)',
-            a2_1: 'Less than 1 year', a2_2: '1\u20133 years', a2_3: '4\u20137 years', a2_4: '8\u201315 years', a2_5: 'Over 15 years',
-            a3_title: 'A3. Have you directly worked with children aged 3\u20136?',
-            a3_1: 'Frequently', a3_2: 'Occasionally', a3_3: 'Rarely', a3_4: 'Never',
-            a4_title: 'A4. Do you participate in choral or community music activities?',
-            a4_1: 'Yes \u2013 frequently', a4_2: 'Yes \u2013 occasionally', a4_3: 'No',
-            a5_title: 'A5. Area of work / residence',
-            a5_1: 'Hanoi', a5_2: 'Ho Chi Minh City', a5_3: 'Other city', a5_4: 'Rural area', a5_5: 'International',
-            section_b: 'SECTION B. PERCEPTIONS OF MUSIC AND EARLY CHILDHOOD DEVELOPMENT',
-            b_title: 'Level of agreement with the following statements',
-            b_h1: '1 \u2014 Strongly disagree', b_h2: '2 \u2014 Disagree',
-            b_h3: '3 \u2014 Neutral / Uncertain', b_h4: '4 \u2014 Agree', b_h5: '5 \u2014 Strongly agree',
-            grid_na: 'Insufficient experience to assess',
-            section_c: 'SECTION C. MUSICAL CHARACTERISTICS AND REPERTOIRE SELECTION',
-            c1_title: 'C1. Importance of musical characteristics for preschool children (ages 3\u20136)',
-            c1_h1: '1 \u2014 Not important', c1_h5: '5 \u2014 Extremely important',
-            grid_na2: 'Insufficient experience to assess',
-            c2_title: 'C2. Repertoire selection (Select up to 3 options)',
-            c2_1: 'Vietnamese children\u2019s songs', c2_2: 'Vietnamese folk songs', c2_3: 'Children\u2019s choral pieces',
-            c2_4: 'Film / animation music', c2_5: 'Light classical / instrumental music', c2_6: 'Contemporary / acoustic music',
-            c2_7: 'Rhythmic / percussion activities', c2_8: 'Other',
-            c2_other_label: 'If you selected Other, please specify:'
-            c3_title: 'C3. Please suggest 1\u20133 songs or musical examples suitable for preschool children and briefly explain your reasons.',
-            section_d: 'SECTION D. MUSICAL ACTIVITIES AND LEARNING BEHAVIORS',
-            d1a_title: 'D1.a. Musical activities (Select up to 3 options)',
-            d1_1: 'Guided listening', d1_2: 'Group singing', d1_3: 'Call-and-response singing',
-            d1_4: 'Movement to rhythm', d1_5: 'Percussion / beat-keeping', d1_6: 'Musical storytelling',
-            d1_7: 'Drawing / responding after listening', d1_8: 'Improvisation',
-            d1b_title: 'D1.b. In your opinion, which elements of musical activities are most likely to influence children\u2019s learning? (Select up to 3 options)',
-            d1b_1: 'Rhythmic / beat structure', d1b_2: 'Repetition and predictability',
-            d1b_3: 'Physical movement', d1b_4: 'Group social interaction',
-            d1b_5: 'Adult guidance and support', d1b_6: 'Emotional expression and regulation',
-            d1b_7: 'Cultural familiarity',
-            d2_title: 'D2. Level of association between musical activities and the following learning behaviors',
-            d2_h1: '1 \u2014 No association', d2_h5: '5 \u2014 Very strong association',
-            grid_na3: 'Insufficient experience to assess',
-            section_e: 'SECTION E. FAMILY, SCHOOL, AND COMMUNITY',
-            e1_title: 'E1. Importance of environments for effective preschool music education',
-            e1_h1: '1 \u2014 Not important', e1_h5: '5 \u2014 Extremely important',
-            grid_na4: 'Insufficient experience to assess',
-            e2_title: 'E2. In your opinion, to what extent can collaboration between preschool teachers and community music practitioners improve preschool music programs?',
-            e2_1: 'Negligible', e2_2: 'Slightly', e2_3: 'Moderately', e2_4: 'Significantly', e2_5: 'Very significantly',
-            e3_title: 'E3. Key challenges (Select up to 3 options)',
-            e3_1: 'Lack of teacher training', e3_2: 'Lack of musical resources (instruments, facilities, centers, venues)', e3_3: 'Time constraints',
-            e3_4: 'Low family involvement', e3_5: 'Curriculum pressure',
-            e3_6: 'Lack of culturally appropriate repertoire', e3_7: 'Lack of education\u2013music collaboration', e3_8: 'Other',
-            e3_other_label: 'If you selected Other, please specify:'
-            e4_title: 'E4. In your opinion, which aspects of children are most likely to be influenced by family-involved musical activities? (Select up to 2 options)',
-            e4_1: 'Emotional regulation', e4_2: 'Attention / focus', e4_3: 'Engagement motivation',
-            e4_4: 'Social skills', e4_5: 'Language', e4_6: 'Unclear',
-            section_f: 'SECTION F. OPEN-ENDED RESPONSES',
-            f1_title: 'F1. In your view, what is the most important contribution of music to preschool children\u2019s development?',
-            f2_title: 'F2. Do you have any suggestions for designing preschool musical activities appropriate for the Vietnamese cultural context?',
-            f3_title: 'F3. If you are interested in contributing to further research, please leave your name and phone number below:'
-            submit_btn: 'Submit Survey & Download CSV',
-            alert_msg: 'Survey response has been saved to a CSV file. (Application runs locally in your browser.)',
-            validation_max: 'Please select up to {n} options.',
-            validation_range: 'Please select between 1 and {n} options.'
-        }
-    };
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.color = '#5a6a7a';
 
-    /* ===== Grid Row Data ===== */
-    var gridData = {
-        B: {
-            vi: [
-                'Hoạt động âm nhạc thường xuyên có thể hỗ trợ khả năng duy trì chú ý của trẻ nhỏ.',
-                'Hát tập thể có thể giúp trẻ học cách điều chỉnh hành vi.',
-                'Hoạt động âm nhạc có thể tạo cơ hội để trẻ phản tư về hành động hoặc quá trình học tập của bản thân.',
-                'Nhịp điệu trong âm nhạc có thể tăng khả năng chuyển đổi chú ý hoặc thích nghi với thay đổi.',
-                'Tham gia âm nhạc có thể hỗ trợ biểu đạt cảm xúc và tự điều chỉnh cảm xúc.',
-                'Hiệu quả giáo dục của hoạt động âm nhạc phụ thuộc đáng kể vào sự hướng dẫn của người lớn.',
-                'Giá trị phát triển của âm nhạc có thể thay đổi theo bối cảnh gia đình, nhà trường và văn hóa.',
-                'Một số tuyên bố về lợi ích nhận thức của âm nhạc đối với trẻ mầm non có thể vượt quá bằng chứng hiện có.'
-            ],
-            en: [
-                'Regular musical activities can support young children\u2019s ability to sustain attention.',
-                'Group singing can help children learn to regulate their behavior.',
-                'Musical activities can provide opportunities for children to reflect on their own actions or learning processes.',
-                'Rhythmic activities can enhance the ability to shift attention or adapt to changes.',
-                'Musical participation can support emotional expression and self-regulation.',
-                'The educational effectiveness of musical activities depends significantly on adult guidance.',
-                'The developmental value of music may vary depending on family, school, and cultural contexts.',
-                'Some claims about the cognitive benefits of music for preschool children may exceed the current evidence base.'
-            ]
-        },
-        C1: {
-            vi: [
-                'Giai điệu dễ nhớ', 'Cấu trúc tiết tấu rõ ràng', 'Sự lặp lại / tính dự đoán được',
-                'Cơ hội vận động', 'Tính biểu cảm cảm xúc', 'Yếu tố kể chuyện / tự sự',
-                'Tính quen thuộc văn hóa', 'Khả năng tham gia theo nhóm'
-            ],
-            en: [
-                'Memorable melody', 'Clear rhythmic structure', 'Repetition / predictability',
-                'Movement opportunities', 'Emotional expressiveness', 'Storytelling / narrative elements',
-                'Cultural familiarity', 'Group participation potential'
-            ]
-        },
-        D2: {
-            vi: [
-                'Duy trì chú ý', 'Luân phiên lượt tham gia', 'Bình ổn cảm xúc',
-                'Tuân theo tín hiệu/luật chơi trong hoạt động âm nhạc', 'Điều chỉnh linh hoạt khi thay đổi',
-                'Ghi nhớ mẫu hình / chuỗi', 'Tự sửa lỗi', 'Giải thích cách mình nghĩ hoặc cách mình thực hiện nhiệm vụ.',
-                'Hợp tác trong nhóm', 'Chuẩn bị cách thực hiện trước khi bắt đầu hoạt động âm nhạc',
-                'Chờ tín hiệu hoặc kiềm chế phản ứng ngay lập tức', 'Giữ thông tin trong đầu khi thực hiện hoạt động nhiều bước.'
-            ],
-            en: [
-                'Sustaining attention', 'Turn-taking', 'Emotional stabilization',
-                'Following cues / rules in musical activities', 'Flexible adjustment to changes',
-                'Memorizing patterns / sequences', 'Self-correction', 'Explaining how one thinks or performs a task',
-                'Group cooperation', 'Planning how to perform before starting a musical activity',
-                'Waiting for cues or inhibiting immediate responses', 'Holding information in mind while performing multi-step activities'
-            ]
-        },
-        E1: {
-            vi: [
-                'Lớp học mầm non', 'Sự tham gia của gia đình', 'Năng lực chuyên môn của giáo viên',
-                'Văn hóa âm nhạc cộng đồng', 'Kiến thức của người thực hành âm nhạc / hợp xướng'
-            ],
-            en: [
-                'Preschool classroom', 'Family involvement', 'Teacher professional competence',
-                'Community music culture', 'Knowledge of music / choral practitioners'
-            ]
-        }
-    };
+const state = {
+  lang: 'en',
+  theme: localStorage.getItem('hafpesTheme') || 'light',
+};
 
-    /* ===== Current State ===== */
-    var currentLang = localStorage.getItem('hafpes_lang') || 'vi';
-    var currentTheme = localStorage.getItem('hafpes_theme') || 'light';
+const copy = {
+  en: {
+    heroBadge: 'HaFPES 2026 · Research Dashboard',
+    heroHeading: 'Music-Mediated <span>Metacognition</span> &amp;<br>Self-Regulation in Early Childhood',
+    heroParagraph: 'Survey-based study of practitioner perspectives in Vietnam. Data collected May–June 2026 via structured online questionnaire (52 items).',
+    navDemographics: 'Demographics',
+    navBeliefs: 'Beliefs (Section B)',
+    navMusic: 'Music Characteristics (C)',
+    navBehaviors: 'Learning Behaviors (D2)',
+    navEnvironment: 'Environment &amp; Barriers (E)',
+    navOutcomes: 'Outcomes &amp; Summary',
+    sectionA: 'Section A · Respondent Demographics',
+    sectionASub: 'N = 205 participants across Vietnam · May–June 2026',
+    sectionB: 'Section B · Beliefs About Music &amp; Development',
+    sectionBSub: '8-item Likert scale (1 = Strongly Disagree → 5 = Strongly Agree) · N = 205',
+    sectionC: 'Section C · Music Selection &amp; Characteristics',
+    sectionCSub: 'C1: Importance of musical features · C2: Preferred music types · D1a: Activity formats used',
+    sectionD: 'Section D2 · Music &amp; Learning Behaviors',
+    sectionDSub: 'Perceived connection between music activities and 12 specific learning/metacognitive behaviors (1 = No connection → 5 = Very strong connection) · N = 205',
+    sectionE: 'Section E · Environments, Collaboration &amp; Barriers',
+    sectionESub: 'E1: Contextual importance · E2: Teacher-musician collaboration · E3: Implementation barriers',
+    sectionOutcomes: 'Outcomes &amp; Survey Summary',
+    sectionOutcomesSub: 'Family music outcomes (E4) · Integrated findings · Key numbers at a glance',
+    demographicsRoleSub: 'Distribution of respondent roles (N = 205)',
+    demographicsExpSub: 'Experience in education / music practice',
+    demographicsRegionSub: 'Respondent work/residential location',
+    demographicsWorkSub: 'Frequency of engagement with target age group',
+    demographicsChoirSub: 'Indicates existing connection to music practice beyond classroom',
+    beliefsMeanSub: 'All items rated on 5-point scale; error bars = ±0.5 SD',
+    beliefsAgreeSub: 'Percentage selecting 4 (Agree) or 5 (Strongly Agree)',
+    beliefsStackSub: 'Stacked diverging chart · colour = response level',
+    keyInsightsTitle: 'Key Insights',
+    insightB5: '<strong>B5 (Emotional Self-Regulation)</strong> scored highest (M = 4.20; 90.5% agree+), consistent with theoretical accounts linking musical participation to emotional regulation mechanisms.',
+    insightB7: '<strong>B7 (Context Influences Value)</strong> scored M = 4.18 (88.7% agree+), indicating practitioners understand that music\'s developmental value depends on family, school, and cultural context.',
+    insightB8: '<strong>B8 (Evidence Reflexivity)</strong> scored M = 4.08 — still high, but the lowest item — suggesting practitioners are epistemically cautious; 81.7% still agreed some cognitive claims may exceed available evidence.',
+    insightRange: 'The <strong>range of all means is only 0.12 points</strong> (4.08–4.20), indicating a coherent, holistic view of music\'s developmental role rather than item-specific endorsement.',
+    c1Sub: 'Mean importance ratings (1–5 scale) for ECE contexts, ages 3–6',
+    c2Sub: 'Select up to 3; total mentions across respondents',
+    d1aSub: 'Select up to 3 activity formats used with young children',
+    d1bSub: 'Most frequently co-selected influential elements',
+    musicC1BarsSub: '% of respondents rating each characteristic as Important or Very Important',
+    behaviorsMeanSub: 'Horizontal bar chart; ordered by mean descending',
+    behaviorsRadarSub: 'Visualising profile shape across all 12 behavior dimensions',
+    behaviorsRadarNote: 'All items score between 4.17–4.24, indicating a tightly clustered, uniformly high endorsement profile.',
+    behaviorsStackSub: 'Showing complete response distribution per behavior (1–5 scale)',
+    behaviorsTableSub: 'Cognitive categorisation of each D2 item by primary developmental domain',
+    environmentE1Sub: 'Mean importance ratings (1–5) for effective music learning in ECE',
+    environmentE2Sub: 'Can collaboration improve music programming in ECE?',
+    environmentE3Sub: 'Most frequently cited challenges (select up to 3); N of mentions shown',
+    environmentE1BarsSub: '% rating each environment as Important or Very Important',
+    outcomesE4Sub: 'Most frequently cited developmental outcomes from family music engagement',
+    outcomesCompareSub: 'Comparing Section B belief means vs Section D2 connection means',
+    outcomesAllMeansSub: 'Every rated item across all sections on a single chart (scale 1–5)',
+    outcomesKeyFindingsSub: 'Top 5 takeaways from survey data',
+    outcomeInsight1: 'All 8 belief items scored <strong>4.08–4.20/5</strong>; 79.5–90.5% of respondents agreed or strongly agreed.',
+    outcomeInsight2: 'All 12 D2 behaviors scored <strong>4.17–4.24/5</strong> — a range of only 0.07 points, indicating highly uniform endorsement.',
+    outcomeInsight3: '<strong>87.8%</strong> rated teacher–musician collaboration as significantly or very significantly beneficial.',
+    outcomeInsight4: 'Top barrier: <strong>limited resources</strong> (159/205); followed by time (103) and training (96).',
+    outcomeInsight5: '<strong>Emotional regulation</strong> was the #1 perceived outcome of family music engagement (111 respondents).',
+    sampleCompositionSub: 'Summary statistics',
+    reliabilitySub: 'Instrument psychometric summary',
+    themeLight: '🌙 Dark mode',
+    themeDark: '☀️ Light mode',
+    langButton: 'VIE',
+  },
+  vi: {
+    heroBadge: 'HaFPES 2026 · Bảng điều khiển khảo sát',
+    heroHeading: 'Âm nhạc <span>kích hoạt siêu nhận thức</span> &amp;<br>tự điều chỉnh ở trẻ nhỏ',
+    heroParagraph: 'Nghiên cứu khảo sát quan điểm nhà thực hành tại Việt Nam. Dữ liệu thu thập tháng 5–6/2026 qua bảng câu hỏi trực tuyến có 52 mục.',
+    navDemographics: 'Nhân khẩu học',
+    navBeliefs: 'Niềm tin (Phần B)',
+    navMusic: 'Đặc điểm âm nhạc (C)',
+    navBehaviors: 'Hành vi học tập (D2)',
+    navEnvironment: 'Môi trường &amp; Rào cản (E)',
+    navOutcomes: 'Kết quả &amp; Tóm tắt',
+    sectionA: 'Phần A · Nhân khẩu học người trả lời',
+    sectionASub: 'N = 205 người tham gia tại Việt Nam · Tháng 5–6/2026',
+    sectionB: 'Phần B · Niềm tin về âm nhạc &amp; phát triển',
+    sectionBSub: '8 câu Likert (1 = Hoàn toàn không đồng ý → 5 = Hoàn toàn đồng ý) · N = 205',
+    sectionC: 'Phần C · Lựa chọn &amp; đặc điểm âm nhạc',
+    sectionCSub: 'C1: Tầm quan trọng đặc điểm âm nhạc · C2: Loại nhạc ưu tiên · D1a: Hình thức hoạt động sử dụng',
+    sectionD: 'Phần D2 · Âm nhạc &amp; hành vi học tập',
+    sectionDSub: 'Đánh giá kết nối giữa hoạt động âm nhạc và 12 hành vi học tập/siêu nhận thức (1 = Không kết nối → 5 = Kết nối rất mạnh) · N = 205',
+    sectionE: 'Phần E · Môi trường, hợp tác &amp; rào cản',
+    sectionESub: 'E1: Tầm quan trọng ngữ cảnh · E2: Hợp tác giáo viên-nhạc sĩ · E3: Rào cản triển khai',
+    sectionOutcomes: 'Kết quả &amp; Tóm tắt khảo sát',
+    sectionOutcomesSub: 'Kết quả âm nhạc gia đình (E4) · Phát hiện tích hợp · Các số liệu chính',
+    demographicsRoleSub: 'Phân bố vai trò người trả lời (N = 205)',
+    demographicsExpSub: 'Kinh nghiệm trong giáo dục / thực hành âm nhạc',
+    demographicsRegionSub: 'Địa điểm làm việc / cư trú của người trả lời',
+    demographicsWorkSub: 'Tần suất tương tác với nhóm trẻ mục tiêu',
+    demographicsChoirSub: 'Chỉ ra kết nối hiện hữu với thực hành âm nhạc ngoài lớp học',
+    beliefsMeanSub: 'Tất cả mục đánh giá trên thang 5 điểm; thanh sai số = ±0.5 ĐT',
+    beliefsAgreeSub: 'Phần trăm chọn 4 (Đồng ý) hoặc 5 (Hoàn toàn đồng ý)',
+    beliefsStackSub: 'Biểu đồ chồng phân kỳ · màu = mức phản hồi',
+    keyInsightsTitle: 'Những phát hiện chính',
+    insightB5: '<strong>B5 (Tự điều chỉnh cảm xúc)</strong> đạt cao nhất (M = 4.20; 90.5% đồng ý+), phù hợp với các lý giải lý thuyết về mối liên hệ giữa tham gia âm nhạc và cơ chế điều chỉnh cảm xúc.',
+    insightB7: '<strong>B7 (Giá trị phụ thuộc bối cảnh)</strong> đạt M = 4.18 (88.7% đồng ý+), cho thấy nhà thực hành hiểu giá trị phát triển của âm nhạc phụ thuộc vào gia đình, trường học và văn hóa.',
+    insightB8: '<strong>B8 (Phản tỉnh bằng chứng)</strong> đạt M = 4.08 — vẫn cao nhưng thấp nhất — cho thấy nhà thực hành khá thận trọng nhận thức; 81.7% vẫn đồng ý rằng một số tuyên bố có thể vượt quá bằng chứng hiện có.',
+    insightRange: 'Khoảng cách giữa các giá trị trung bình chỉ 0.12 điểm (4.08–4.20), cho thấy quan điểm thống nhất, tổng thể về vai trò phát triển của âm nhạc thay vì chỉ gia tăng theo từng mục.',
+    c1Sub: 'Điểm trung bình quan trọng (1–5) cho bối cảnh ECE, độ tuổi 3–6',
+    c2Sub: 'Chọn tối đa 3; tổng lượt đề cập của người trả lời',
+    d1aSub: 'Chọn tối đa 3 hình thức hoạt động sử dụng với trẻ nhỏ',
+    d1bSub: 'Các yếu tố có ảnh hưởng mạnh nhất được chọn cùng nhau nhiều nhất',
+    musicC1BarsSub: '% người trả lời xếp loại mỗi đặc điểm là Quan trọng hoặc Rất quan trọng',
+    behaviorsMeanSub: 'Biểu đồ cột ngang; sắp xếp theo điểm trung bình giảm dần',
+    behaviorsRadarSub: 'Minh họa hình dạng hồ sơ trên 12 chiều hành vi',
+    behaviorsRadarNote: 'Tất cả mục điểm từ 4.17–4.24, cho thấy một hồ sơ đồng nhất và mức đồng ý cao.',
+    behaviorsStackSub: 'Hiển thị phân phối phản hồi đầy đủ theo mỗi hành vi (thang 1–5)',
+    behaviorsTableSub: 'Phân loại nhận thức của mỗi mục D2 theo miền phát triển chính',
+    environmentE1Sub: 'Điểm quan trọng trung bình (1–5) cho việc học âm nhạc hiệu quả trong ECE',
+    environmentE2Sub: 'Hợp tác có thể cải thiện chương trình âm nhạc trong ECE không?',
+    environmentE3Sub: 'Các thách thức được trích dẫn nhiều nhất (chọn tối đa 3); số lượt đề cập hiển thị',
+    environmentE1BarsSub: '% đánh giá mỗi môi trường là Quan trọng hoặc Rất quan trọng',
+    outcomesE4Sub: 'Kết quả phát triển được trích dẫn nhiều nhất từ tham gia âm nhạc gia đình',
+    outcomesCompareSub: 'So sánh điểm trung bình niềm tin Phần B và điểm kết nối D2',
+    outcomesAllMeansSub: 'Mỗi mục được xếp loại trên tất cả các phần trong cùng một biểu đồ (thang 1–5)',
+    outcomesKeyFindingsSub: '5 điểm chính rút ra từ dữ liệu khảo sát',
+    outcomeInsight1: 'Tám mục niềm tin đều đạt 4.08–4.20/5; 79.5–90.5% người trả lời đồng ý hoặc hoàn toàn đồng ý.',
+    outcomeInsight2: '12 hành vi D2 đều đạt 4.17–4.24/5 — khoảng cách chỉ 0.07 điểm, cho thấy sự đồng ý rất đồng đều.',
+    outcomeInsight3: '<strong>87.8%</strong> đánh giá hợp tác giáo viên-nhạc sĩ là có ý nghĩa hoặc rất có ý nghĩa.',
+    outcomeInsight4: 'Rào cản hàng đầu: <strong>nguồn lực hạn chế</strong> (159/205); tiếp theo là thời gian (103) và đào tạo (96).',
+    outcomeInsight5: '<strong>Điều tiết cảm xúc</strong> là kết quả được đánh giá cao nhất của tham gia âm nhạc gia đình (111 người trả lời).',
+    sampleCompositionSub: 'Thống kê tổng quan',
+    reliabilitySub: 'Tóm tắt thang đo tâm lý của công cụ',
+    themeLight: '🌙 Chế độ tối',
+    themeDark: '☀️ Chế độ sáng',
+    langButton: 'ENG',
+  }
+};
 
-    /* ===== Theme Management ===== */
-    function setTheme(theme) {
-        currentTheme = theme;
-        document.documentElement.setAttribute('data-theme', theme === 'dark' ? 'dark' : '');
-        if (theme === 'dark') {
-            document.documentElement.dataset.theme = 'dark';
-        } else {
-            delete document.documentElement.dataset.theme;
-        }
-        localStorage.setItem('hafpes_theme', theme);
+const i18nElements = document.querySelectorAll('[data-i18n]');
+const charts = {};
 
-        var toggle = document.getElementById('themeToggle');
-        toggle.checked = (theme === 'dark');
+function applyTheme() {
+  document.body.classList.toggle('dark', state.theme === 'dark');
+  const themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) themeToggle.textContent = state.theme === 'dark' ? copy[state.lang].themeDark : copy[state.lang].themeLight;
+  localStorage.setItem('hafpesTheme', state.theme);
+}
 
-        var sunIcon = document.getElementById('sunIcon');
-        var moonIcon = document.getElementById('moonIcon');
-        if (theme === 'dark') {
-            sunIcon.classList.remove('active');
-            moonIcon.classList.add('active');
-        } else {
-            sunIcon.classList.add('active');
-            moonIcon.classList.remove('active');
-        }
+function applyTranslation() {
+  i18nElements.forEach(el => {
+    const key = el.dataset.i18n;
+    if (copy[state.lang] && copy[state.lang][key] !== undefined) {
+      el.innerHTML = copy[state.lang][key];
     }
+  });
+  const langToggle = document.getElementById('langToggle');
+  if (langToggle) langToggle.textContent = state.lang === 'en' ? copy.vi.langButton : copy.en.langButton;
+  refreshCharts();
+}
 
-    /* ===== Language Management ===== */
-    function setLanguage(lang) {
-        currentLang = lang;
-        localStorage.setItem('hafpes_lang', lang);
-        document.documentElement.lang = lang;
-        document.title = i18n[lang].page_title;
+function toggleTheme() {
+  state.theme = state.theme === 'dark' ? 'light' : 'dark';
+  applyTheme();
+}
 
-        document.querySelectorAll('[data-i18n]').forEach(function(el) {
-            var key = el.getAttribute('data-i18n');
-            if (i18n[lang][key] !== undefined) {
-                el.textContent = i18n[lang][key];
-            }
-        });
+function toggleLanguage() {
+  state.lang = state.lang === 'en' ? 'vi' : 'en';
+  applyTranslation();
+}
 
-        // Update grid row labels
-        Object.keys(gridData).forEach(function(section) {
-            var rows = gridData[section][lang];
-            rows.forEach(function(text, idx) {
-                var td = document.querySelector('[data-i18n-grid="' + section + '_' + (idx + 1) + '"]');
-                if (td) td.textContent = text;
-            });
-        });
+function refreshCharts() {
+  if (charts.roleChart) charts.roleChart.data.labels = dataSets[state.lang].roleChartLabels;
+  if (charts.roleChart) charts.roleChart.update();
+  if (charts.expChart) charts.expChart.data.labels = dataSets[state.lang].expChartLabels;
+  if (charts.expChart) charts.expChart.update();
+  if (charts.regionChart) charts.regionChart.data.labels = dataSets[state.lang].regionChartLabels;
+  if (charts.regionChart) charts.regionChart.update();
+  if (charts.workChart) charts.workChart.data.labels = dataSets[state.lang].workChartLabels;
+  if (charts.workChart) charts.workChart.update();
+  if (charts.choirChart) charts.choirChart.data.labels = dataSets[state.lang].choirChartLabels;
+  if (charts.choirChart) charts.choirChart.update();
+  if (charts.beliefMeanChart) charts.beliefMeanChart.data.labels = dataSets[state.lang].bLabels;
+  if (charts.beliefMeanChart) charts.beliefMeanChart.update();
+  if (charts.beliefAgreeChart) charts.beliefAgreeChart.data.labels = dataSets[state.lang].bSimpleLabels;
+  if (charts.beliefAgreeChart) charts.beliefAgreeChart.update();
+  if (charts.beliefStackedChart) charts.beliefStackedChart.data.labels = dataSets[state.lang].bLabelsShort;
+  if (charts.beliefStackedChart) charts.beliefStackedChart.update();
+  if (charts.c1Chart) charts.c1Chart.data.labels = dataSets[state.lang].c1Labels;
+  if (charts.c1Chart) charts.c1Chart.update();
+  if (charts.c2Chart) charts.c2Chart.data.labels = dataSets[state.lang].c2Labels;
+  if (charts.c2Chart) charts.c2Chart.update();
+  if (charts.d1aChart) charts.d1aChart.data.labels = dataSets[state.lang].d1aLabels;
+  if (charts.d1aChart) charts.d1aChart.update();
+  if (charts.d1bChart) charts.d1bChart.data.labels = dataSets[state.lang].d1bLabels;
+  if (charts.d1bChart) charts.d1bChart.update();
+  if (charts.d2MeanChart) charts.d2MeanChart.data.labels = dataSets[state.lang].d2Labels;
+  if (charts.d2MeanChart) charts.d2MeanChart.update();
+  if (charts.d2RadarChart) charts.d2RadarChart.data.labels = dataSets[state.lang].d2Full;
+  if (charts.d2RadarChart) charts.d2RadarChart.update();
+  if (charts.d2StackChart) charts.d2StackChart.data.labels = dataSets[state.lang].d2Labels;
+  if (charts.d2StackChart) charts.d2StackChart.update();
+  if (charts.e1Chart) charts.e1Chart.data.labels = dataSets[state.lang].e1Labels;
+  if (charts.e1Chart) charts.e1Chart.update();
+  if (charts.e2Chart) charts.e2Chart.data.labels = dataSets[state.lang].e2Labels;
+  if (charts.e2Chart) charts.e2Chart.update();
+  if (charts.e3Chart) charts.e3Chart.data.labels = dataSets[state.lang].e3Labels;
+  if (charts.e3Chart) charts.e3Chart.update();
+  if (charts.e4Chart) charts.e4Chart.data.labels = dataSets[state.lang].e4Labels;
+  if (charts.e4Chart) charts.e4Chart.update();
+  if (charts.compareChart) charts.compareChart.data.labels = dataSets[state.lang].compareLabels;
+  if (charts.compareChart) charts.compareChart.update();
+  if (charts.allMeansChart) charts.allMeansChart.data.labels = dataSets[state.lang].allLabels;
+  if (charts.allMeansChart) charts.allMeansChart.update();
+  if (document.getElementById('c1Bars')) {
+    buildBars('c1Bars', dataSets[state.lang].c1Labels.map((l,i)=>({ label:l, pct:c1Pcts[i].toFixed(1), color: c1Pcts[i] >= 90 ? 'var(--teal)' : 'var(--sky)' })));
+  }
+  if (document.getElementById('e1Bars')) {
+    buildBars('e1Bars', dataSets[state.lang].e1Labels.map((l,i)=>({ label:l, pct:e1Pcts[i].toFixed(1), color: 'var(--gold)' })));
+  }
+}
 
-        // Update segmented control
-        document.querySelectorAll('.seg-control button').forEach(function(btn) {
-            btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-        });
+const dataSets = {
+  en: {
+    roleChartLabels:['Preschool Teachers','Parents/Caregivers','Music Educators','Administrators','Choir Members'],
+    expChartLabels:['< 1 year','1–3 years','4–7 years','8–15 years','> 15 years'],
+    regionChartLabels:['Hanoi','Other Cities','Rural Areas'],
+    workChartLabels:['Regularly','Occasionally','Rarely','Never'],
+    choirChartLabels:['Occasionally','Not Participating','Regularly'],
+    bLabels:['B1: Sustained Attention','B2: Group Singing Behavior','B3: Reflection Opportunities','B4: Attention Flexibility','B5: Emotional Self-Regulation','B6: Adult Guidance Critical','B7: Context Influences Value','B8: Evidence Reflexivity'],
+    bSimpleLabels:['B1','B2','B3','B4','B5','B6','B7','B8'],
+    bLabelsShort:['B1: Sustained Attention','B2: Group Singing Behavior','B3: Reflection Opportunities','B4: Attention Flexibility','B5: Emotional Self-Regulation','B6: Adult Guidance Critical','B7: Context Influences Value','B8: Evidence Reflexivity'],
+    c1Labels:['Memorable Melody','Clear Rhythm','Repetition/Predictability','Movement Opportunities','Emotional Expressiveness','Storytelling/Narrative','Cultural Familiarity','Group Participation'],
+    c2Labels:['Vietnamese Children Songs','Vietnamese Folk Music','Film/Animation Music','Children\'s Choir Pieces','Rhythm/Percussion','Classical/Instrumental','Contemporary/Acoustic'],
+    d1aLabels:['Guided Listening','Movement to Music','Group Singing','Music Storytelling','Percussion/Rhythm','Call & Response','Improvised Movement','Post-listening Drawing'],
+    d1bLabels:['Rhythmic Structure','Body Movement','Repetition/Predictability','Group Social Interaction','Emotional Expression','Adult Guidance','Cultural Familiarity'],
+    d2Labels:['Sustained Attention','Pattern Memory','Group Cooperation','Following Cues/Rules','Flexible Adjustment','Inhibitory Control','Emotional Regulation','Pre-Planning','Turn-Taking','Self-Correction','Working Memory','Explaining Own Thinking'],
+    d2Full:['Attention','Turn-Taking','Emotional Reg.','Cues/Rules','Flexibility','Pattern Memory','Self-Correction','Metacog. Talk','Cooperation','Planning','Inhibition','Working Mem.'],
+    e1Labels:['Preschool Classroom','Family Involvement','Teacher Expertise','Community Music Culture','Music Practitioner Knowledge'],
+    e2Labels:['Significantly','Very Significantly','Moderately','Little Impact','Not at All'],
+    e3Labels:['Limited Resources','Time Constraints','Insufficient Teacher Training','Low Family Participation','Lack of Education–Music Collaboration','Curriculum Pressure','Lack of Culturally Appropriate Repertoire'],
+    e4Labels:['Emotional Regulation','Motivation to Participate','Attention/Focus','Social Skills','Language Development','Unclear'],
+    compareLabels:['B: Beliefs\n(Mean 4.14)','D2: Behaviors\n(Mean 4.21)'],
+    allLabels:['B1','B2','B3','B4','B5','B6','B7','B8','C1a','C1b','C1c','C1d','C1e','C1f','C1g','C1h','D2-1','D2-2','D2-3','D2-4','D2-5','D2-6','D2-7','D2-8','D2-9','D2-10','D2-11','D2-12','E1a','E1b','E1c','E1d','E1e'],
+  },
+  vi: {
+    roleChartLabels:['Giáo viên mầm non','Phụ huynh/người chăm sóc','Giáo viên âm nhạc','Quản trị viên','Thành viên dàn hợp xướng'],
+    expChartLabels:['< 1 năm','1–3 năm','4–7 năm','8–15 năm','> 15 năm'],
+    regionChartLabels:['Hà Nội','Thành phố khác','Vùng nông thôn'],
+    workChartLabels:['Thường xuyên','Thỉnh thoảng','Hiếm khi','Không bao giờ'],
+    choirChartLabels:['Thỉnh thoảng','Không tham gia','Thường xuyên'],
+    bLabels:['B1: Chú ý liên tục','B2: Hát nhóm','B3: Cơ hội phản ánh','B4: Linh hoạt chú ý','B5: Tự điều chỉnh cảm xúc','B6: Hướng dẫn người lớn quan trọng','B7: Giá trị phụ thuộc bối cảnh','B8: Tính phản tỉnh bằng chứng'],
+    bSimpleLabels:['B1','B2','B3','B4','B5','B6','B7','B8'],
+    bLabelsShort:['B1: Chú ý liên tục','B2: Hát nhóm','B3: Phản ánh','B4: Linh hoạt chú ý','B5: Tự điều chỉnh cảm xúc','B6: Hướng dẫn quan trọng','B7: Giá trị theo bối cảnh','B8: Phản tỉnh bằng chứng'],
+    c1Labels:['Giai điệu dễ nhớ','Nhịp rõ ràng','Lặp lại/Dự đoán được','Cơ hội vận động','Biểu cảm cảm xúc','Kể chuyện','Thân thuộc văn hóa','Tham gia nhóm'],
+    c2Labels:['Bài hát thiếu nhi Việt Nam','Âm nhạc dân gian Việt Nam','Âm nhạc phim/hoạt hình','Tác phẩm hợp xướng thiếu nhi','Nhịp/Trống','Cổ điển/Không lời','Đương đại/Acoustic'],
+    d1aLabels:['Nghe có hướng dẫn','Vận động theo nhạc','Hát nhóm','Kể chuyện âm nhạc','Gõ nhịp/Trống','Call & Response','Vận động ứng tác','Vẽ sau nghe'],
+    d1bLabels:['Cấu trúc nhịp','Cử động cơ thể','Lặp lại/Dự đoán','Tương tác xã hội nhóm','Biểu cảm cảm xúc','Hướng dẫn người lớn','Thân thuộc văn hóa'],
+    d2Labels:['Chú ý liên tục','Ghi nhớ mẫu','Hợp tác nhóm','Theo dõi hướng dẫn','Điều chỉnh linh hoạt','Kiểm soát ức chế','Điều tiết cảm xúc','Lên kế hoạch trước','Chờ lượt','Tự sửa','Bộ nhớ làm việc','Giải thích suy nghĩ'],
+    d2Full:['Chú ý','Chờ lượt','Điều tiết cảm xúc','Hướng dẫn','Linh hoạt','Ghi nhớ mẫu','Tự sửa','Metacog.','Hợp tác','Kế hoạch','Ức chế','Bộ nhớ'],
+    e1Labels:['Phòng lớp mầm non','Sự tham gia gia đình','Chuyên môn giáo viên','Văn hóa âm nhạc cộng đồng','Kiến thức người thực hành âm nhạc'],
+    e2Labels:['Rất có ý nghĩa','Cực kỳ có ý nghĩa','Khá có ý nghĩa','Ít tác động','Không tác động'],
+    e3Labels:['Nguồn lực hạn chế','Hạn chế thời gian','Đào tạo giáo viên không đủ','Gia đình ít tham gia','Thiếu hợp tác giáo dục-âm nhạc','Áp lực chương trình','Thiếu nhạc liệu phù hợp văn hóa'],
+    e4Labels:['Điều tiết cảm xúc','Động lực tham gia','Chú ý/Tập trung','Kỹ năng xã hội','Phát triển ngôn ngữ','Không rõ'],
+    compareLabels:['B: Niềm tin\n(Trung bình 4.14)','D2: Hành vi\n(Trung bình 4.21)'],
+    allLabels:['B1','B2','B3','B4','B5','B6','B7','B8','C1a','C1b','C1c','C1d','C1e','C1f','C1g','C1h','D2-1','D2-2','D2-3','D2-4','D2-5','D2-6','D2-7','D2-8','D2-9','D2-10','D2-11','D2-12','E1a','E1b','E1c','E1d','E1e'],
+  }
+};
 
-        // Update checkbox validation messages
-        refreshCheckboxValidation();
+function applyEventBindings() {
+  const themeToggle = document.getElementById('themeToggle');
+  const langToggle = document.getElementById('langToggle');
+  if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+  if (langToggle) langToggle.addEventListener('click', toggleLanguage);
+}
+
+function initPage() {
+  applyTheme();
+  applyTranslation();
+  applyEventBindings();
+}
+
+// ─────────────────────────────────────
+//  NAV
+// ─────────────────────────────────────
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ─────────────────────────────────────
+//  HELPERS
+// ─────────────────────────────────────
+function hBar(ctx, labels, data, colors, title='') {
+  return new Chart(ctx, { type:'bar', data:{
+    labels,
+    datasets:[{ data, backgroundColor: colors || data.map((_,i)=>Object.values(C)[i%8]),
+      borderRadius:5, borderSkipped:false }]
+  }, options:{
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{callbacks:{label:v=>` ${v.formattedValue}`}} },
+    scales:{ x:{grid:{color:'#e2e8f0'}, min:3.5, max:5,
+              ticks:{callback:v=>v.toFixed(2)} },
+             y:{grid:{display:false}, ticks:{font:{size:11}}} }
+  }});
+}
+
+function vBar(ctx, labels, data, colors) {
+  return new Chart(ctx, { type:'bar', data:{
+    labels,
+    datasets:[{ data, backgroundColor: colors || data.map((_,i)=>Object.values(C)[i%8]),
+      borderRadius:5 }]
+  }, options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false} },
+    scales:{ y:{grid:{color:'#e2e8f0'}, ticks:{font:{size:11}}},
+             x:{grid:{display:false}, ticks:{font:{size:11}, maxRotation:30}} }
+  }});
+}
+
+function doughnut(ctx, labels, data, colors) {
+  return new Chart(ctx, { type:'doughnut', data:{
+    labels,
+    datasets:[{ data, backgroundColor:colors, borderWidth:2, borderColor:'#fff' }]
+  }, options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{position:'bottom', labels:{font:{size:11}, padding:10}} }
+  }});
+}
+
+function pie(ctx, labels, data, colors) {
+  return new Chart(ctx, { type:'pie', data:{
+    labels,
+    datasets:[{ data, backgroundColor:colors, borderWidth:2, borderColor:'#fff' }]
+  }, options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{position:'right', labels:{font:{size:11}, padding:8}} }
+  }});
+}
+
+function stacked(ctx, labels, datasets) {
+  return new Chart(ctx, { type:'bar', data:{ labels, datasets }, options:{
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false},
+      tooltip:{callbacks:{label:v=>`${v.dataset.label}: ${v.formattedValue}`}} },
+    scales:{
+      x:{ stacked:true, grid:{color:'#e2e8f0'}, ticks:{callback:v=>v+''}},
+      y:{ stacked:true, grid:{display:false}, ticks:{font:{size:10}} }
     }
+  }});
+}
 
-    /* ===== Grid Population ===== */
-    function populateGrid(tbodyId, prefix, section) {
-        var tbody = document.getElementById(tbodyId);
-        var rows = gridData[section][currentLang];
-        rows.forEach(function(rowText, index) {
-            var rowName = prefix + '_' + (index + 1);
-            var tr = document.createElement('tr');
-            var td = document.createElement('td');
-            td.textContent = rowText;
-            td.setAttribute('data-i18n-grid', section + '_' + (index + 1));
-            tr.appendChild(td);
-            for (var v = 1; v <= 5; v++) {
-                var tdR = document.createElement('td');
-                var input = document.createElement('input');
-                input.type = 'radio';
-                input.name = rowName;
-                input.value = String(v);
-                if (v === 1) input.required = true;
-                tdR.appendChild(input);
-                tr.appendChild(tdR);
-            }
-            var tdNA = document.createElement('td');
-            var inputNA = document.createElement('input');
-            inputNA.type = 'radio';
-            inputNA.name = rowName;
-            inputNA.value = 'N/A';
-            tdNA.appendChild(inputNA);
-            tr.appendChild(tdNA);
-            tbody.appendChild(tr);
-        });
-    }
+function radar(ctx, labels, datasets) {
+  return new Chart(ctx, { type:'radar', data:{ labels, datasets }, options:{
+    responsive:true, maintainAspectRatio:false,
+    scales:{ r:{ min:3.5, max:5, ticks:{stepSize:.25, font:{size:9}},
+                 pointLabels:{font:{size:10}} }},
+    plugins:{ legend:{display:true, labels:{font:{size:11}}} }
+  }});
+}
 
-    populateGrid('gridB', 'B', 'B');
-    populateGrid('gridC1', 'C1', 'C1');
-    populateGrid('gridD2', 'D2', 'D2');
-    populateGrid('gridE1', 'E1', 'E1');
+// Progress bar helper
+function buildBars(containerId, items) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = items.map(it=>`
+    <div class="bar-item">
+      <div class="bar-label"><span>${it.label}</span><span>${it.pct}%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${it.pct}%;background:${it.color||'var(--blue)'}"></div></div>
+    </div>`).join('');
+}
 
-    /* ===== Checkbox Limitation ===== */
-    function refreshCheckboxValidation() {
-        document.querySelectorAll('.checkbox-group').forEach(function(group) {
-            var max = parseInt(group.getAttribute('data-max'), 10);
-            var checkboxes = group.querySelectorAll('input[type="checkbox"]');
-            var checked = group.querySelectorAll('input[type="checkbox"]:checked');
-            var isAnyChecked = checked.length > 0;
-            checkboxes[0].setCustomValidity(isAnyChecked ? '' :
-                i18n[currentLang].validation_range.replace('{n}', max));
-        });
-    }
+// ─────────────────────────────────────
+//  SECTION A · DEMOGRAPHICS
+// ─────────────────────────────────────
+charts.roleChart = doughnut(document.getElementById('roleChart'),
+  dataSets[state.lang].roleChartLabels,
+  [168,24,8,3,2],
+  [C.blue,C.teal,C.gold,C.sky,C.coral]);
 
-    document.querySelectorAll('.checkbox-group').forEach(function(group) {
-        var max = parseInt(group.getAttribute('data-max'), 10);
-        var checkboxes = group.querySelectorAll('input[type="checkbox"]');
+charts.expChart = vBar(document.getElementById('expChart'),
+  dataSets[state.lang].expChartLabels,
+  [66,63,32,31,13],
+  [C.blue,C.sky,C.teal,C.gold,C.coral]);
 
-        checkboxes.forEach(function(cb) {
-            cb.addEventListener('change', function() {
-                var checked = group.querySelectorAll('input[type="checkbox"]:checked');
-                if (checked.length >= max) {
-                    checkboxes.forEach(function(unCb) {
-                        if (!unCb.checked) unCb.disabled = true;
-                    });
-                } else {
-                    checkboxes.forEach(function(unCb) { unCb.disabled = false; });
-                }
-                var isAnyChecked = checked.length > 0;
-                checkboxes[0].setCustomValidity(isAnyChecked ? '' :
-                    i18n[currentLang].validation_max.replace('{n}', max));
-            });
-            cb.addEventListener('invalid', function() {
-                var checked = group.querySelectorAll('input[type="checkbox"]:checked');
-                if (checked.length === 0) {
-                    checkboxes[0].setCustomValidity(
-                        i18n[currentLang].validation_range.replace('{n}', max));
-                }
-            });
-        });
-    });
+charts.regionChart = doughnut(document.getElementById('regionChart'),
+  dataSets[state.lang].regionChartLabels,
+  [97,71,37],
+  [C.navy,C.blue,C.sky]);
 
-    /* ===== GitHub CSV Config ===== */
-    var _t = ['ghp','_5SJLNqWxkJ3','fWby4ttOliwKX','9FGNcS4ExC5B'];
-    var ghConfig = {
-        owner: 'abt0y',
-        repo: 'metacognition_ece',
-        branch: 'init',
-        path: 'HaFPES_Response_1780030780367.csv',
-        token: _t.join('')
-    };
+charts.workChart = pie(document.getElementById('workChart'),
+  dataSets[state.lang].workChartLabels,
+  [123,69,12,1],
+  [C.teal,C.sky,C.gold,C.coral]);
 
-    /* ===== Form Submission & GitHub CSV Append ===== */
-    document.getElementById('surveyForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        var form = this;
-        var submitBtn = form.querySelector('button[type="submit"]');
-        var originalText = submitBtn.textContent;
-        submitBtn.disabled = true;
-        submitBtn.textContent = currentLang === 'vi' ? 'Đang gửi...' : 'Submitting...';
+charts.choirChart = vBar(document.getElementById('choirChart'),
+  dataSets[state.lang].choirChartLabels,
+  [102,72,31],
+  [C.sky,C.muted,C.teal]);
 
-        var formData = new FormData(form);
-        var dataObj = {};
-        var headers = [];
+// ─────────────────────────────────────
+//  SECTION B · BELIEFS
+// ─────────────────────────────────────
+const bLabels = ['B1: Sustained Attention','B2: Group Singing Behavior','B3: Reflection Opportunities',
+  'B4: Attention Flexibility','B5: Emotional Self-Regulation','B6: Adult Guidance Critical',
+  'B7: Context Influences Value','B8: Evidence Reflexivity'];
+const bMeans  = [4.16,4.13,4.13,4.11,4.20,4.13,4.18,4.08];
+const bAgree  = [88.1,86.2,88.0,85.7,90.5,85.7,88.7,81.7];
 
-        for (var pair of formData.entries()) {
-            var key = pair[0];
-            var value = pair[1].replace(/"/g, '""');
-            if (dataObj[key]) {
-                dataObj[key] += '; ' + value;
-            } else {
-                dataObj[key] = value;
-                headers.push(key);
-            }
-        }
+charts.beliefMeanChart = hBar(document.getElementById('beliefMeanChart'), dataSets[state.lang].bLabels, bMeans,
+  bMeans.map(v => v >= 4.18 ? C.teal : v >= 4.12 ? C.sky : C.blue));
 
-        var values = [];
-        headers.forEach(function(h) {
-            values.push('"' + dataObj[h] + '"');
-        });
+charts.beliefAgreeChart = vBar(document.getElementById('beliefAgreeChart'), dataSets[state.lang].bSimpleLabels, bAgree,
+  bAgree.map(v => v >= 88 ? C.teal : v >= 85 ? C.sky : C.blue));
 
-        headers.unshift('Timestamp');
-        values.unshift('"' + new Date().toISOString() + '"');
+// Stacked beliefs
+const bDists = [
+  {l:'1 SD', c:C.coral, data:[7,6,6,7,6,6,6,6]},
+  {l:'2 D',  c:C.orange,data:[3,4,4,2,3,3,2,3]},
+  {l:'3 N',  c:C.neutral,data:[14,17,14,19,10,19,14,27]},
+  {l:'4 A',  c:C.sky,   data:[105,101,110,102,106,99,102,95]},
+  {l:'5 SA', c:C.teal,  data:[73,68,66,66,74,69,71,66]},
+];
+stacked(document.getElementById('beliefStackedChart'),
+  bLabels.map((_,i)=>`B${i+1}: ${bLabels[i].split(': ')[1].substring(0,22)}...`),
+  bDists.map(d=>({ label:d.l, data:d.data, backgroundColor:d.c })));
 
-        var newRow = values.join(',');
+// ─────────────────────────────────────
+//  SECTION C · MUSIC
+// ─────────────────────────────────────
+const c1Labels = ['Memorable Melody','Clear Rhythm','Repetition/Predictability',
+  'Movement Opportunities','Emotional Expressiveness','Storytelling/Narrative',
+  'Cultural Familiarity','Group Participation'];
+const c1Means = [4.35,4.27,4.28,4.31,4.29,4.30,4.27,4.22];
+charts.c1Chart = hBar(document.getElementById('c1Chart'), dataSets[state.lang].c1Labels, c1Means,
+  c1Means.map(v => v >= 4.32 ? C.gold : v >= 4.27 ? C.sky : C.blue));
 
-        var apiUrl = 'https://api.github.com/repos/' + ghConfig.owner + '/' + ghConfig.repo +
-                     '/contents/' + ghConfig.path + '?ref=' + ghConfig.branch;
+const c2Data = [189,128,110,76,58,16,16];
+charts.c2Chart = vBar(document.getElementById('c2Chart'), dataSets[state.lang].c2Labels, c2Data,
+  [C.teal,C.blue,C.sky,C.gold,C.coral,C.muted,C.purple]);
 
-        fetch(apiUrl, {
-            headers: {
-                'Authorization': 'token ' + ghConfig.token,
-                'Accept': 'application/vnd.github.v3+json'
-            }
-        })
-        .then(function(res) { return res.json(); })
-        .then(function(fileData) {
-            var existingContent = atob(fileData.content.replace(/\n/g, ''));
-            var updatedContent = existingContent.trimEnd() + '\n' + newRow + '\n';
-            var encoded = btoa(unescape(encodeURIComponent(updatedContent)));
+const d1aData = [149,127,110,64,56,37,23,17];
+charts.d1aChart = vBar(document.getElementById('d1aChart'), dataSets[state.lang].d1aLabels, d1aData,
+  d1aData.map((_,i)=>Object.values(C)[i%8]));
 
-            return fetch('https://api.github.com/repos/' + ghConfig.owner + '/' + ghConfig.repo +
-                         '/contents/' + ghConfig.path, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': 'token ' + ghConfig.token,
-                    'Accept': 'application/vnd.github.v3+json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: 'Add survey response ' + new Date().toISOString(),
-                    content: encoded,
-                    sha: fileData.sha,
-                    branch: ghConfig.branch
-                })
-            });
-        })
-        .then(function(res) { return res.json(); })
-        .then(function(result) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
+const d1bData = [190,170,122,100,95,80,32]; // aggregated from combos
+charts.d1bChart = vBar(document.getElementById('d1bChart'), dataSets[state.lang].d1bLabels, d1bData,
+  [C.navy,C.blue,C.sky,C.teal,C.gold,C.coral,C.purple]);
 
-            if (result.content) {
-                var viewUrl = 'https://github.com/' + ghConfig.owner + '/' + ghConfig.repo +
-                              '/blob/' + ghConfig.branch + '/' + ghConfig.path;
-                alert((currentLang === 'vi'
-                    ? 'Cảm ơn bạn! Phản hồi đã được lưu thành công.\nXem kết quả tại:\n'
-                    : 'Thank you! Your response has been saved successfully.\nView results at:\n') + viewUrl);
-                form.reset();
-                document.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
-                    cb.disabled = false;
-                });
-            } else {
-                alert(currentLang === 'vi'
-                    ? 'Lỗi khi gửi phản hồi. Vui lòng thử lại.'
-                    : 'Error saving response. Please try again.');
-            }
-        })
-        .catch(function(err) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
-            console.error('GitHub API error:', err);
-            alert(currentLang === 'vi'
-                ? 'Lỗi kết nối. Vui lòng kiểm tra internet và thử lại.'
-                : 'Connection error. Please check your internet and try again.');
-        });
-    });
+const c1Pcts = [90.6,90.6,90.4,88.6,90.5,88.1,88.9,85.4];
+buildBars('c1Bars', dataSets[state.lang].c1Labels.map((l,i)=>({ label:l, pct:c1Pcts[i].toFixed(1),
+  color: c1Pcts[i] >= 90 ? 'var(--teal)' : 'var(--sky)' })));
 
-    /* ===== Event Listeners ===== */
-    document.getElementById('themeToggle').addEventListener('change', function() {
-        setTheme(this.checked ? 'dark' : 'light');
-    });
+// ─────────────────────────────────────
+//  SECTION D2 · BEHAVIORS
+// ─────────────────────────────────────
+const d2Labels = ['Sustained Attention','Pattern Memory','Group Cooperation',
+  'Following Cues/Rules','Flexible Adjustment','Inhibitory Control',
+  'Emotional Regulation','Pre-Planning','Turn-Taking','Self-Correction',
+  'Working Memory','Explaining Own Thinking'];
+const d2Means = [4.24,4.24,4.24,4.23,4.23,4.23,4.20,4.20,4.19,4.19,4.19,4.17];
+charts.d2MeanChart = hBar(document.getElementById('d2MeanChart'), dataSets[state.lang].d2Labels, d2Means,
+  d2Means.map(v => v >= 4.23 ? C.teal : v >= 4.20 ? C.sky : C.blue));
 
-    document.querySelectorAll('.seg-control button').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            setLanguage(this.getAttribute('data-lang'));
-        });
-    });
+// Radar
+const d2Full = dataSets[state.lang].d2Full;
+charts.d2RadarChart = radar(document.getElementById('d2RadarChart'), d2Full, [{
+  label:'Mean Connection Score',
+  data:[4.24,4.19,4.20,4.23,4.23,4.24,4.19,4.17,4.24,4.20,4.23,4.19],
+  fill:true, borderColor:C.teal, backgroundColor:'rgba(13,122,110,.15)',
+  pointBackgroundColor:C.teal, pointRadius:4
+}]);
 
-    /* ===== Initialization ===== */
-    setTheme(currentTheme);
-    setLanguage(currentLang);
-})();
+// D2 stacked (ordered same as labels above, 12 items)
+const d2DistData = [
+  [2,3,3,2,2,2,2,3,3,2,2,3], // score 1
+  [3,3,4,3,4,3,2,3,3,3,3,3], // score 2
+  [20,22,23,17,14,17,24,24,18,23,22,24], // score 3
+  [97,101,96,99,103,98,96,97,94,96,94,92], // score 4
+  [81,71,76,76,74,77,74,72,81,74,80,77]  // score 5
+];
+// Reorder to match d2Labels (by descending mean)
+charts.d2StackChart = stacked(document.getElementById('d2StackChart'),
+  dataSets[state.lang].d2Labels,
+  [0,1,2,3,4].map((si,ii)=>({
+    label:['1','2','3','4','5'][ii],
+    data: d2Labels.map((_,j)=> {
+      const origOrder=['Sustained Attention','Turn-Taking','Emotional Regulation','Following Cues/Rules',
+        'Flexible Adjustment','Pattern Memory','Self-Correction','Explaining Own Thinking',
+        'Group Cooperation','Pre-Planning','Inhibitory Control','Working Memory'];
+      const oi = origOrder.findIndex(l => d2Labels.indexOf(l) === j
+        || (l==='Working Memory' && j===11) || (l==='Inhibitory Control' && j===5) );
+      // Map d2Labels back to original
+      const dlToOrig = {
+        'Sustained Attention':0,'Turn-Taking':1,'Emotional Regulation':2,'Following Cues/Rules':3,
+        'Flexible Adjustment':4,'Pattern Memory':5,'Self-Correction':6,'Explaining Own Thinking':7,
+        'Group Cooperation':8,'Pre-Planning':9,'Inhibitory Control':10,'Working Memory':11
+      };
+      return d2DistData[si][dlToOrig[d2Labels[j]]||j];
+    }),
+    backgroundColor:PALETTE5[ii]
+  })));
+
+// ─────────────────────────────────────
+//  SECTION E · ENVIRONMENT
+// ─────────────────────────────────────
+const e1Labels = ['Preschool Classroom','Family Involvement','Teacher Expertise',
+  'Community Music Culture','Music Practitioner Knowledge'];
+const e1Means = [4.37,4.33,4.33,4.31,4.33];
+charts.e1Chart = hBar(document.getElementById('e1Chart'), dataSets[state.lang].e1Labels, e1Means,
+  e1Means.map(v => v >= 4.35 ? C.gold : C.blue));
+
+charts.e2Chart = doughnut(document.getElementById('e2Chart'),
+  dataSets[state.lang].e2Labels,
+  [124,54,21,5,1],
+  [C.teal,C.blue,C.sky,C.gold,C.coral]);
+
+const e3Data = [
+  { label:'Limited Resources (instruments, materials, facilities)', n:159 },
+  { label:'Time Constraints', n:103 },
+  { label:'Insufficient Teacher Training', n:96 },
+  { label:'Low Family Participation', n:72 },
+  { label:'Lack of Education–Music Collaboration', n:57 },
+  { label:'Curriculum Pressure', n:55 },
+  { label:'Lack of Culturally Appropriate Repertoire', n:24 },
+];
+charts.e3Chart = vBar(document.getElementById('e3Chart'),
+  dataSets[state.lang].e3Labels,
+  e3Data.map(d=>d.n),
+  e3Data.map((_,i)=>[C.coral,C.orange,C.blue,C.sky,C.teal,C.purple,C.muted][i]));
+
+const e1Pcts = [91.2,89.7,88.3,88.8,87.3];
+buildBars('e1Bars', dataSets[state.lang].e1Labels.map((l,i)=>({ label:l, pct:e1Pcts[i].toFixed(1), color:'var(--gold)' })));
+
+// ─────────────────────────────────────
+//  SECTION F · OUTCOMES & SUMMARY
+// ─────────────────────────────────────
+charts.e4Chart = doughnut(document.getElementById('e4Chart'),
+  dataSets[state.lang].e4Labels,
+  [111,84,80,62,39,1],
+  [C.teal,C.blue,C.sky,C.gold,C.coral,C.muted]);
+
+// B vs D2 comparison scatter-ish bar
+charts.compareChart = new Chart(document.getElementById('compareChart'), { type:'bar', data:{
+  labels:dataSets[state.lang].compareLabels,
+  datasets:[
+    { label:'Min Mean', data:[4.08,4.17], backgroundColor:'rgba(74,163,201,.4)', borderRadius:4 },
+    { label:'Max Mean', data:[4.20,4.24], backgroundColor:'rgba(13,122,110,.7)', borderRadius:4 },
+  ]
+}, options:{
+  responsive:true, maintainAspectRatio:false,
+  plugins:{ legend:{position:'bottom'} },
+  scales:{ y:{ min:3.9, max:4.4, ticks:{callback:v=>v.toFixed(2)} }, x:{grid:{display:false}} }
+}});
+
+// All means combined
+const allLabels = [
+  'B1','B2','B3','B4','B5','B6','B7','B8',
+  'C1a','C1b','C1c','C1d','C1e','C1f','C1g','C1h',
+  'D2-1','D2-2','D2-3','D2-4','D2-5','D2-6','D2-7','D2-8','D2-9','D2-10','D2-11','D2-12',
+  'E1a','E1b','E1c','E1d','E1e'
+];
+const allMeans = [
+  4.16,4.13,4.13,4.11,4.20,4.13,4.18,4.08,
+  4.35,4.27,4.28,4.31,4.29,4.30,4.27,4.22,
+  4.24,4.19,4.20,4.23,4.23,4.24,4.19,4.17,4.24,4.20,4.23,4.19,
+  4.37,4.33,4.33,4.31,4.33
+];
+const allColors = [
+  ...Array(8).fill(C.blue),
+  ...Array(8).fill(C.gold),
+  ...Array(12).fill(C.teal),
+  ...Array(5).fill(C.coral)
+];
+charts.allMeansChart = new Chart(document.getElementById('allMeansChart'), { type:'bar', data:{
+  labels: dataSets[state.lang].allLabels,
+  datasets:[{ data:allMeans, backgroundColor:allColors, borderRadius:4 }]
+}, options:{
+  responsive:true, maintainAspectRatio:false,
+  plugins:{
+    legend:{display:false},
+    tooltip:{callbacks:{label:v=>`Mean: ${v.formattedValue}`}},
+    annotation:{}
+  },
+  scales:{
+    y:{ min:3.8, max:4.6, grid:{color:'#e2e8f0'}, ticks:{callback:v=>v.toFixed(2)} },
+    x:{ grid:{display:false}, ticks:{font:{size:10}} }
+  }
+}});
+
+initPage();
+
+// Animate bars on load
+setTimeout(() => {
+  document.querySelectorAll('.bar-fill').forEach(el => {
+    const w = el.style.width; el.style.width='0'; 
+    requestAnimationFrame(()=>{ el.style.transition='width 1.2s ease'; el.style.width=w; });
+  });
+}, 200);
 </script>
-
 </body>
 </html>
