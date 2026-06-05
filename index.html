@@ -446,6 +446,7 @@
   </div>
 </div>
 
+<<<<<<< HEAD
 <!-- NAVIGATION -->
 <div class="nav-wrap">
   <div class="nav">
@@ -456,6 +457,303 @@
     <button id="navEnvironment" onclick="show('environment',this)" data-i18n="navEnvironment">Environment &amp; Barriers (E)</button>
     <button id="navOutcomes" onclick="show('outcomes',this)" data-i18n="navOutcomes">Outcomes &amp; Summary</button>
   </div>
+=======
+<!-- ===== Survey Form ===== -->
+<div class="container">
+    <form id="surveyForm">
+
+        <!-- Header Card -->
+        <div class="card header-card">
+            <h1 data-i18n="title">B&#7843;ng kh&#7843;o s&aacute;t chuy&ecirc;n gia HaFPES 2026: &Acirc;m nh&#7841;c, nh&#7853;n th&#7913;c s&#7899;m v&agrave; m&ocirc;i tr&#432;&#7901;ng h&#7885;c t&#7853;p m&#7847;m non t&#7841;i Vi&#7879;t Nam</h1>
+            <div class="description" data-i18n="description">M&#7909;c &#273;&iacute;ch kh&#7843;o s&aacute;t:
+Kh&#7843;o s&aacute;t n&agrave;y thu&#7897;c d&#7921; &aacute;n nghi&ecirc;n c&#7913;u v&#7873; vai tr&ograve; ti&#7873;m n&#259;ng c&#7911;a c&aacute;c ho&#7841;t &#273;&#7897;ng gi&aacute;o d&#7909;c d&#7921;a tr&ecirc;n &acirc;m nh&#7841;c trong h&#7895; tr&#7907; s&#7921; ph&aacute;t tri&#7875;n c&#7911;a tr&#7867; m&#7847;m non (3&#8211;6 tu&#7893;i) t&#7841;i Vi&#7879;t Nam.
+
+&#272;&#7889;i t&#432;&#7907;ng tham gia c&oacute; th&#7875; bao g&#7891;m:
+- Gi&aacute;o vi&ecirc;n m&#7847;m non
+- Th&agrave;nh vi&ecirc;n h&#7907;p x&#432;&#7899;ng / th&#7921;c h&agrave;nh &acirc;m nh&#7841;c c&#7897;ng &#273;&#7891;ng
+- Nh&agrave; gi&aacute;o d&#7909;c &acirc;m nh&#7841;c / ch&#7881; huy h&#7907;p x&#432;&#7899;ng
+- Ph&#7909; huynh / ng&#432;&#7901;i ch&#259;m s&oacute;c
+- Kh&aacute;c
+
+Kh&#7843;o s&aacute;t t&#7853;p trung v&agrave;o:
+- &#273;&#7863;c &#273;i&#7875;m &acirc;m nh&#7841;c v&agrave; l&#7921;a ch&#7885;n t&aacute;c ph&#7849;m &acirc;m nh&#7841;c;
+- t&#7921; &#273;i&#7873;u ch&#7881;nh v&agrave; h&agrave;nh vi h&#7885;c t&#7853;p ph&#7843;n t&#432;;
+- c&aacute;c qu&aacute; tr&igrave;nh h&#7885;c t&#7853;p li&ecirc;n quan &#273;&#7871;n ch&#7913;c n&#259;ng &#273;i&#7873;u h&agrave;nh;
+- vai tr&ograve; c&#7911;a gia &#273;&igrave;nh, nh&agrave; tr&#432;&#7901;ng v&agrave; c&#7897;ng &#273;&#7891;ng.
+
+M&#7885;i c&acirc;u tr&#7843; l&#7901;i &#273;&#432;&#7907;c b&#7843;o m&#7853;t v&agrave; ch&#7881; ph&#7909;c v&#7909; m&#7909;c &#273;&iacute;ch nghi&ecirc;n c&#7913;u.
+Th&#7901;i gian ho&agrave;n th&agrave;nh d&#7921; ki&#7871;n: 12&#8211;15 ph&uacute;t.</div>
+        </div>
+
+        <!-- Consent Card -->
+        <div class="card">
+            <div class="question">
+                <span class="question-title required" data-i18n="consent_title">Th&ocirc;ng tin &#273;&#7891;ng thu&#7853;n tham gia</span>
+                <span class="help-text" data-i18n="consent_help">Vi&#7879;c tham gia kh&#7843;o s&aacute;t l&agrave; ho&agrave;n to&agrave;n t&#7921; nguy&#7879;n. Ng&#432;&#7901;i tham gia c&oacute; th&#7875; ng&#432;ng tr&#7843; l&#7901;i b&#7845;t k&#7923; l&uacute;c n&agrave;o. Kh&ocirc;ng thu th&#7853;p th&ocirc;ng tin nh&#7853;n d&#7841;ng c&aacute; nh&acirc;n ngo&agrave;i m&#7909;c &#273;&iacute;ch nghi&ecirc;n c&#7913;u. D&#7919; li&#7879;u s&#7869; &#273;&#432;&#7907;c s&#7917; d&#7909;ng cho ph&acirc;n t&iacute;ch h&#7885;c thu&#7853;t v&agrave; c&ocirc;ng b&#7889; nghi&ecirc;n c&#7913;u.</span>
+                <label class="option"><input type="checkbox" name="Consent" value="I agree to participate" required> <span data-i18n="consent_label">T&ocirc;i &#273;&#7891;ng &yacute; tham gia kh&#7843;o s&aacute;t.</span></label>
+            </div>
+        </div>
+
+        <!-- Section A -->
+        <div class="card">
+            <h2 data-i18n="section_a">PH&#7846;N A. TH&Ocirc;NG TIN N&#7872;N</h2>
+
+            <div class="question">
+                <span class="question-title required" data-i18n="a1_title">A1. Vai tr&ograve; ngh&#7873; nghi&#7879;p ch&iacute;nh</span>
+                <label class="option"><input type="radio" name="A1" value="Preschool teacher" required> <span data-i18n="a1_1">Gi&aacute;o vi&ecirc;n m&#7847;m non</span></label>
+                <label class="option"><input type="radio" name="A1" value="Preschool administrator"> <span data-i18n="a1_2">Qu&#7843;n l&yacute; m&#7847;m non</span></label>
+                <label class="option"><input type="radio" name="A1" value="Music educator"> <span data-i18n="a1_3">Nh&agrave; gi&aacute;o d&#7909;c &acirc;m nh&#7841;c</span></label>
+                <label class="option"><input type="radio" name="A1" value="Choral/music practitioner"> <span data-i18n="a1_4">Th&agrave;nh vi&ecirc;n / th&#7921;c h&agrave;nh h&#7907;p x&#432;&#7899;ng</span></label>
+                <label class="option"><input type="radio" name="A1" value="Parent/caregiver"> <span data-i18n="a1_5">Ph&#7909; huynh / ng&#432;&#7901;i ch&#259;m s&oacute;c tr&#7867; l&#7913;a tu&#7893;i m&#7847;m non</span></label>
+                <label class="option"><input type="radio" name="A1" value="Other"> <span data-i18n="a1_6">Kh&aacute;c</span></label>
+            </div>
+
+            <div class="question">
+                <span class="question-title required" data-i18n="a2_title">A2. S&#7889; n&#259;m kinh nghi&#7879;m trong gi&aacute;o d&#7909;c v&agrave;/ho&#7863;c th&#7921;c h&agrave;nh &acirc;m nh&#7841;c (bao g&#7891;m nghe, th&#432;&#7903;ng th&#7913;c, ch&#417;i nh&#7841;c, s&aacute;ng t&aacute;c, ...)</span>
+                <label class="option"><input type="radio" name="A2" value="Less than 1 year" required> <span data-i18n="a2_1">D&#432;&#7899;i 1 n&#259;m</span></label>
+                <label class="option"><input type="radio" name="A2" value="1-3 years"> <span data-i18n="a2_2">1&#8211;3 n&#259;m</span></label>
+                <label class="option"><input type="radio" name="A2" value="4-7 years"> <span data-i18n="a2_3">4&#8211;7 n&#259;m</span></label>
+                <label class="option"><input type="radio" name="A2" value="8-15 years"> <span data-i18n="a2_4">8&#8211;15 n&#259;m</span></label>
+                <label class="option"><input type="radio" name="A2" value="Over 15 years"> <span data-i18n="a2_5">Tr&ecirc;n 15 n&#259;m</span></label>
+            </div>
+
+            <div class="question">
+                <span class="question-title required" data-i18n="a3_title">A3. Anh/ch&#7883; &#273;&atilde; t&#7915;ng l&agrave;m vi&#7879;c tr&#7921;c ti&#7871;p v&#7899;i tr&#7867; 3&#8211;6 tu&#7893;i ch&#432;a?</span>
+                <label class="option"><input type="radio" name="A3" value="Frequently" required> <span data-i18n="a3_1">Th&#432;&#7901;ng xuy&ecirc;n</span></label>
+                <label class="option"><input type="radio" name="A3" value="Occasionally"> <span data-i18n="a3_2">Th&#7881;nh tho&#7843;ng</span></label>
+                <label class="option"><input type="radio" name="A3" value="Rarely"> <span data-i18n="a3_3">Hi&#7871;m khi</span></label>
+                <label class="option"><input type="radio" name="A3" value="Never"> <span data-i18n="a3_4">Ch&#432;a t&#7915;ng</span></label>
+            </div>
+
+            <div class="question">
+                <span class="question-title required" data-i18n="a4_title">A4. Anh/ch&#7883; c&oacute; tham gia ho&#7841;t &#273;&#7897;ng h&#7907;p x&#432;&#7899;ng ho&#7863;c &acirc;m nh&#7841;c c&#7897;ng &#273;&#7891;ng kh&ocirc;ng?</span>
+                <label class="option"><input type="radio" name="A4" value="Yes - frequently" required> <span data-i18n="a4_1">C&oacute; &#8211; th&#432;&#7901;ng xuy&ecirc;n</span></label>
+                <label class="option"><input type="radio" name="A4" value="Yes - occasionally"> <span data-i18n="a4_2">C&oacute; &#8211; th&#7881;nh tho&#7843;ng</span></label>
+                <label class="option"><input type="radio" name="A4" value="No"> <span data-i18n="a4_3">Kh&ocirc;ng</span></label>
+            </div>
+
+            <div class="question">
+                <span class="question-title required" data-i18n="a5_title">A5. Khu v&#7921;c c&ocirc;ng t&aacute;c/sinh s&#7889;ng</span>
+                <label class="option"><input type="radio" name="A5" value="Hanoi" required> <span data-i18n="a5_1">H&agrave; N&#7897;i</span></label>
+                <label class="option"><input type="radio" name="A5" value="Ho Chi Minh City"> <span data-i18n="a5_2">TP.HCM</span></label>
+                <label class="option"><input type="radio" name="A5" value="Other city"> <span data-i18n="a5_3">Th&agrave;nh ph&#7889; kh&aacute;c</span></label>
+                <label class="option"><input type="radio" name="A5" value="Rural area"> <span data-i18n="a5_4">N&ocirc;ng th&ocirc;n</span></label>
+                <label class="option"><input type="radio" name="A5" value="International"> <span data-i18n="a5_5">Qu&#7889;c t&#7871;</span></label>
+            </div>
+        </div>
+
+        <!-- Section B -->
+        <div class="card">
+            <h2 data-i18n="section_b">PH&#7846;N B. NH&#7852;N TH&#7912;C V&#7872; &Acirc;M NH&#7840;C V&Agrave; PH&Aacute;T TRI&#7874;N TH&#7900;I TH&#416; &#7844;U</h2>
+            <div class="question">
+                <span class="question-title required" data-i18n="b_title">M&#7913;c &#273;&#7897; &#273;&#7891;ng &yacute; v&#7899;i c&aacute;c ph&aacute;t bi&#7875;u sau</span>
+                <div class="grid-container">
+                    <table class="grid">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th data-i18n="b_h1">1 &#8212; Ho&agrave;n to&agrave;n kh&ocirc;ng &#273;&#7891;ng &yacute;</th>
+                                <th data-i18n="b_h2">2 &#8212; Kh&ocirc;ng &#273;&#7891;ng &yacute;</th>
+                                <th data-i18n="b_h3">3 &#8212; Trung l&#7853;p / Kh&ocirc;ng ch&#7855;c ch&#7855;n</th>
+                                <th data-i18n="b_h4">4 &#8212; &#272;&#7891;ng &yacute;</th>
+                                <th data-i18n="b_h5">5 &#8212; Ho&agrave;n to&agrave;n &#273;&#7891;ng &yacute;</th>
+                                <th data-i18n="grid_na">Kh&ocirc;ng &#273;&#7911; tr&#7843;i nghi&#7879;m &#273;&#7875; &#273;&aacute;nh gi&aacute;</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gridB"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section C -->
+        <div class="card">
+            <h2 data-i18n="section_c">PH&#7846;N C. &#272;&#7862;C &#272;I&#7874;M &Acirc;M NH&#7840;C V&Agrave; L&#7920;A CH&#7884;N T&Aacute;C PH&#7848;M &Acirc;M NH&#7840;C</h2>
+
+            <div class="question">
+                <span class="question-title required" data-i18n="c1_title">C1. M&#7913;c &#273;&#7897; quan tr&#7885;ng c&#7911;a c&aacute;c &#273;&#7863;c &#273;i&#7875;m &acirc;m nh&#7841;c &#273;&#7889;i v&#7899;i tr&#7867; m&#7847;m non (3&#8211;6 tu&#7893;i)</span>
+                <div class="grid-container">
+                    <table class="grid">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th data-i18n="c1_h1">1 &#8212; Kh&ocirc;ng quan tr&#7885;ng</th>
+                                <th>2</th>
+                                <th>3</th>
+                                <th>4</th>
+                                <th data-i18n="c1_h5">5 &#8212; C&#7921;c k&#7923; quan tr&#7885;ng</th>
+                                <th data-i18n="grid_na2">Kh&ocirc;ng &#273;&#7911; tr&#7843;i nghi&#7879;m &#273;&#7875; &#273;&aacute;nh gi&aacute;</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gridC1"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="question">
+                <span class="question-title required" data-i18n="c2_title">C2. Ch&#7885;n t&aacute;c ph&#7849;m &acirc;m nh&#7841;c (Ch&#7885;n t&#7889;i &#273;a 3 &#273;&aacute;p &aacute;n)</span>
+                <div class="checkbox-group" data-max="3">
+                    <label class="option"><input type="checkbox" name="C2" value="Vietnamese children's songs"> <span data-i18n="c2_1">B&agrave;i h&aacute;t thi&#7871;u nhi Vi&#7879;t Nam</span></label>
+                    <label class="option"><input type="checkbox" name="C2" value="Vietnamese folk songs"> <span data-i18n="c2_2">D&acirc;n ca Vi&#7879;t Nam</span></label>
+                    <label class="option"><input type="checkbox" name="C2" value="Children's choral pieces"> <span data-i18n="c2_3">T&aacute;c ph&#7849;m &acirc;m nh&#7841;c h&#7907;p x&#432;&#7899;ng thi&#7871;u nhi</span></label>
+                    <label class="option"><input type="checkbox" name="C2" value="Film/animation music"> <span data-i18n="c2_4">Nh&#7841;c phim / ho&#7841;t h&igrave;nh</span></label>
+                    <label class="option"><input type="checkbox" name="C2" value="Light classical/instrumental"> <span data-i18n="c2_5">Nh&#7841;c c&#7893; &#273;i&#7875;n nh&#7865; / kh&iacute; nh&#7841;c</span></label>
+                    <label class="option"><input type="checkbox" name="C2" value="Contemporary/acoustic"> <span data-i18n="c2_6">Nh&#7841;c &#273;&#432;&#417;ng &#273;&#7841;i / acoustic</span></label>
+                    <label class="option"><input type="checkbox" name="C2" value="Rhythmic/percussion activities"> <span data-i18n="c2_7">Ho&#7841;t &#273;&#7897;ng ti&#7871;t t&#7845;u / g&otilde; &#273;&#7879;m</span></label>
+                    <label class="option"><input type="checkbox" name="C2" value="Other"> <span data-i18n="c2_8">Kh&aacute;c</span></label>
+                </div>
+                <div style="margin-top:10px;">
+                    <label class="question-title" data-i18n="c2_other_label">N&#7871;u l&#7921;a ch&#7885;n kh&aacute;c, B&#7841;n vui l&ograve;ng n&ecirc;u c&#7909; th&#7875; d&#432;&#7899;i &#273;&acirc;y:</label>
+                    <input type="text" name="C2_Other_Text">
+                </div>
+            </div>
+
+            <div class="question">
+                <span class="question-title" data-i18n="c3_title">C3. Anh/ch&#7883; vui l&ograve;ng &#273;&#7873; xu&#7845;t 1&#8211;3 b&agrave;i h&aacute;t ho&#7863;c v&iacute; d&#7909; &acirc;m nh&#7841;c ph&ugrave; h&#7907;p cho tr&#7867; v&agrave; gi&#7843;i th&iacute;ch ng&#7855;n g&#7885;n l&yacute; do.</span>
+                <textarea name="C3" rows="3"></textarea>
+            </div>
+        </div>
+
+        <!-- Section D -->
+        <div class="card">
+            <h2 data-i18n="section_d">PH&#7846;N D. HO&#7840;T &#272;&#7896;NG &Acirc;M NH&#7840;C V&Agrave; H&Agrave;NH VI H&#7884;C T&#7852;P</h2>
+
+            <div class="question">
+                <span class="question-title required" data-i18n="d1a_title">D1.a. Ho&#7841;t &#273;&#7897;ng &acirc;m nh&#7841;c (Ch&#7885;n t&#7889;i &#273;a 3 &#273;&aacute;p &aacute;n)</span>
+                <div class="checkbox-group" data-max="3">
+                    <label class="option"><input type="checkbox" name="D1a" value="Guided listening"> <span data-i18n="d1a_1">Nghe nh&#7841;c c&oacute; h&#432;&#7899;ng d&#7851;n</span></label>
+                    <label class="option"><input type="checkbox" name="D1a" value="Group singing"> <span data-i18n="d1a_2">H&aacute;t nh&oacute;m</span></label>
+                    <label class="option"><input type="checkbox" name="D1a" value="Call-and-response singing"> <span data-i18n="d1a_3">H&aacute;t &#273;&#7889;i &#273;&aacute;p</span></label>
+                    <label class="option"><input type="checkbox" name="D1a" value="Movement to rhythm"> <span data-i18n="d1a_4">V&#7853;n &#273;&#7897;ng theo nh&#7883;p</span></label>
+                    <label class="option"><input type="checkbox" name="D1a" value="Percussion/beat-keeping"> <span data-i18n="d1a_5">G&otilde; &#273;&#7879;m / gi&#7919; nh&#7883;p</span></label>
+                    <label class="option"><input type="checkbox" name="D1a" value="Musical storytelling"> <span data-i18n="d1a_6">K&#7875; chuy&#7879;n b&#7857;ng &acirc;m nh&#7841;c</span></label>
+                    <label class="option"><input type="checkbox" name="D1a" value="Drawing/responding after listening"> <span data-i18n="d1a_7">V&#7869; / ph&#7843;n h&#7891;i sau nghe nh&#7841;c</span></label>
+                    <label class="option"><input type="checkbox" name="D1a" value="Improvisation/creative movement"> <span data-i18n="d1a_8">&#7912;ng t&aacute;c / v&#7853;n &#273;&#7897;ng s&aacute;ng t&#7841;o</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <span class="question-title required" data-i18n="d1b_title">D1.b. Theo anh/ch&#7883;, y&#7871;u t&#7889; n&agrave;o c&#7911;a ho&#7841;t &#273;&#7897;ng &acirc;m nh&#7841;c c&oacute; kh&#7843; n&#259;ng &#7843;nh h&#432;&#7903;ng m&#7841;nh nh&#7845;t t&#7899;i s&#7921; h&#7885;c t&#7853;p c&#7911;a tr&#7867;? (Ch&#7885;n t&#7889;i &#273;a 3 &#273;&aacute;p &aacute;n)</span>
+                <div class="checkbox-group" data-max="3">
+                    <label class="option"><input type="checkbox" name="D1b" value="Rhythmic/beat structure"> <span data-i18n="d1b_1">C&#7845;u tr&uacute;c nh&#7883;p &#273;i&#7879;u / ti&#7871;t t&#7845;u</span></label>
+                    <label class="option"><input type="checkbox" name="D1b" value="Repetition and predictability"> <span data-i18n="d1b_2">S&#7921; l&#7863;p l&#7841;i v&agrave; d&#7921; &#273;o&aacute;n &#273;&#432;&#7907;c</span></label>
+                    <label class="option"><input type="checkbox" name="D1b" value="Physical movement"> <span data-i18n="d1b_3">V&#7853;n &#273;&#7897;ng c&#417; th&#7875;</span></label>
+                    <label class="option"><input type="checkbox" name="D1b" value="Group social interaction"> <span data-i18n="d1b_4">T&#432;&#417;ng t&aacute;c x&atilde; h&#7897;i theo nh&oacute;m</span></label>
+                    <label class="option"><input type="checkbox" name="D1b" value="Adult guidance and support"> <span data-i18n="d1b_5">H&#432;&#7899;ng d&#7851;n v&agrave; h&#7895; tr&#7907; c&#7911;a ng&#432;&#7901;i l&#7899;n</span></label>
+                    <label class="option"><input type="checkbox" name="D1b" value="Emotional expression and regulation"> <span data-i18n="d1b_6">Bi&#7875;u &#273;&#7841;t v&agrave; &#273;i&#7873;u ch&#7881;nh c&#7843;m x&uacute;c</span></label>
+                    <label class="option"><input type="checkbox" name="D1b" value="Cultural familiarity"> <span data-i18n="d1b_7">T&iacute;nh quen thu&#7897;c v&#259;n h&oacute;a</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <span class="question-title required" data-i18n="d2_title">D2. M&#7913;c &#273;&#7897; li&ecirc;n h&#7879; gi&#7919;a ho&#7841;t &#273;&#7897;ng &acirc;m nh&#7841;c v&agrave; c&aacute;c h&agrave;nh vi h&#7885;c t&#7853;p sau</span>
+                <div class="grid-container">
+                    <table class="grid">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th data-i18n="d2_h1">1 &#8212; Kh&ocirc;ng li&ecirc;n h&#7879;</th>
+                                <th>2</th>
+                                <th>3</th>
+                                <th>4</th>
+                                <th data-i18n="d2_h5">5 &#8212; Li&ecirc;n h&#7879; r&#7845;t m&#7841;nh</th>
+                                <th data-i18n="grid_na3">Kh&ocirc;ng &#273;&#7911; tr&#7843;i nghi&#7879;m &#273;&#7875; &#273;&aacute;nh gi&aacute;</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gridD2"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section E -->
+        <div class="card">
+            <h2 data-i18n="section_e">PH&#7846;N E. GIA &#272;&Igrave;NH, NH&Agrave; TR&#431;&#7900;NG V&Agrave; C&#7896;NG &#272;&#7890;NG</h2>
+
+            <div class="question">
+                <span class="question-title required" data-i18n="e1_title">E1. M&#7913;c &#273;&#7897; quan tr&#7885;ng c&#7911;a c&aacute;c m&ocirc;i tr&#432;&#7901;ng &#273;&#7889;i v&#7899;i vi&#7879;c h&#7885;c &acirc;m nh&#7841;c m&#7847;m non hi&#7879;u qu&#7843;</span>
+                <div class="grid-container">
+                    <table class="grid">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th data-i18n="e1_h1">1 &#8212; Kh&ocirc;ng quan tr&#7885;ng</th>
+                                <th>2</th>
+                                <th>3</th>
+                                <th>4</th>
+                                <th data-i18n="e1_h5">5 &#8212; C&#7921;c k&#7923; quan tr&#7885;ng</th>
+                                <th data-i18n="grid_na4">Kh&ocirc;ng &#273;&#7911; tr&#7843;i nghi&#7879;m &#273;&#7875; &#273;&aacute;nh gi&aacute;</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gridE1"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="question">
+                <span class="question-title required" data-i18n="e2_title">E2. Theo anh/ch&#7883;, m&#7913;c &#273;&#7897; h&#7907;p t&aacute;c gi&#7919;a gi&aacute;o vi&ecirc;n m&#7847;m non v&agrave; ng&#432;&#7901;i th&#7921;c h&agrave;nh &acirc;m nh&#7841;c c&#7897;ng &#273;&#7891;ng c&oacute; th&#7875; c&#7843;i thi&#7879;n ch&#432;&#417;ng tr&igrave;nh &acirc;m nh&#7841;c m&#7847;m non &#273;&#7871;n m&#7913;c n&agrave;o?</span>
+                <label class="option"><input type="radio" name="E2" value="Negligible" required> <span data-i18n="e2_1">Kh&ocirc;ng &#273;&aacute;ng k&#7875;</span></label>
+                <label class="option"><input type="radio" name="E2" value="Slightly"> <span data-i18n="e2_2">&Iacute;t</span></label>
+                <label class="option"><input type="radio" name="E2" value="Moderately"> <span data-i18n="e2_3">Trung b&igrave;nh</span></label>
+                <label class="option"><input type="radio" name="E2" value="Significantly"> <span data-i18n="e2_4">&#272;&aacute;ng k&#7875;</span></label>
+                <label class="option"><input type="radio" name="E2" value="Very significantly"> <span data-i18n="e2_5">R&#7845;t &#273;&aacute;ng k&#7875;</span></label>
+            </div>
+
+            <div class="question">
+                <span class="question-title required" data-i18n="e3_title">E3. Nh&#7919;ng th&aacute;ch th&#7913;c ch&iacute;nh (Ch&#7885;n t&#7889;i &#273;a 3 &#273;&aacute;p &aacute;n)</span>
+                <div class="checkbox-group" data-max="3">
+                    <label class="option"><input type="checkbox" name="E3" value="Lack of teacher training"> <span data-i18n="e3_1">Thi&#7871;u &#273;&agrave;o t&#7841;o gi&aacute;o vi&ecirc;n</span></label>
+                    <label class="option"><input type="checkbox" name="E3" value="Lack of musical resources"> <span data-i18n="e3_2">Thi&#7871;u ngu&#7891;n l&#7921;c &acirc;m nh&#7841;c (nh&#7841;c c&#7909;, c&#417; s&#7903; v&#7853;t ch&#7845;t, trung t&acirc;m, &#273;&#7883;a b&agrave;n t&#7893; ch&#7913;c)</span></label>
+                    <label class="option"><input type="checkbox" name="E3" value="Time constraints"> <span data-i18n="e3_3">H&#7841;n ch&#7871; th&#7901;i gian</span></label>
+                    <label class="option"><input type="checkbox" name="E3" value="Low family involvement"> <span data-i18n="e3_4">S&#7921; tham gia th&#7845;p c&#7911;a gia &#273;&igrave;nh</span></label>
+                    <label class="option"><input type="checkbox" name="E3" value="Curriculum pressure"> <span data-i18n="e3_5">&Aacute;p l&#7921;c ch&#432;&#417;ng tr&igrave;nh h&#7885;c</span></label>
+                    <label class="option"><input type="checkbox" name="E3" value="Lack of culturally appropriate repertoire"> <span data-i18n="e3_6">Thi&#7871;u t&aacute;c ph&#7849;m &acirc;m nh&#7841;c ph&ugrave; h&#7907;p v&#259;n h&oacute;a</span></label>
+                    <label class="option"><input type="checkbox" name="E3" value="Lack of education-music collaboration"> <span data-i18n="e3_7">Thi&#7871;u h&#7907;p t&aacute;c gi&#7919;a l&#297;nh v&#7921;c gi&aacute;o d&#7909;c v&agrave; &acirc;m nh&#7841;c</span></label>
+                    <label class="option"><input type="checkbox" name="E3" value="Other"> <span data-i18n="e3_8">Kh&aacute;c</span></label>
+                </div>
+                <div style="margin-top:10px;">
+                    <label class="question-title" data-i18n="e3_other_label">N&#7871;u b&#7841;n ch&#7885;n kh&aacute;c, vui l&ograve;ng n&ecirc;u r&otilde;:</label>
+                    <input type="text" name="E3_Other_Text">
+                </div>
+            </div>
+
+            <div class="question">
+                <span class="question-title required" data-i18n="e4_title">E4. Theo anh/ch&#7883;, ho&#7841;t &#273;&#7897;ng &acirc;m nh&#7841;c c&oacute; s&#7921; tham gia c&#7911;a gia &#273;&igrave;nh c&oacute; kh&#7843; n&#259;ng &#7843;nh h&#432;&#7903;ng m&#7841;nh nh&#7845;t t&#7899;i kh&iacute;a c&#7841;nh n&agrave;o c&#7911;a tr&#7867;? (Ch&#7885;n t&#7889;i &#273;a 2 &#273;&aacute;p &aacute;n)</span>
+                <div class="checkbox-group" data-max="2">
+                    <label class="option"><input type="checkbox" name="E4" value="Emotional regulation"> <span data-i18n="e4_1">&#272;i&#7873;u ch&#7881;nh c&#7843;m x&uacute;c</span></label>
+                    <label class="option"><input type="checkbox" name="E4" value="Attention/focus"> <span data-i18n="e4_2">Ch&uacute; &yacute;/t&#7853;p trung</span></label>
+                    <label class="option"><input type="checkbox" name="E4" value="Engagement motivation"> <span data-i18n="e4_3">&#272;&#7897;ng l&#7921;c tham gia</span></label>
+                    <label class="option"><input type="checkbox" name="E4" value="Social skills"> <span data-i18n="e4_4">K&#7929; n&#259;ng x&atilde; h&#7897;i</span></label>
+                    <label class="option"><input type="checkbox" name="E4" value="Language"> <span data-i18n="e4_5">Ng&ocirc;n ng&#7919;</span></label>
+                    <label class="option"><input type="checkbox" name="E4" value="Unclear"> <span data-i18n="e4_6">Ch&#432;a r&otilde;</span></label>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Section F -->
+        <div class="card">
+            <h2 data-i18n="section_f">PH&#7846;N F. PH&#7842;N H&#7890;I M&#7902;</h2>
+
+            <div class="question">
+                <span class="question-title" data-i18n="f1_title">F1. Theo quan &#273;i&#7875;m c&#7911;a anh/ch&#7883;, &#273;&oacute;ng g&oacute;p quan tr&#7885;ng nh&#7845;t c&#7911;a &acirc;m nh&#7841;c &#273;&#7889;i v&#7899;i s&#7921; ph&aacute;t tri&#7875;n c&#7911;a tr&#7867; l&agrave; g&igrave;?</span>
+                <textarea name="F1" rows="4"></textarea>
+            </div>
+
+            <div class="question">
+                <span class="question-title" data-i18n="f2_title">F2. Anh/ch&#7883; c&oacute; &#273;&#7873; xu&#7845;t g&igrave; cho vi&#7879;c thi&#7871;t k&#7871; c&aacute;c ho&#7841;t &#273;&#7897;ng &acirc;m nh&#7841;c m&#7847;m non ph&ugrave; h&#7907;p v&#7899;i b&#7889;i c&#7843;nh v&#259;n h&oacute;a Vi&#7879;t Nam?</span>
+                <textarea name="F2" rows="4"></textarea>
+            </div>
+
+            <div class="question">
+                <span class="question-title" data-i18n="f3_title">Anh / Ch&#7883; quan t&acirc;m tham gia &#273;&oacute;ng g&oacute;p nghi&ecirc;n c&#7913;u chuy&ecirc;n s&acirc;u vui l&ograve;ng &#273;&#7875; l&#7841;i T&ecirc;n v&agrave; s&#7889; &#273;i&#7879;n tho&#7841;i d&#432;&#7899;i &#273;&acirc;y:</span>
+                <textarea name="F3" rows="3"></textarea>
+            </div>
+        </div>
+
+        <button type="submit" data-i18n="submit_btn">G&#7917;i kh&#7843;o s&aacute;t &amp; T&#7843;i d&#7919; li&#7879;u CSV</button>
+    </form>
+>>>>>>> ce696e5e2957b645c104467678f8190049928fec
 </div>
 
 <!-- MAIN -->
@@ -778,6 +1076,7 @@ const C = {
 };
 const PALETTE5 = [C.coral, C.orange, C.neutral, C.sky, C.teal];
 
+<<<<<<< HEAD
 Chart.defaults.font.family = "'DM Sans', sans-serif";
 Chart.defaults.color = '#5a6a7a';
 
@@ -785,6 +1084,215 @@ const state = {
   lang: 'en',
   theme: localStorage.getItem('hafpesTheme') || 'light',
 };
+=======
+    /* ===== Translation Dictionary ===== */
+    var i18n = {
+        vi: {
+            page_title: 'Bảng khảo sát chuyên gia HaFPES 2026',
+            title: 'Bảng khảo sát chuyên gia HaFPES 2026: Âm nhạc, nhận thức sớm và môi trường học tập mầm non tại Việt Nam',
+            description: 'Mục đích khảo sát:\nKhảo sát này thuộc dự án nghiên cứu về vai trò tiềm năng của các hoạt động giáo dục dựa trên âm nhạc trong hỗ trợ sự phát triển của trẻ mầm non (3\u20136 tuổi) tại Việt Nam.\n\nĐối tượng tham gia có thể bao gồm:\n- Giáo viên mầm non\n- Thành viên hợp xướng / thực hành âm nhạc cộng đồng\n- Nhà giáo dục âm nhạc / chỉ huy hợp xướng\n- Phụ huynh / người chăm sóc\n- Khác\n\nKhảo sát tập trung vào:\n- đặc điểm âm nhạc và lựa chọn tác phẩm âm nhạc;\n- tự điều chỉnh và hành vi học tập phản tư;\n- các quá trình học tập liên quan đến chức năng điều hành;\n- vai trò của gia đình, nhà trường và cộng đồng.\n\nMọi câu trả lời được bảo mật và chỉ phục vụ mục đích nghiên cứu.\nThời gian hoàn thành dự kiến: 12\u201315 phút.',
+            consent_title: 'Thông tin đồng thuận tham gia',
+            consent_help: 'Việc tham gia khảo sát là hoàn toàn tự nguyện. Người tham gia có thể ngừng trả lời bất kỳ lúc nào. Không thu thập thông tin nhận dạng cá nhân ngoài mục đích nghiên cứu. Dữ liệu sẽ được sử dụng cho phân tích học thuật và công bố nghiên cứu.',
+            consent_label: 'Tôi đồng ý tham gia khảo sát.',
+            section_a: 'PHẦN A. THÔNG TIN NỀN',
+            a1_title: 'A1. Vai trò nghề nghiệp chính',
+            a1_1: 'Giáo viên mầm non', a1_2: 'Quản lý mầm non', a1_3: 'Nhà giáo dục âm nhạc',
+            a1_4: 'Thành viên / thực hành hợp xướng', a1_5: 'Phụ huynh / người chăm sóc trẻ lứa tuổi mầm non', a1_6: 'Khác',
+            a2_title: 'A2. Số năm kinh nghiệm trong giáo dục và/hoặc thực hành âm nhạc (bao gồm nghe, thưởng thức, chơi nhạc, sáng tác, ...)',
+            a2_1: 'Dưới 1 năm', a2_2: '1\u20133 năm', a2_3: '4\u20137 năm', a2_4: '8\u201315 năm', a2_5: 'Trên 15 năm',
+            a3_title: 'A3. Anh/chị đã từng làm việc trực tiếp với trẻ 3\u20136 tuổi chưa?',
+            a3_1: 'Thường xuyên', a3_2: 'Thỉnh thoảng', a3_3: 'Hiếm khi', a3_4: 'Chưa từng',
+            a4_title: 'A4. Anh/chị có tham gia hoạt động hợp xướng hoặc âm nhạc cộng đồng không?',
+            a4_1: 'Có \u2013 thường xuyên', a4_2: 'Có \u2013 thỉnh thoảng', a4_3: 'Không',
+            a5_title: 'A5. Khu vực công tác/sinh sống',
+            a5_1: 'Hà Nội', a5_2: 'TP.HCM', a5_3: 'Thành phố khác', a5_4: 'Nông thôn', a5_5: 'Quốc tế',
+            section_b: 'PHẦN B. NHẬN THỨC VỀ ÂM NHẠC VÀ PHÁT TRIỂN THỜI THƠ ẤU',
+            b_title: 'Mức độ đồng ý với các phát biểu sau',
+            b_h1: '1 \u2014 Hoàn toàn không đồng ý', b_h2: '2 \u2014 Không đồng ý',
+            b_h3: '3 \u2014 Trung lập / Không chắc chắn', b_h4: '4 \u2014 Đồng ý', b_h5: '5 \u2014 Hoàn toàn đồng ý',
+            grid_na: 'Không đủ trải nghiệm để đánh giá',
+            section_c: 'PHẦN C. ĐẶC ĐIỂM ÂM NHẠC VÀ LỰA CHỌN TÁC PHẨM ÂM NHẠC',
+            c1_title: 'C1. Mức độ quan trọng của các đặc điểm âm nhạc đối với trẻ mầm non (3\u20136 tuổi)',
+            c1_h1: '1 \u2014 Không quan trọng', c1_h5: '5 \u2014 Cực kỳ quan trọng',
+            grid_na2: 'Không đủ trải nghiệm để đánh giá',
+            c2_title: 'C2. Chọn tác phẩm âm nhạc (Chọn tối đa 3 đáp án)',
+            c2_1: 'Bài hát thiếu nhi Việt Nam', c2_2: 'Dân ca Việt Nam', c2_3: 'Tác phẩm âm nhạc hợp xướng thiếu nhi',
+            c2_4: 'Nhạc phim / hoạt hình', c2_5: 'Nhạc cổ điển nhẹ / khí nhạc', c2_6: 'Nhạc đương đại / acoustic',
+            c2_7: 'Hoạt động tiết tấu / gõ đệm', c2_8: 'Khác',
+            c2_other_label: 'Nếu lựa chọn khác, Bạn vui lòng nêu cụ thể dưới đây:',
+            c3_title: 'C3. Anh/chị vui lòng đề xuất 1\u20133 bài hát hoặc ví dụ âm nhạc phù hợp cho trẻ và giải thích ngắn gọn lý do.',
+            section_d: 'PHẦN D. HOẠT ĐỘNG ÂM NHẠC VÀ HÀNH VI HỌC TẬP',
+            d1a_title: 'D1.a. Hoạt động âm nhạc (Chọn tối đa 3 đáp án)',
+            d1a_1: 'Nghe nhạc có hướng dẫn', d1a_2: 'Hát nhóm', d1a_3: 'Hát đối đáp',
+            d1a_4: 'Vận động theo nhịp', d1a_5: 'Gõ đệm / giữ nhịp', d1a_6: 'Kể chuyện bằng âm nhạc',
+            d1a_7: 'Vẽ / phản hồi sau nghe nhạc', d1a_8: 'Ứng tác / vận động sáng tạo',
+            d1b_title: 'D1.b. Theo anh/chị, yếu tố nào của hoạt động âm nhạc có khả năng ảnh hưởng mạnh nhất tới sự học tập của trẻ? (Chọn tối đa 3 đáp án)',
+            d1b_1: 'Cấu trúc nhịp điệu / tiết tấu', d1b_2: 'Sự lặp lại và dự đoán được',
+            d1b_3: 'Vận động cơ thể', d1b_4: 'Tương tác xã hội theo nhóm',
+            d1b_5: 'Hướng dẫn và hỗ trợ của người lớn', d1b_6: 'Biểu đạt và điều chỉnh cảm xúc',
+            d1b_7: 'Tính quen thuộc văn hóa',
+            d2_title: 'D2. Mức độ liên hệ giữa hoạt động âm nhạc và các hành vi học tập sau',
+            d2_h1: '1 \u2014 Không liên hệ', d2_h5: '5 \u2014 Liên hệ rất mạnh',
+            grid_na3: 'Không đủ trải nghiệm để đánh giá',
+            section_e: 'PHẦN E. GIA ĐÌNH, NHÀ TRƯỜNG VÀ CỘNG ĐỒNG',
+            e1_title: 'E1. Mức độ quan trọng của các môi trường đối với việc học âm nhạc mầm non hiệu quả',
+            e1_h1: '1 \u2014 Không quan trọng', e1_h5: '5 \u2014 Cực kỳ quan trọng',
+            grid_na4: 'Không đủ trải nghiệm để đánh giá',
+            e2_title: 'E2. Theo anh/chị, mức độ hợp tác giữa giáo viên mầm non và người thực hành âm nhạc cộng đồng có thể cải thiện chương trình âm nhạc mầm non đến mức nào?',
+            e2_1: 'Không đáng kể', e2_2: 'Ít', e2_3: 'Trung bình', e2_4: 'Đáng kể', e2_5: 'Rất đáng kể',
+            e3_title: 'E3. Những thách thức chính (Chọn tối đa 3 đáp án)',
+            e3_1: 'Thiếu đào tạo giáo viên', e3_2: 'Thiếu nguồn lực âm nhạc (nhạc cụ, cơ sở vật chất, trung tâm, địa bàn tổ chức)', e3_3: 'Hạn chế thời gian',
+            e3_4: 'Sự tham gia thấp của gia đình', e3_5: 'Áp lực chương trình học',
+            e3_6: 'Thiếu tác phẩm âm nhạc phù hợp văn hóa', e3_7: 'Thiếu hợp tác giữa lĩnh vực giáo dục và âm nhạc', e3_8: 'Khác',
+            e3_other_label: 'Nếu bạn chọn khác, vui lòng nêu rõ:',
+            e4_title: 'E4. Theo anh/chị, hoạt động âm nhạc có sự tham gia của gia đình có khả năng ảnh hưởng mạnh nhất tới khía cạnh nào của trẻ? (Chọn tối đa 2 đáp án)',
+            e4_1: 'Điều chỉnh cảm xúc', e4_2: 'Chú ý/tập trung', e4_3: 'Động lực tham gia',
+            e4_4: 'Kỹ năng xã hội', e4_5: 'Ngôn ngữ', e4_6: 'Chưa rõ',
+            section_f: 'PHẦN F. PHẢN HỒI MỞ',
+            f1_title: 'F1. Theo quan điểm của anh/chị, đóng góp quan trọng nhất của âm nhạc đối với sự phát triển của trẻ là gì?',
+            f2_title: 'F2. Anh/chị có đề xuất gì cho việc thiết kế các hoạt động âm nhạc mầm non phù hợp với bối cảnh văn hóa Việt Nam?',
+            f3_title: 'Anh / Chị quan tâm tham gia đóng góp nghiên cứu chuyên sâu vui lòng để lại Tên và số điện thoại dưới đây:',
+            submit_btn: 'Gửi khảo sát & Tải dữ liệu CSV',
+            alert_msg: 'Khảo sát đã được lưu vào file CSV. (Ứng dụng chạy cục bộ trên trình duyệt).',
+            validation_max: 'Vui lòng chọn tối đa {n} đáp án.',
+            validation_range: 'Vui lòng chọn từ 1 đến {n} đáp án.'
+        },
+        en: {
+            page_title: 'HaFPES 2026 Expert Survey',
+            title: 'HaFPES 2026 Expert Survey: Music, Early Cognition, and Preschool Learning Environments in Vietnam',
+            description: 'Survey Purpose:\nThis survey is part of a research project on the potential role of music-based educational activities in supporting the development of preschool children (ages 3\u20136) in Vietnam.\n\nParticipant profiles may include:\n- Preschool teachers\n- Choral / community music practitioners\n- Music educators / choral conductors\n- Parents / caregivers\n- Others\n\nThe survey focuses on:\n- musical characteristics and repertoire selection;\n- self-regulation and reflective learning behaviors;\n- learning processes related to executive functions;\n- the role of family, school, and community.\n\nAll responses are confidential and used solely for research purposes.\nEstimated completion time: 12\u201315 minutes.',
+            consent_title: 'Informed Consent',
+            consent_help: 'Participation in this survey is entirely voluntary. Participants may stop responding at any time. No personally identifiable information is collected beyond research purposes. Data will be used for academic analysis and research publication.',
+            consent_label: 'I agree to participate in this survey.',
+            section_a: 'SECTION A. BACKGROUND INFORMATION',
+            a1_title: 'A1. Primary professional role',
+            a1_1: 'Preschool teacher', a1_2: 'Preschool administrator', a1_3: 'Music educator',
+            a1_4: 'Choral / music practitioner', a1_5: 'Parent / caregiver of preschool-aged children', a1_6: 'Other',
+            a2_title: 'A2. Years of experience in education and/or music practice (including listening, appreciation, playing, composing, etc.)',
+            a2_1: 'Less than 1 year', a2_2: '1\u20133 years', a2_3: '4\u20137 years', a2_4: '8\u201315 years', a2_5: 'Over 15 years',
+            a3_title: 'A3. Have you directly worked with children aged 3\u20136?',
+            a3_1: 'Frequently', a3_2: 'Occasionally', a3_3: 'Rarely', a3_4: 'Never',
+            a4_title: 'A4. Do you participate in choral or community music activities?',
+            a4_1: 'Yes \u2013 frequently', a4_2: 'Yes \u2013 occasionally', a4_3: 'No',
+            a5_title: 'A5. Area of work / residence',
+            a5_1: 'Hanoi', a5_2: 'Ho Chi Minh City', a5_3: 'Other city', a5_4: 'Rural area', a5_5: 'International',
+            section_b: 'SECTION B. PERCEPTIONS OF MUSIC AND EARLY CHILDHOOD DEVELOPMENT',
+            b_title: 'Level of agreement with the following statements',
+            b_h1: '1 \u2014 Strongly disagree', b_h2: '2 \u2014 Disagree',
+            b_h3: '3 \u2014 Neutral / Uncertain', b_h4: '4 \u2014 Agree', b_h5: '5 \u2014 Strongly agree',
+            grid_na: 'Insufficient experience to assess',
+            section_c: 'SECTION C. MUSICAL CHARACTERISTICS AND REPERTOIRE SELECTION',
+            c1_title: 'C1. Importance of musical characteristics for preschool children (ages 3\u20136)',
+            c1_h1: '1 \u2014 Not important', c1_h5: '5 \u2014 Extremely important',
+            grid_na2: 'Insufficient experience to assess',
+            c2_title: 'C2. Musical repertoire selection (Select up to 3 options)',
+            c2_1: 'Vietnamese children\u2019s songs', c2_2: 'Vietnamese folk songs', c2_3: 'Children\u2019s choral pieces',
+            c2_4: 'Film / animation music', c2_5: 'Light classical / instrumental music', c2_6: 'Contemporary / acoustic music',
+            c2_7: 'Rhythmic / percussion activities', c2_8: 'Other',
+            c2_other_label: 'If you selected Other, please specify:',
+            c3_title: 'C3. Please suggest 1\u20133 songs or musical examples suitable for preschool children and briefly explain your reasons.',
+            section_d: 'SECTION D. MUSICAL ACTIVITIES AND LEARNING BEHAVIORS',
+            d1a_title: 'D1.a. Musical activities (Select up to 3 options)',
+            d1a_1: 'Guided listening', d1a_2: 'Group singing', d1a_3: 'Call-and-response singing',
+            d1a_4: 'Movement to rhythm', d1a_5: 'Percussion / beat-keeping', d1a_6: 'Musical storytelling',
+            d1a_7: 'Drawing / responding after listening', d1a_8: 'Improvisation / creative movement',
+            d1b_title: 'D1.b. In your opinion, which elements of musical activities are most likely to influence children\u2019s learning? (Select up to 3 options)',
+            d1b_1: 'Rhythmic / beat structure', d1b_2: 'Repetition and predictability',
+            d1b_3: 'Physical movement', d1b_4: 'Group social interaction',
+            d1b_5: 'Adult guidance and support', d1b_6: 'Emotional expression and regulation',
+            d1b_7: 'Cultural familiarity',
+            d2_title: 'D2. Level of association between musical activities and the following learning behaviors',
+            d2_h1: '1 \u2014 No association', d2_h5: '5 \u2014 Very strong association',
+            grid_na3: 'Insufficient experience to assess',
+            section_e: 'SECTION E. FAMILY, SCHOOL, AND COMMUNITY',
+            e1_title: 'E1. Importance of environments for effective preschool music education',
+            e1_h1: '1 \u2014 Not important', e1_h5: '5 \u2014 Extremely important',
+            grid_na4: 'Insufficient experience to assess',
+            e2_title: 'E2. In your opinion, to what extent can collaboration between preschool teachers and community music practitioners improve preschool music programs?',
+            e2_1: 'Negligible', e2_2: 'Slightly', e2_3: 'Moderately', e2_4: 'Significantly', e2_5: 'Very significantly',
+            e3_title: 'E3. Key challenges (Select up to 3 options)',
+            e3_1: 'Lack of teacher training', e3_2: 'Lack of musical resources (instruments, facilities, centers, venues)', e3_3: 'Time constraints',
+            e3_4: 'Low family involvement', e3_5: 'Curriculum pressure',
+            e3_6: 'Lack of culturally appropriate repertoire', e3_7: 'Lack of education\u2013music collaboration', e3_8: 'Other',
+            e3_other_label: 'If you selected Other, please specify:',
+            e4_title: 'E4. In your opinion, which aspects of children are most likely to be influenced by family-involved musical activities? (Select up to 2 options)',
+            e4_1: 'Emotional regulation', e4_2: 'Attention / focus', e4_3: 'Engagement motivation',
+            e4_4: 'Social skills', e4_5: 'Language', e4_6: 'Unclear',
+            section_f: 'SECTION F. OPEN-ENDED RESPONSES',
+            f1_title: 'F1. In your view, what is the most important contribution of music to preschool children\u2019s development?',
+            f2_title: 'F2. Do you have any suggestions for designing preschool musical activities appropriate for the Vietnamese cultural context?',
+            f3_title: 'If you are interested in contributing to further research, please leave your name and phone number below:',
+            submit_btn: 'Submit Survey & Download CSV',
+            alert_msg: 'Survey response has been saved to a CSV file. (Application runs locally in your browser.)',
+            validation_max: 'Please select up to {n} options.',
+            validation_range: 'Please select between 1 and {n} options.'
+        }
+    };
+
+    /* ===== Grid Row Data ===== */
+    var gridData = {
+        B: {
+            vi: [
+                'Hoạt động âm nhạc thường xuyên có thể hỗ trợ khả năng duy trì chú ý của trẻ nhỏ.',
+                'Hát tập thể có thể giúp trẻ học cách điều chỉnh hành vi.',
+                'Hoạt động âm nhạc có thể tạo cơ hội để trẻ phản tư về hành động hoặc quá trình học tập của bản thân.',
+                'Nhịp điệu trong âm nhạc có thể tăng khả năng chuyển đổi chú ý hoặc thích nghi với thay đổi.',
+                'Tham gia âm nhạc có thể hỗ trợ biểu đạt cảm xúc và tự điều chỉnh cảm xúc.',
+                'Hiệu quả giáo dục của hoạt động âm nhạc phụ thuộc đáng kể vào sự hướng dẫn của người lớn.',
+                'Giá trị phát triển của âm nhạc có thể thay đổi theo bối cảnh gia đình, nhà trường và văn hóa.',
+                'Một số tuyên bố về lợi ích nhận thức của âm nhạc đối với trẻ có thể vượt quá bằng chứng hiện có.'
+            ],
+            en: [
+                'Regular musical activities can support young children\u2019s ability to sustain attention.',
+                'Group singing can help children learn to regulate their behavior.',
+                'Musical activities can provide opportunities for children to reflect on their own actions or learning processes.',
+                'Rhythm in music can enhance the ability to shift attention or adapt to changes.',
+                'Musical participation can support emotional expression and self-regulation.',
+                'The educational effectiveness of musical activities depends significantly on adult guidance.',
+                'The developmental value of music may vary depending on family, school, and cultural contexts.',
+                'Some claims about the cognitive benefits of music for preschool children may exceed the current evidence base.'
+            ]
+        },
+        C1: {
+            vi: [
+                'Giai điệu dễ nhớ', 'Cấu trúc tiết tấu rõ ràng', 'Sự lặp lại / tính dự đoán được',
+                'Cơ hội vận động', 'Tính biểu cảm cảm xúc', 'Yếu tố kể chuyện / tự sự',
+                'Tính quen thuộc văn hóa', 'Khả năng tham gia theo nhóm'
+            ],
+            en: [
+                'Memorable melody', 'Clear rhythmic structure', 'Repetition / predictability',
+                'Movement opportunities', 'Emotional expressiveness', 'Storytelling / narrative elements',
+                'Cultural familiarity', 'Group participation potential'
+            ]
+        },
+        D2: {
+            vi: [
+                'Duy trì chú ý', 'Luân phiên lượt tham gia', 'Bình ổn cảm xúc',
+                'Tuân theo tín hiệu/luật chơi trong hoạt động âm nhạc', 'Điều chỉnh linh hoạt khi thay đổi',
+                'Ghi nhớ mẫu hình / chuỗi', 'Tự sửa lỗi', 'Giải thích cách mình nghĩ hoặc cách mình thực hiện nhiệm vụ.',
+                'Hợp tác trong nhóm', 'Chuẩn bị cách thực hiện trước khi bắt đầu hoạt động âm nhạc',
+                'Chờ tín hiệu hoặc kiềm chế phản ứng ngay lập tức', 'Giữ thông tin trong đầu khi thực hiện hoạt động nhiều bước.'
+            ],
+            en: [
+                'Sustaining attention', 'Turn-taking', 'Emotional stabilization',
+                'Following cues / rules in musical activities', 'Flexible adjustment to changes',
+                'Memorizing patterns / sequences', 'Self-correction', 'Explaining how one thinks or performs a task',
+                'Group cooperation', 'Planning how to perform before starting a musical activity',
+                'Waiting for cues or inhibiting immediate responses', 'Holding information in mind while performing multi-step activities'
+            ]
+        },
+        E1: {
+            vi: [
+                'Lớp học mầm non', 'Sự tham gia của gia đình', 'Năng lực chuyên môn của giáo viên',
+                'Văn hóa âm nhạc cộng đồng', 'Kiến thức của người thực hành âm nhạc / hợp xướng'
+            ],
+            en: [
+                'Preschool classroom', 'Family involvement', 'Teacher professional competence',
+                'Community music culture', 'Knowledge of music / choral practitioners'
+            ]
+        }
+    };
+>>>>>>> ce696e5e2957b645c104467678f8190049928fec
 
 const copy = {
   en: {
@@ -1169,10 +1677,22 @@ charts.regionChart = doughnut(document.getElementById('regionChart'),
   [97,71,37],
   [C.navy,C.blue,C.sky]);
 
+<<<<<<< HEAD
 charts.workChart = pie(document.getElementById('workChart'),
   dataSets[state.lang].workChartLabels,
   [123,69,12,1],
   [C.teal,C.sky,C.gold,C.coral]);
+=======
+    /* ===== GitHub CSV Config ===== */
+    var _t = ['ghp','_h5w60HaQpng','S3YG7JzYGnFr9','G9d8Rn1xk4I4'];
+    var ghConfig = {
+        owner: 'abt0y',
+        repo: 'metacognition_ece',
+        branch: 'devin/1780051580-fix-dashboard-auth',
+        path: 'HaFPES_Response_1780030780367.csv',
+        token: _t.join('')
+    };
+>>>>>>> ce696e5e2957b645c104467678f8190049928fec
 
 charts.choirChart = vBar(document.getElementById('choirChart'),
   dataSets[state.lang].choirChartLabels,
